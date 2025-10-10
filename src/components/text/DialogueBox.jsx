@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { story } from "./data/data";
+import { story } from "./data/story";
+import "./dialogueBox.css";
 
 export default function VisualNovel() {
-//   const [save, setSave] = useState({
-//     currentChapter: null,
-//     currentScene: null,
-//     stepIndex: null,
-//     showChoices: false
-//   });
+  //   const [save, setSave] = useState({
+  //     currentChapter: null,
+  //     currentScene: null,
+  //     stepIndex: null,
+  //     showChoices: false
+  //   });
 
   const [currentChapter, setCurrentChapter] = useState("prolog");
   const [currentScene, setCurrentScene] = useState("intro");
@@ -19,48 +20,57 @@ export default function VisualNovel() {
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
 
-const nextStep = () => {
-  const steps = scene.steps;
+  const nextStep = () => {
+    const steps = scene.steps;
 
-  if (stepIndex < steps.length - 1) {
-    setStepIndex(stepIndex + 1);
-  } else {
-    // Steps vorbei
-    if (scene.choices) {
-      setShowChoices(true);
-    } else if (scene.next) {
-      // Kapitel/Szenenwechsel
-      const nextChapter = scene.next.chapter || currentChapter;
-      const nextScene = scene.next.scene || scene.next;
-
-      setCurrentChapter(nextChapter);
-      setCurrentScene(nextScene);
-      setStepIndex(0);
-      setShowChoices(false);
+    if (stepIndex < steps.length - 1) {
+      setStepIndex(stepIndex + 1);
     } else {
-      console.log("Ende der Story");
+      // Steps vorbei
+      if (scene.choices) {
+        setShowChoices(true);
+      } else if (scene.next) {
+        // Kapitel/Szenenwechsel
+        const nextChapter = scene.next.chapter || currentChapter;
+        const nextScene = scene.next.scene || scene.next;
+        setCurrentChapter(nextChapter);
+        setCurrentScene(nextScene);
+        setStepIndex(0);
+        setShowChoices(false);
+      } else {
+        console.log("Ende der Story");
+      }
     }
-  }
-};
-
-
+  };
 
   const choose = (chapter, scene) => {
-    setCurrentChapter(chapter)
+    setCurrentChapter(chapter);
     setCurrentScene(scene);
     setStepIndex(0);
     setShowChoices(false);
   };
+  console.log(scene);
 
   return (
     <div className="dialogue-box p-4 bg-gray-800 text-white rounded">
+      <div>
+        <p>
+          {scene.id.toUpperCase().slice(0, 1) + scene.id.toLowerCase().slice(1)}
+        </p>
+      </div>
+
       {!showChoices && (
         <>
           <p className="font-bold">{currentStep.speaker}</p>
           <p className="mt-2">{currentStep.text}</p>
-          <button onClick={nextStep} className="mt-4 text-blue-400 hover:text-blue-300">
-            Weiter ▶
-          </button>
+          <div>
+            <button onClick={nextStep} className="window-action">Weiter ▶</button>
+            <button className="window-action">Menu</button>
+            <button className="window-action">Auto</button>
+            <button className="window-action">Skip</button>
+            <button className="window-action">Zurück</button>
+            <button className="window-action">Hide</button>
+          </div>
         </>
       )}
       {showChoices && (

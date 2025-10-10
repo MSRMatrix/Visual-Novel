@@ -1,7 +1,6 @@
 const narrator = "Erzähler";
 
-export const story = {
-  prolog: {
+export const prolog = {
     intro: {
       id: "intro",
       steps: [
@@ -22,6 +21,14 @@ export const story = {
     choice_fail: {
       id: "choice_fail",
       steps: [
+ {
+          speaker: narrator,
+          text: "Bereit für ein spannendes Abenteuer? Dann legen wir mal los!",
+        },
+        {
+          speaker: narrator,
+          text: "...",
+        },
         {
           speaker: narrator,
           sfx: "paper_flip.mp3",
@@ -55,24 +62,6 @@ export const story = {
           text: "Kapitel Ende",
         },
       ],
-      next: {chapter: "chapterOne", scene: "path_life_continue"},
+      next: {chapter: "chapterOne", scene: "path_life_continue_1"},
     },
-  },
-
-  chapterOne: {
-    path_life_continue: {
-        id: "path_life_continue",
-      steps: [
-        {
-          speaker: narrator,
-          text: "Noch gibt es keinen Text...",
-        },
-         {
-          speaker: narrator,
-          text: "Sei nicht traurig...",
-        },
-      ],
-      next: {chapter: "chapterOne", scene: "example"},
-    },
-  },
 };

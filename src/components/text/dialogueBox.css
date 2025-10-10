@@ -1,0 +1,13 @@
+.window-action{
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: transparent; 
+    
+    &:hover{
+        background-color: green;
+    }
+    &:active{
+        background-color: brown;
+    }
+    }
