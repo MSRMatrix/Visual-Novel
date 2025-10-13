@@ -13,7 +13,7 @@ export const chapterTwo = {
           text: "Die Spannung steigt!",
         },
       ],
-      next: {chapter: "chapterTwo", scene: "the_beginning_2"},
+      next: {chapter: "lastChapter", scene: "the_ending"},
     },
   }
  
