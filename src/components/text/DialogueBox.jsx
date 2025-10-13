@@ -1,136 +1,187 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { story } from "./data/story";
 import { useNavigate } from "react-router-dom";
 import "./dialogueBox.css";
+import Menu from "../menu/Menu";
+import { nextStep } from "../functions/nextStep";
+import { stepBack } from "../functions/stepBack";
 
 export default function VisualNovel() {
-  //   const [save, setSave] = useState({
-  //     currentChapter: null,
-  //     currentScene: null,
-  //     stepIndex: null,
-  //     showChoices: false
-  //   });
-  const navigate = useNavigate();
-  const [currentChapter, setCurrentChapter] = useState("prolog");
-  const [currentScene, setCurrentScene] = useState("intro");
-  const [stepIndex, setStepIndex] = useState(0);
-  const [showChoices, setShowChoices] = useState(false);
+  const [load, setLoad] = useState({
+    currentChapter: "",
+    currentScene: "",
+    stepIndex: "",
+    history: "",
+  });
 
-  const [history, setHistory] = useState([]);
+  const [currentChapter, setCurrentChapter] = useState(
+    load.currentChapter || "prolog"
+  );
+  const [currentScene, setCurrentScene] = useState(
+    load.currentScene || "intro"
+  );
+  const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
+  const [history, setHistory] = useState(load.history || []);
+
+  const [showChoices, setShowChoices] = useState(false);
+  const [auto, setAuto] = useState(false);
+  const [autoTime, setAutoTime] = useState(5000);
+  const [quickMenu, setQuickMenu] = useState(false);
+
+  const navigate = useNavigate();
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
 
-  const nextStep = () => {
-    const steps = scene.steps;
-
-    if (stepIndex < steps.length - 1) {
-      setStepIndex(stepIndex + 1);
-    } else {
-      // Steps vorbei
-      if (scene.choices) {
-        setShowChoices(true);
-      } else if (scene.next) {
-        // Kapitel/Szenenwechsel
-        const nextChapter = scene.next.chapter || currentChapter;
-        const nextScene = scene.next.scene || scene.next;
-        console.log(scene);
-        
-        if (nextChapter === "exit" && nextScene === "close") {
-          return navigate("/credits");
-        }
-
-        setCurrentChapter(nextChapter);
-        setCurrentScene(nextScene);
-        setStepIndex(0);
-        setShowChoices(false);
-      } else {
-        console.log("Ende der Story");
-      }
-    }
-  };
-
-  const stepBack = () => {
-    const steps = scene.steps;
-
-    if (stepIndex > 0) {
-      setStepIndex(stepIndex - 1);
-    } else {
-      // Steps vorbei
-      if (scene.choices) {
-        setShowChoices(true);
-      } else if (scene.next) {
-        // Kapitel/Szenenwechsel
-        const nextChapter = scene.next.chapter || currentChapter;
-        const nextScene = scene.next.scene || scene.next;
-        if (nextChapter === "exit" && nextScene === "close") {
-          return navigate("/credits");
-        }
-
-        setCurrentChapter(nextChapter);
-        setCurrentScene(nextScene);
-        setStepIndex(0);
-        setShowChoices(false);
-      } else {
-        console.log("Ende der Story");
-      }
-    }
-  };
-
   const choose = (chapter, scene) => {
-    setCurrentChapter(chapter);
-    setCurrentScene(scene);
-    setStepIndex(0);
-    setShowChoices(false);
-  };
+  // 💾 Aktuellen Zustand merken
+  setHistory(prev => [
+    ...prev,
+    {
+      chapter: currentChapter,
+      scene: currentScene,
+      step: stepIndex,
+    },
+  ]);
+
+  // Dann zur neuen Szene springen
+  setCurrentChapter(chapter);
+  setCurrentScene(scene);
+  setStepIndex(0);
+  setShowChoices(false);
+};
+
+
+  useEffect(() => {
+    if (!auto || showChoices) return;
+
+    const interval = setInterval(() => {
+      nextStep(
+        scene,
+        stepIndex,
+        setStepIndex,
+        setShowChoices,
+        currentChapter,
+        navigate,
+        setHistory,
+        currentScene,
+        setCurrentChapter,
+        setCurrentScene
+      );
+    }, autoTime);
+
+    return () => clearInterval(interval);
+  }, [auto, autoTime, showChoices, stepIndex]);
+
+  console.log(history);
+
   return (
-    <div className="dialogue-box p-4 bg-gray-800 text-white rounded">
-      <div>
-        <p>
-          {scene.id.toUpperCase().slice(0, 1) + scene.id.toLowerCase().slice(1)}
-        </p>
-      </div>
-
-      <>
-       
-        {!showChoices ? <div> <p className="font-bold">{currentStep.speaker}</p> <p className="mt-2">{currentStep.text}</p> </div> : ""}
-
-        {showChoices && (
-          <div className="choices mt-4 flex flex-col gap-2">
-            {scene.choices.map((choice, idx) => (
-              <button
-                key={idx}
-                onClick={() => choose(choice.next.chapter, choice.next.scene)}
-                className="bg-blue-600 p-2 rounded hover:bg-blue-500"
-              >
-                {choice.text}
-              </button>
-            ))}
-          </div>
-        )}
-
+    <div>
+      {!quickMenu ? (
         <div>
-          <button
-            onClick={nextStep}
-            className="window-action"
-            disabled={showChoices}
-          >
-            Weiter ▶
-          </button>
-          <button className="window-action">Menu</button>
-          <button className="window-action">Auto</button>
-          <button className="window-action">Skip</button>
-          <button
-            onClick={stepBack}
-            className="window-action"
-            disabled={stepIndex <= 0 && scene.id === "intro"}
-          >
-            Zurück
-          </button>
-          <button className="window-action">Hide</button>
+          <div>
+            <p>
+              {scene.id.toUpperCase().slice(0, 1) +
+                scene.id.toLowerCase().slice(1)}
+            </p>
+          </div>
+
+          <>
+            {!showChoices ? (
+              <div>
+                {" "}
+                <p className="font-bold">{currentStep.speaker}</p>{" "}
+                <p className="mt-2">{currentStep.text}</p>{" "}
+              </div>
+            ) : (
+              ""
+            )}
+
+            {showChoices && (
+              <div className="choices mt-4 flex flex-col gap-2">
+                {scene.choices.map((choice, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() =>
+                      choose(choice.next.chapter, choice.next.scene)
+                    }
+                    className="bg-blue-600 p-2 rounded hover:bg-blue-500"
+                  >
+                    {choice.text}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <div>
+              <button
+                onClick={() => {
+                  nextStep(
+                    scene,
+                    stepIndex,
+                    setStepIndex,
+                    setShowChoices,
+                    currentChapter,
+                    navigate,
+                    setHistory,
+                    currentScene,
+                    setCurrentChapter,
+                    setCurrentScene
+                  ),
+                    setAuto(false);
+                }}
+                className="window-action"
+                disabled={showChoices}
+              >
+                Weiter ▶
+              </button>
+              <button
+                className="window-action"
+                onClick={() => setQuickMenu(true)}
+              >
+                Menu
+              </button>
+              <button
+                className="window-action"
+                onClick={() => setAuto((prevMode) => !prevMode)}
+                style={{ background: auto ? "blue" : "" }}
+                disabled={showChoices}
+              >
+                Auto
+              </button>
+              <button className="window-action">Skip</button>
+              <button
+                onClick={() => {
+                  stepBack(
+                    stepIndex,
+                    setStepIndex,
+                    setCurrentChapter,
+                    setCurrentScene,
+                    setHistory,
+                    history,
+                    setShowChoices
+                  ),
+                    setAuto(false);
+                }}
+                className="window-action"
+                disabled={!history}
+              >
+                Zurück
+              </button>
+              <button className="window-action">Hide</button>
+            </div>
+          </>
         </div>
-      </>
+      ) : (
+        <Menu
+          setQuickMenu={setQuickMenu}
+          currentChapter={currentChapter}
+          currentScene={currentScene}
+          stepIndex={stepIndex}
+          history={history}
+        />
+      )}
     </div>
   );
 }
