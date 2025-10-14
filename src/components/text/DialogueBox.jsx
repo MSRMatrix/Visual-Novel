@@ -5,6 +5,7 @@ import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import { nextStep } from "../functions/nextStep";
 import { stepBack } from "../functions/stepBack";
+import DialogueAction from "./dialogueAction/DialogueAction";
 
 export default function VisualNovel() {
   const [load, setLoad] = useState({
@@ -21,7 +22,7 @@ export default function VisualNovel() {
     load.currentScene || "intro"
   );
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
-  const [history, setHistory] = useState(load.history || []);
+  const [chatHistory, setChatHistory] = useState(load.history || []);
 
   const [showChoices, setShowChoices] = useState(false);
   const [auto, setAuto] = useState(false);
@@ -36,12 +37,13 @@ export default function VisualNovel() {
 
   const choose = (chapter, scene) => {
   // 💾 Aktuellen Zustand merken
-  setHistory(prev => [
+  setChatHistory(prev => [
     ...prev,
     {
       chapter: currentChapter,
       scene: currentScene,
       step: stepIndex,
+      choice: true
     },
   ]);
 
@@ -64,7 +66,7 @@ export default function VisualNovel() {
         setShowChoices,
         currentChapter,
         navigate,
-        setHistory,
+        setChatHistory,
         currentScene,
         setCurrentChapter,
         setCurrentScene
@@ -74,7 +76,7 @@ export default function VisualNovel() {
     return () => clearInterval(interval);
   }, [auto, autoTime, showChoices, stepIndex]);
 
-  console.log(history);
+console.log(chatHistory);
 
   return (
     <div>
@@ -114,63 +116,22 @@ export default function VisualNovel() {
               </div>
             )}
 
-            <div>
-              <button
-                onClick={() => {
-                  nextStep(
-                    scene,
-                    stepIndex,
-                    setStepIndex,
-                    setShowChoices,
-                    currentChapter,
-                    navigate,
-                    setHistory,
-                    currentScene,
-                    setCurrentChapter,
-                    setCurrentScene
-                  ),
-                    setAuto(false);
-                }}
-                className="window-action"
-                disabled={showChoices}
-              >
-                Weiter ▶
-              </button>
-              <button
-                className="window-action"
-                onClick={() => setQuickMenu(true)}
-              >
-                Menu
-              </button>
-              <button
-                className="window-action"
-                onClick={() => setAuto((prevMode) => !prevMode)}
-                style={{ background: auto ? "blue" : "" }}
-                disabled={showChoices}
-              >
-                Auto
-              </button>
-              <button className="window-action">Skip</button>
-              <button
-                onClick={() => {
-                  stepBack(
-                    stepIndex,
-                    setStepIndex,
-                    setCurrentChapter,
-                    setCurrentScene,
-                    setHistory,
-                    history,
-                    setShowChoices
-                  ),
-                    setAuto(false);
-                }}
-                className="window-action"
-                disabled={!history}
-              >
-                Zurück
-              </button>
-              <button className="window-action">Hide</button>
-            </div>
+           <DialogueAction 
+                    scene={scene}
+                    stepIndex={stepIndex}
+                    setStepIndex={setStepIndex}
+                    setShowChoices={setShowChoices}
+                    currentChapter={currentChapter}
+                    navigate={navigate}
+                    setChatHistory={setChatHistory}
+                    currentScene={currentScene}
+                    setCurrentChapter={setCurrentChapter}
+                    setCurrentScene={setCurrentScene}
+                    setAuto={setAuto} 
+                    showChoices={showChoices} 
+                    setQuickMenu={setQuickMenu}
+                    auto={auto}
+                    chatHistory={chatHistory}/>
           </>
         </div>
       ) : (
@@ -179,7 +140,7 @@ export default function VisualNovel() {
           currentChapter={currentChapter}
           currentScene={currentScene}
           stepIndex={stepIndex}
-          history={history}
+          chatHistory={chatHistory}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import './credits.css'
 
-function Credits() {
+const  Credits = () => {
   return (
     <>
     <div>
