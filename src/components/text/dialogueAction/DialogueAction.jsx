@@ -16,7 +16,9 @@ setChatHistory,
   showChoices,
   setQuickMenu,
   auto,
-  chatHistory
+  chatHistory,
+  hide,
+  setHide
 }) => {
 
     
@@ -76,7 +78,7 @@ setChatHistory,
       >
         Zurück
       </button>
-      <button className="window-action">Hide</button>
+      <button className="window-action" onClick={() => setHide(prevMode => !prevMode)}>Hide</button>
     </div>
   );
 };

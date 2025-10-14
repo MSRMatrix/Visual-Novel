@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import { nextStep } from "../functions/nextStep";
-import { stepBack } from "../functions/stepBack";
 import DialogueAction from "./dialogueAction/DialogueAction";
 
-export default function VisualNovel() {
+export default function VisualNovel({hide, setHide}) {
   const [load, setLoad] = useState({
     currentChapter: "",
     currentScene: "",
@@ -76,10 +75,10 @@ export default function VisualNovel() {
     return () => clearInterval(interval);
   }, [auto, autoTime, showChoices, stepIndex]);
 
-console.log(chatHistory);
+  
 
   return (
-    <div>
+    <div style={{display: hide ? "none" : "block"}}>
       {!quickMenu ? (
         <div>
           <div>
@@ -131,7 +130,10 @@ console.log(chatHistory);
                     showChoices={showChoices} 
                     setQuickMenu={setQuickMenu}
                     auto={auto}
-                    chatHistory={chatHistory}/>
+                    chatHistory={chatHistory}
+                    hide={hide}
+                    setHide={setHide}
+                    />
           </>
         </div>
       ) : (
