@@ -12,8 +12,19 @@ export const chapterOne = {
           speaker: narrator,
           text: "Sei nicht traurig...",
         },
+        
       ],
-      next: {chapter: "chapterOne", scene: "path_life_continue_2"},
+     choices: 
+         [
+      {
+        text: "Weiter...",
+        next: { chapter: "chapterOne", scene: "path_life_continue_2" },
+      },
+      {
+        text: "Zum Ende springe",
+        next: { chapter: "end", scene: "ending" },
+      },
+    ],
     },
 
     path_life_continue_2: {

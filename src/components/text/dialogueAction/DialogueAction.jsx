@@ -66,7 +66,8 @@ setChatHistory,
             setChatHistory,
             chatHistory,
             setShowChoices,
-            scene
+            scene,
+            showChoices
           ),
             setAuto(false);
         }}
