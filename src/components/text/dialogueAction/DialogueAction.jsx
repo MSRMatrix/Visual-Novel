@@ -18,10 +18,16 @@ setChatHistory,
   auto,
   chatHistory,
   hide,
-  setHide
+  setHide,
+  skip,
+  setSkip
 }) => {
 
-    
+function skipText(){
+  setSkip(prevMode => !prevMode)
+  setAuto(false)
+}
+
   return (
     <div>
       <button
@@ -51,14 +57,14 @@ setChatHistory,
       </button>
       <button
         className="window-action"
-        onClick={() => setAuto((prevMode) => !prevMode)}
+        onClick={() => {setAuto((prevMode) => !prevMode), setSkip(false)}}
         style={{ background: auto ? "blue" : "" }}
         disabled={showChoices}
       >
         Auto
       </button>
-      <button className="window-action">Skip</button>
-      <button
+      <button className="window-action" style={{ background: skip ? "blue" : "" }} onClick={() => skipText()}>Skip</button>
+      <button  
         onClick={() => {
           stepBack(
             stepIndex,

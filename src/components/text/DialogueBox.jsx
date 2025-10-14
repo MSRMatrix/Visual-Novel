@@ -5,8 +5,11 @@ import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import { nextStep } from "../functions/nextStep";
 import DialogueAction from "./dialogueAction/DialogueAction";
+import { choose } from "../functions/choose";
 
-export default function VisualNovel({hide, setHide}) {
+export default function VisualNovel({ hide, setHide }) {
+  
+  const navigate = useNavigate();
   const [load, setLoad] = useState({
     currentChapter: "",
     currentScene: "",
@@ -27,58 +30,61 @@ export default function VisualNovel({hide, setHide}) {
   const [auto, setAuto] = useState(false);
   const [autoTime, setAutoTime] = useState(5000);
   const [quickMenu, setQuickMenu] = useState(false);
-
-  const navigate = useNavigate();
+  const [skip, setSkip] = useState(false)
+  
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
 
-  const choose = (chapter, scene) => {
-  // 💾 Aktuellen Zustand merken
-  setChatHistory(prev => [
-    ...prev,
-    {
-      chapter: currentChapter,
-      scene: currentScene,
-      step: stepIndex,
-      choice: true
-    },
-  ]);
+  // 🔹 Auto-Modus
+useEffect(() => {
+  if (!auto || showChoices) return;
 
-  // Dann zur neuen Szene springen
-  setCurrentChapter(chapter);
-  setCurrentScene(scene);
-  setStepIndex(0);
-  setShowChoices(false);
-};
+  const interval = setInterval(() => {
+    nextStep(
+      scene,
+      stepIndex,
+      setStepIndex,
+      setShowChoices,
+      currentChapter,
+      navigate,
+      setChatHistory,
+      currentScene,
+      setCurrentChapter,
+      setCurrentScene
+    );
+  }, autoTime);
 
+  return () => clearInterval(interval);
+}, [auto, autoTime, showChoices, stepIndex]);
 
-  useEffect(() => {
-    if (!auto || showChoices) return;
+// 🔹 Skip-Modus
+useEffect(() => {
+  if (!skip || showChoices) return;
 
-    const interval = setInterval(() => {
-      nextStep(
-        scene,
-        stepIndex,
-        setStepIndex,
-        setShowChoices,
-        currentChapter,
-        navigate,
-        setChatHistory,
-        currentScene,
-        setCurrentChapter,
-        setCurrentScene
-      );
-    }, autoTime);
+  const interval = setInterval(() => {
+    nextStep(
+      scene,
+      stepIndex,
+      setStepIndex,
+      setShowChoices,
+      currentChapter,
+      navigate,
+      setChatHistory,
+      currentScene,
+      setCurrentChapter,
+      setCurrentScene
+    );
+  }, 80); // superschnell
 
-    return () => clearInterval(interval);
-  }, [auto, autoTime, showChoices, stepIndex]);
+  return () => clearInterval(interval);
+}, [skip, showChoices, stepIndex]);
 
   
 
   return (
-    <div style={{display: hide ? "none" : "block"}}>
+    <div style={{ display: hide ? "none" : "block" }}>
       {!quickMenu ? (
         <div>
           <div>
@@ -105,7 +111,18 @@ export default function VisualNovel({hide, setHide}) {
                   <button
                     key={idx}
                     onClick={() =>
-                      choose(choice.next.chapter, choice.next.scene)
+                      choose(
+                        choice.next.chapter,
+                        choice.next.scene,
+                        setChatHistory,
+                        currentChapter,
+                        currentScene,
+                        stepIndex,
+                        setCurrentChapter,
+                        setCurrentScene,
+                        setStepIndex,
+                        setShowChoices
+                      )
                     }
                     className="bg-blue-600 p-2 rounded hover:bg-blue-500"
                   >
@@ -115,25 +132,27 @@ export default function VisualNovel({hide, setHide}) {
               </div>
             )}
 
-           <DialogueAction 
-                    scene={scene}
-                    stepIndex={stepIndex}
-                    setStepIndex={setStepIndex}
-                    setShowChoices={setShowChoices}
-                    currentChapter={currentChapter}
-                    navigate={navigate}
-                    setChatHistory={setChatHistory}
-                    currentScene={currentScene}
-                    setCurrentChapter={setCurrentChapter}
-                    setCurrentScene={setCurrentScene}
-                    setAuto={setAuto} 
-                    showChoices={showChoices} 
-                    setQuickMenu={setQuickMenu}
-                    auto={auto}
-                    chatHistory={chatHistory}
-                    hide={hide}
-                    setHide={setHide}
-                    />
+            <DialogueAction
+              scene={scene}
+              stepIndex={stepIndex}
+              setStepIndex={setStepIndex}
+              setShowChoices={setShowChoices}
+              currentChapter={currentChapter}
+              navigate={navigate}
+              setChatHistory={setChatHistory}
+              currentScene={currentScene}
+              setCurrentChapter={setCurrentChapter}
+              setCurrentScene={setCurrentScene}
+              setAuto={setAuto}
+              showChoices={showChoices}
+              setQuickMenu={setQuickMenu}
+              auto={auto}
+              chatHistory={chatHistory}
+              hide={hide}
+              setHide={setHide}
+              skip={skip}
+              setSkip={setSkip}
+            />
           </>
         </div>
       ) : (
