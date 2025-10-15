@@ -1,35 +1,64 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./menu.css";
+import { useState } from "react";
+import Save from "./save/Save";
+import Load from "./load/Load";
+import Options from "../options/Options";
 
 function Menu({
   setQuickMenu,
   currentChapter,
   currentScene,
   stepIndex,
-  history,
+  chatHistory,
 }) {
-
-
-  function save() {
-    console.log(currentChapter);
-    console.log(currentScene);
-    console.log(stepIndex);
-    console.log(history);
-    // In den Local Storage einspeichern (Vermutlich den Titel Speicherplatz 1, 2, 3 etc...)
-  }
+  const navigate = useNavigate();
 
   function load() {
     console.log(`Noch keine Funktion :)`);
     // Local Storage Daten rausfiltern
   }
 
+  const [test, setTest] = useState("");
+
+  function mainMenu() {
+    const backToMenu = confirm(
+      "Alle ungespeicherten Fortschritte gehen verloren! Möchtest du wirklich das Spiel verlassen?"
+    );
+    if (backToMenu) {
+      return navigate("/");
+    } else {
+      return;
+    }
+  }
+
   return (
     <>
       <h1>Schnellmenü</h1>
-      <button onClick={() => setQuickMenu(false)}>Zurück zum Spiel</button>
-      <button onClick={() => save()}>Speichern</button>
-      <button onClick={() => load()}>Laden</button>
-      <NavLink to="/">Ins Hauptmenü</NavLink>
+      <button
+        onClick={() => {
+          setQuickMenu(false), setTest("");
+        }}
+      >
+        Zurück zum Spiel
+      </button>
+      <button onClick={() => setTest("save")}>Speichern</button>
+      <button onClick={() => setTest("load")}>Laden</button>
+      <button onClick={() => setTest("option")}>Optionen</button>
+      {test === "save" ? (
+        <Save 
+  currentChapter={currentChapter}
+  currentScene={currentScene}
+  stepIndex={stepIndex}
+  chatHistory={chatHistory}/>
+      ) : test === "load" ? (
+        <Load />
+      ) : test === "option" ? (
+        <Options />
+      ) : (
+        ""
+      )}
+      <button onClick={() => mainMenu()}>Ins Hauptmenü</button>
     </>
   );
 }
