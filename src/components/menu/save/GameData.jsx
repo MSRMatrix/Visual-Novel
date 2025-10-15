@@ -1,0 +1,82 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { saveData } from "../../functions/saveData";
+import { loadData } from "../../functions/loadData";
+import { deleteData } from "../../functions/deleteData";
+
+function GameData({
+  currentChapter,
+  currentScene,
+  stepIndex,
+  chatHistory,
+  mode,
+  setCurrentChapter,
+  setCurrentScene,
+  setStepIndex,
+  setChatHistory,
+  setMode,
+  quickMenu,
+  setQuickMenu,
+}) {
+  const navigate = useNavigate();
+  const [saves, setSaves] = useState(() => {
+    const stored = JSON.parse(localStorage.getItem("vn_saves")) || [];
+    return stored.length
+      ? stored
+      : [
+          { name: "Speicherplatz 1" },
+          { name: "Speicherplatz 2" },
+          { name: "Speicherplatz 3" },
+          { name: "Speicherplatz 4" },
+          { name: "Speicherplatz 5" },
+        ];
+  });
+
+  function actionFunction(slotName) {
+    switch (mode) {
+      case "save":
+        return saveData(
+          slotName,
+          saves,
+          currentChapter,
+          currentScene,
+          stepIndex,
+          chatHistory,
+          setSaves
+        );
+      case "delete":
+        return deleteData(slotName, saves, setSaves);
+      case "load":
+        return loadData(
+          slotName,
+          setCurrentChapter,
+          setCurrentScene,
+          setStepIndex,
+          setChatHistory,
+          setMode,
+          setQuickMenu,
+          navigate,
+          quickMenu
+        );
+      default:
+        console.warn(`Unbekannter Modus: ${mode}`);
+        break;
+    }
+  }
+
+  return (
+    <>
+      {saves.map((item, key) => (
+        <div key={key} onClick={() => actionFunction(item.name)}>
+          <h2>{item.name}</h2>
+          <p>{item.timestamp}</p>
+          <p>{item.currentChapter}</p>
+          <p>{item.currentScene}</p>
+          <p>{item.stepIndex}</p>
+        </div>
+      ))}
+    </>
+  );
+}
+
+export default GameData;

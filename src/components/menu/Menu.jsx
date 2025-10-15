@@ -1,9 +1,8 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./menu.css";
 import { useState } from "react";
-import Save from "./save/Save";
-import Load from "./load/Load";
 import Options from "../options/Options";
+import GameData from "./save/GameData";
 
 function Menu({
   setQuickMenu,
@@ -11,21 +10,22 @@ function Menu({
   currentScene,
   stepIndex,
   chatHistory,
+  setCurrentChapter,
+  setCurrentScene,
+  setStepIndex,
+  setChatHistory,
+  quickMenu
 }) {
   const navigate = useNavigate();
 
-  function load() {
-    console.log(`Noch keine Funktion :)`);
-    // Local Storage Daten rausfiltern
-  }
-
-  const [test, setTest] = useState("");
+  const [action, setAction] = useState("");
 
   function mainMenu() {
     const backToMenu = confirm(
       "Alle ungespeicherten Fortschritte gehen verloren! Möchtest du wirklich das Spiel verlassen?"
     );
     if (backToMenu) {
+      setAction("");
       return navigate("/");
     } else {
       return;
@@ -37,23 +37,51 @@ function Menu({
       <h1>Schnellmenü</h1>
       <button
         onClick={() => {
-          setQuickMenu(false), setTest("");
+          setQuickMenu(false), setAction("");
         }}
       >
         Zurück zum Spiel
       </button>
-      <button onClick={() => setTest("save")}>Speichern</button>
-      <button onClick={() => setTest("load")}>Laden</button>
-      <button onClick={() => setTest("option")}>Optionen</button>
-      {test === "save" ? (
-        <Save 
-  currentChapter={currentChapter}
-  currentScene={currentScene}
-  stepIndex={stepIndex}
-  chatHistory={chatHistory}/>
-      ) : test === "load" ? (
-        <Load />
-      ) : test === "option" ? (
+      <button
+        style={{ background: action === "save" ? "blue" : "" }}
+        onClick={() => setAction("save")}
+      >
+        Speichern
+      </button>
+      <button
+        style={{ background: action === "load" ? "green" : "" }}
+        onClick={() => setAction("load")}
+      >
+        Laden
+      </button>
+      <button
+        style={{ background: action === "delete" ? "red" : "" }}
+        onClick={() => setAction("delete")}
+      >
+        Löschen
+      </button>
+      <button
+        style={{ background: action === "option" ? "violet" : "" }}
+        onClick={() => setAction("option")}
+      >
+        Optionen
+      </button>
+      {action === "save" || action === "load" || action === "delete" ? (
+        <GameData
+          currentChapter={currentChapter}
+          currentScene={currentScene}
+          stepIndex={stepIndex}
+          chatHistory={chatHistory}
+          mode={action}
+          setCurrentChapter={setCurrentChapter}
+setCurrentScene={setCurrentScene}
+setStepIndex={setStepIndex}
+setChatHistory={setChatHistory}
+setMode={setAction}
+quickMenu={quickMenu}
+setQuickMenu={setQuickMenu}
+        />
+      ) : action === "option" ? (
         <Options />
       ) : (
         ""

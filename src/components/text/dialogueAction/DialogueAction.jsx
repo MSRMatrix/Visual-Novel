@@ -8,7 +8,7 @@ const DialogueAction = ({
   setShowChoices,
   currentChapter,
   navigate,
-setChatHistory,
+  setChatHistory,
   currentScene,
   setCurrentChapter,
   setCurrentScene,
@@ -20,13 +20,12 @@ setChatHistory,
   hide,
   setHide,
   skip,
-  setSkip
+  setSkip,
 }) => {
-
-function skipText(){
-  setSkip(prevMode => !prevMode)
-  setAuto(false)
-}
+  function skipText() {
+    setSkip((prevMode) => !prevMode);
+    setAuto(false);
+  }
 
   return (
     <div>
@@ -52,19 +51,32 @@ function skipText(){
       >
         Weiter ▶
       </button>
-      <button className="window-action" onClick={() => setQuickMenu(true)}>
-        Menu
+      <button
+        className="window-action"
+        onClick={() => {
+          setQuickMenu(true), setSkip(false), setAuto(false);
+        }}
+      >
+        Menü
       </button>
       <button
         className="window-action"
-        onClick={() => {setAuto((prevMode) => !prevMode), setSkip(false)}}
+        onClick={() => {
+          setAuto((prevMode) => !prevMode), setSkip(false);
+        }}
         style={{ background: auto ? "blue" : "" }}
         disabled={showChoices}
       >
         Auto
       </button>
-      <button className="window-action" style={{ background: skip ? "blue" : "" }} onClick={() => skipText()}>Skip</button>
-      <button  
+      <button
+        className="window-action"
+        style={{ background: skip ? "blue" : "" }}
+        onClick={() => skipText()}
+      >
+        Skip
+      </button>
+      <button
         onClick={() => {
           stepBack(
             stepIndex,
@@ -84,7 +96,12 @@ function skipText(){
       >
         Zurück
       </button>
-      <button className="window-action" onClick={() => setHide(prevMode => !prevMode)}>Hide</button>
+      <button
+        className="window-action"
+        onClick={() => setHide((prevMode) => !prevMode)}
+      >
+        Hide
+      </button>
     </div>
   );
 };

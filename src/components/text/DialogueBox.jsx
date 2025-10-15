@@ -17,12 +17,8 @@ export default function VisualNovel({ hide, setHide }) {
     history: "",
   });
 
-  const [currentChapter, setCurrentChapter] = useState(
-    load.currentChapter || "prolog"
-  );
-  const [currentScene, setCurrentScene] = useState(
-    load.currentScene || "intro"
-  );
+  const [currentChapter, setCurrentChapter] = useState(load.currentChapter || "prolog");
+  const [currentScene, setCurrentScene] = useState(load.currentScene || "intro");
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
   const [chatHistory, setChatHistory] = useState(load.history || []);
 
@@ -162,6 +158,11 @@ useEffect(() => {
           currentScene={currentScene}
           stepIndex={stepIndex}
           chatHistory={chatHistory}
+          setCurrentChapter={setCurrentChapter}
+          setCurrentScene={setCurrentScene}
+          setStepIndex={setStepIndex}
+          setChatHistory={setChatHistory}
+          quickMenu={quickMenu}
         />
       )}
     </div>
