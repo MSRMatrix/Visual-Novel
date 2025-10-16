@@ -1,9 +1,9 @@
 import { useState } from "react"
 import ReactPlayer from "react-player";
 
-function ReactPlayerComponent() {
+function ReactPlayerComponent({intro}) {
   const [music, setMusic] = useState("https://www.youtube.com/watch?v=HJuSIcSS_xI")
-  const [playing, setPlaying] = useState(true)
+  const [playing, setPlaying] = useState(!intro ? true : false)
   console.log(playing);
   
   return (
