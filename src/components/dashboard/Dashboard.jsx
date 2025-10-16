@@ -5,7 +5,7 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <NavLink to="start">Neues Spiel starten</NavLink>
-      <NavLink to="/load">Spiel laden</NavLink>
+      <NavLink to="load">Spiel laden</NavLink>
       <NavLink to="options">Optionen</NavLink>
     </div>
   );

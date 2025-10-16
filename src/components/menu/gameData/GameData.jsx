@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { saveData } from "../../functions/saveData";
 import { loadData } from "../../functions/loadData";
 import { deleteData } from "../../functions/deleteData";
+import { formatTime } from "../../functions/formatTime";
 
 function GameData({
   currentChapter,
@@ -68,6 +69,8 @@ function GameData({
     }
   }
 
+  
+
   return (
     <>
       {saves.map((item, key) => (
@@ -79,7 +82,7 @@ function GameData({
             {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
           </p>
           <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>{item.playTime ? `Spielzeit: ${item.playTime}` : ""}</p>
+          <p>{item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}</p>
         </div>
       ))}
     </>

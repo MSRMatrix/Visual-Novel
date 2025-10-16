@@ -7,18 +7,24 @@ import Credits from "./components/credits/Credits";
 import Load from "./components/load/Load";
 import { LoadContext } from "./context/LoadContext";
 import { useState } from "react";
+import Root from "./Root";
 
 function App() {
   const router = createBrowserRouter([
     {
+      element: <Root />,
+      children: [
+{
       element: <Dashboard />,
       path: "/",
-      children: [],
     },
     { element: <Options />, path: "/options" },
     { element: <Start />, path: "/start" },
     { element: <Credits />, path: "/credits" },
     { element: <Load />, path: "/load" },
+      ],
+    },
+    
   ]);
 
     const [load, setLoad] = useState({

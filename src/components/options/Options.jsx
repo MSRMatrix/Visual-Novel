@@ -7,7 +7,6 @@ function Options() {
     Musik Ein Aus Lautstärke
     Schreibgeräusch Ein Aus Lautstärke
     Helligkeit
-
     <NavLink to="/">Zurück</NavLink>
     </>
   )

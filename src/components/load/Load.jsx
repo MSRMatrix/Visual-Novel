@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { LoadContext } from "../../context/LoadContext";
+import { formatTime } from "../functions/formatTime";
 
 function Load() {
     const {load, setLoad} = useContext(LoadContext)
@@ -22,8 +23,8 @@ const [saves, setSaves] = useState(() => {
     
     const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
-
-  if (!existing) {
+  
+  if (!existing.timestamp) {
     console.log("Kein Speicherstand gefunden!");
     return;
   } 
@@ -53,7 +54,7 @@ const [saves, setSaves] = useState(() => {
             {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
           </p>
           <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>{item.playTime ? `Spielzeit: ${item.playTime}` : ""}</p>
+          <p>{item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}</p>
         </div>
       ))}
      <NavLink to="/">Zurück</NavLink>

@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
 import { useContext, useState } from "react";
-import Options from "../options/Options";
 import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
+import Options from "./options/Options";
 
 function Menu({
   setQuickMenu,
