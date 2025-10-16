@@ -1,8 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Options from "../options/Options";
-import GameData from "./save/GameData";
+import GameData from "./gameData/GameData";
+import { LoadContext } from "../../context/LoadContext";
 
 function Menu({
   setQuickMenu,
@@ -14,10 +15,14 @@ function Menu({
   setCurrentScene,
   setStepIndex,
   setChatHistory,
-  quickMenu
+  quickMenu,
+  playTime,
+setPlayTime,
+isPaused,
+setIsPaused
 }) {
   const navigate = useNavigate();
-
+const {load, setLoad} = useContext(LoadContext)
   const [action, setAction] = useState("");
 
   function mainMenu() {
@@ -26,9 +31,35 @@ function Menu({
     );
     if (backToMenu) {
       setAction("");
+      setLoad({
+      currentChapter: "",
+      currentScene: "",
+      stepIndex: "",
+      history: "",
+      playTime: 0,
+    });
+    setPlayTime(0)
       return navigate("/");
     } else {
       return;
+    }
+  }
+
+  function newGame() {
+    if (
+      confirm(
+        "Möchtest du ein neues Spiel starten? Alle deine ungespeicherten Daten gehen verloren!"
+      )
+    ) {
+      setCurrentChapter("prolog")
+      setCurrentScene("intro")
+      setStepIndex(0)
+      setChatHistory([])
+      setAction("");
+      setQuickMenu(false)
+      return;
+    } else {
+      console.log(`Neues Spiel abgebrochen!`);
     }
   }
 
@@ -37,11 +68,12 @@ function Menu({
       <h1>Schnellmenü</h1>
       <button
         onClick={() => {
-          setQuickMenu(false), setAction("");
+          setQuickMenu(false), setAction(""), setIsPaused(false);
         }}
       >
         Zurück zum Spiel
       </button>
+      <button onClick={() => newGame()}>Neues Spiel</button>
       <button
         style={{ background: action === "save" ? "blue" : "" }}
         onClick={() => setAction("save")}
@@ -74,12 +106,14 @@ function Menu({
           chatHistory={chatHistory}
           mode={action}
           setCurrentChapter={setCurrentChapter}
-setCurrentScene={setCurrentScene}
-setStepIndex={setStepIndex}
-setChatHistory={setChatHistory}
-setMode={setAction}
-quickMenu={quickMenu}
-setQuickMenu={setQuickMenu}
+          setCurrentScene={setCurrentScene}
+          setStepIndex={setStepIndex}
+          setChatHistory={setChatHistory}
+          setMode={setAction}
+          quickMenu={quickMenu}
+          setQuickMenu={setQuickMenu}
+          playTime={playTime}
+          setPlayTime={setPlayTime}
         />
       ) : action === "option" ? (
         <Options />

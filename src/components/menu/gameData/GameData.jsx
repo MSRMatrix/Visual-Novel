@@ -17,6 +17,8 @@ function GameData({
   setMode,
   quickMenu,
   setQuickMenu,
+  playTime,
+  setPlayTime,
 }) {
   const navigate = useNavigate();
   const [saves, setSaves] = useState(() => {
@@ -42,7 +44,8 @@ function GameData({
           currentScene,
           stepIndex,
           chatHistory,
-          setSaves
+          setSaves,
+          playTime
         );
       case "delete":
         return deleteData(slotName, saves, setSaves);
@@ -56,7 +59,8 @@ function GameData({
           setMode,
           setQuickMenu,
           navigate,
-          quickMenu
+          quickMenu,
+          setPlayTime
         );
       default:
         console.warn(`Unbekannter Modus: ${mode}`);
@@ -69,10 +73,13 @@ function GameData({
       {saves.map((item, key) => (
         <div key={key} onClick={() => actionFunction(item.name)}>
           <h2>{item.name}</h2>
-          <p>{item.timestamp}</p>
-          <p>{item.currentChapter}</p>
-          <p>{item.currentScene}</p>
-          <p>{item.stepIndex}</p>
+          <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
+          <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
+          <p>
+            {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
+          </p>
+          <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
+          <p>{item.playTime ? `Spielzeit: ${item.playTime}` : ""}</p>
         </div>
       ))}
     </>

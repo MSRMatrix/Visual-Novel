@@ -7,7 +7,8 @@ export function loadData(
   setMode,
   setQuickMenu,
   navigate,
-  quickMenu
+  quickMenu,
+  setPlayTime
 ) {
   const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
@@ -27,6 +28,7 @@ export function loadData(
   setCurrentScene(existing.currentScene);
   setStepIndex(existing.stepIndex);
   setChatHistory(existing.chatHistory);
+  setPlayTime(existing.setPlayTime)
 
   if (quickMenu) {
     setMode("");

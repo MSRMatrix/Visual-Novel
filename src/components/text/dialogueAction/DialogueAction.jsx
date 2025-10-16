@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { nextStep } from "../../functions/nextStep";
 import { stepBack } from "../../functions/stepBack";
 
@@ -21,6 +22,7 @@ const DialogueAction = ({
   setHide,
   skip,
   setSkip,
+setIsPaused
 }) => {
   function skipText() {
     setSkip((prevMode) => !prevMode);
@@ -54,7 +56,7 @@ const DialogueAction = ({
       <button
         className="window-action"
         onClick={() => {
-          setQuickMenu(true), setSkip(false), setAuto(false);
+          setQuickMenu(true), setSkip(false), setAuto(false), setIsPaused(true);
         }}
       >
         Menü

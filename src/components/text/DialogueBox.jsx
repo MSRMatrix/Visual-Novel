@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { story } from "./data/story";
 import { useNavigate } from "react-router-dom";
 import "./dialogueBox.css";
@@ -6,21 +6,18 @@ import Menu from "../menu/Menu";
 import { nextStep } from "../functions/nextStep";
 import DialogueAction from "./dialogueAction/DialogueAction";
 import { choose } from "../functions/choose";
+import { LoadContext } from "../../context/LoadContext";
 
 export default function VisualNovel({ hide, setHide }) {
   
   const navigate = useNavigate();
-  const [load, setLoad] = useState({
-    currentChapter: "",
-    currentScene: "",
-    stepIndex: "",
-    history: "",
-  });
+  const {load, setLoad} = useContext(LoadContext)
 
   const [currentChapter, setCurrentChapter] = useState(load.currentChapter || "prolog");
   const [currentScene, setCurrentScene] = useState(load.currentScene || "intro");
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
-  const [chatHistory, setChatHistory] = useState(load.history || []);
+  const [chatHistory, setChatHistory] = useState(load.chatHistory || []);
+  const [playTime, setPlayTime] = useState(load.playtime || 0);
 
   const [showChoices, setShowChoices] = useState(false);
   const [auto, setAuto] = useState(false);
@@ -77,7 +74,17 @@ useEffect(() => {
   return () => clearInterval(interval);
 }, [skip, showChoices, stepIndex]);
 
-  
+const [isPaused, setIsPaused] = useState(false);
+
+useEffect(() => {
+  if (isPaused) return;
+
+  const interval = setInterval(() => {
+    setPlayTime((prev) => prev + 1);
+  }, 1000);
+
+  return () => clearInterval(interval);
+}, [isPaused]);
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
@@ -148,6 +155,7 @@ useEffect(() => {
               setHide={setHide}
               skip={skip}
               setSkip={setSkip}
+              setIsPaused={setIsPaused}
             />
           </>
         </div>
@@ -163,6 +171,10 @@ useEffect(() => {
           setStepIndex={setStepIndex}
           setChatHistory={setChatHistory}
           quickMenu={quickMenu}
+          playTime={playTime}
+          setPlayTime={setPlayTime}
+          isPaused={isPaused}
+          setIsPaused={setIsPaused}
         />
       )}
     </div>
