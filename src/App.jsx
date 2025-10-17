@@ -9,6 +9,8 @@ import { LoadContext } from "./context/LoadContext";
 import { useState } from "react";
 import Root from "./Root";
 import { SoundContext } from "./context/SoundContext";
+import click from "./sound/normalClick.wav"
+import typing from "./sound/typing-1.wav"
 
 function App() {
   const router = createBrowserRouter([
@@ -39,9 +41,12 @@ function App() {
     hidePlayer : true,
     url: "https://www.youtube.com/watch?v=6Fv-wbsIA2s",
     playing: false,
-    masterVolume: 1,
-    textVolume: 1,
-    musicVolume: 1,
+    masterVolume: 0.5,
+    textVolume: 0.5,
+    clickVolume: 0.5,
+    musicVolume: 0.5,
+    click: click,
+    typing: typing
   })
 
   return (

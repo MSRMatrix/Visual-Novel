@@ -4,6 +4,7 @@ import { useContext, useState } from "react";
 import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
 import Options from "./options/Options";
+import { SoundContext } from "../../context/SoundContext";
 
 function Menu({
   setQuickMenu,
@@ -23,6 +24,7 @@ setIsPaused
 }) {
   const navigate = useNavigate();
 const {load, setLoad} = useContext(LoadContext)
+const { sound, setSound } = useContext(SoundContext);
   const [action, setAction] = useState("");
 
   function mainMenu() {
@@ -39,6 +41,7 @@ const {load, setLoad} = useContext(LoadContext)
       playTime: 0,
     });
     setPlayTime(0)
+    setSound((prev) => ({ ...prev, url: "https://www.youtube.com/watch?v=6Fv-wbsIA2s" }))
       return navigate("/");
     } else {
       return;
