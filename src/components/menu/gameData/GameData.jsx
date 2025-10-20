@@ -82,7 +82,7 @@ function GameData({
             {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
           </p>
           <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>{item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}</p>
+          <p>{isNaN(item.playTime) ? "" : `Spielzeit: ${formatTime(item.playTime)}`}</p>
         </div>
       ))}
     </>

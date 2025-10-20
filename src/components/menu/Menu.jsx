@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
 import Options from "./options/Options";
@@ -60,18 +60,29 @@ const { sound, setSound } = useContext(SoundContext);
       setChatHistory([])
       setAction("");
       setQuickMenu(false)
+      setPlayTime(0)
       return;
     } else {
       console.log(`Neues Spiel abgebrochen!`);
     }
   }
 
+  useEffect( () => {
+if(action === "option"){
+    setSound((prev) => ({...prev, hidePlayer: false}))
+  } else {
+    setSound((prev) => ({...prev, hidePlayer: true}))
+  }
+
+  },[action])
+
+
   return (
     <>
       <h1>Schnellmenü</h1>
       <button
         onClick={() => {
-          setQuickMenu(false), setAction(""), setIsPaused(false);
+          setQuickMenu(false), setAction(""), setIsPaused(false), setSound((prev) => ({...prev, url: "https://www.youtube.com/watch?v=0iVgv5OP4so&list=PLfP6i5T0-DkLTWwznhWjQ1sm_GasKuMPY&index=23", hidePlayer: true}));
         }}
       >
         Zurück zum Spiel

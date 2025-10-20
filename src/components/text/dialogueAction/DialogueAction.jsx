@@ -28,7 +28,6 @@ setIsPaused
     setSkip((prevMode) => !prevMode);
     setAuto(false);
   }
-
   return (
     <div>
       <button

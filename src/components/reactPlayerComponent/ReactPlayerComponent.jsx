@@ -24,7 +24,7 @@ function ReactPlayerComponent({ intro }) {
   }
 
   return (
-    <>
+    <div className={`react-player ${sound.hidePlayer ? "hide-player" : "show-player"}`}>
       <div>
         <ReactPlayer
           src={sound.url}
@@ -93,7 +93,7 @@ function ReactPlayerComponent({ intro }) {
 
         <AudioManager />
       </div>
-    </>
+    </div>
   );
 }
 

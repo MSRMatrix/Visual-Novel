@@ -1,3 +1,11 @@
-.react-player-action{
-    
+.react-player{
+
+}
+
+.hide-player{
+    display: none;
+}
+
+.show-player{
+    display: block;
 }

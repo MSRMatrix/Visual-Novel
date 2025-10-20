@@ -24,33 +24,13 @@ export default function VisualNovel({ hide, setHide }) {
   const [autoTime, setAutoTime] = useState(5000);
   const [quickMenu, setQuickMenu] = useState(false);
   const [skip, setSkip] = useState(false)
-  
+  const [displayText, setDisplayText] = useState("");
+  const [textFinished, setTextFinished] = useState(false)
+
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
-
-  // 🔹 Auto-Modus
-useEffect(() => {
-  if (!auto || showChoices) return;
-
-  const interval = setInterval(() => {
-    nextStep(
-      scene,
-      stepIndex,
-      setStepIndex,
-      setShowChoices,
-      currentChapter,
-      navigate,
-      setChatHistory,
-      currentScene,
-      setCurrentChapter,
-      setCurrentScene
-    );
-  }, autoTime);
-
-  return () => clearInterval(interval);
-}, [auto, autoTime, showChoices, stepIndex]);
 
 // 🔹 Skip-Modus
 useEffect(() => {
@@ -69,13 +49,14 @@ useEffect(() => {
       setCurrentChapter,
       setCurrentScene
     );
-  }, 80); // superschnell
+  }, 80);
 
   return () => clearInterval(interval);
 }, [skip, showChoices, stepIndex]);
 
 const [isPaused, setIsPaused] = useState(false);
 
+// Pausen Modus
 useEffect(() => {
   if (isPaused) return;
 
@@ -85,6 +66,52 @@ useEffect(() => {
 
   return () => clearInterval(interval);
 }, [isPaused]);
+
+
+
+// Typewriter Modus
+useEffect(() => {
+  if (!currentStep?.text || showChoices) return;
+  setDisplayText(""); 
+  let i = 0;
+
+  setDisplayText(currentStep.text.charAt(0));
+
+  const interval = setInterval(() => {
+    if (i < currentStep.text.length) {
+      setDisplayText(prev => prev + currentStep.text.charAt(i));
+      i++;
+    } else {
+      clearInterval(interval);
+      setTextFinished(true); 
+    }
+  }, 10);
+  return () => clearInterval(interval);
+}, [currentStep?.text]);
+
+// Auto-Modus
+useEffect(() => {
+  if (!auto || showChoices || !textFinished) return;
+
+  const interval = setInterval(() => {
+    nextStep(
+      scene,
+      stepIndex,
+      setStepIndex,
+      setShowChoices,
+      currentChapter,
+      navigate,
+      setChatHistory,
+      currentScene,
+      setCurrentChapter,
+      setCurrentScene
+    );
+  }, autoTime);
+
+  return () => clearInterval(interval);
+}, [auto, autoTime, showChoices, stepIndex, textFinished]);
+
+
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
@@ -101,8 +128,8 @@ useEffect(() => {
             {!showChoices ? (
               <div>
                 {" "}
-                <p className="font-bold">{currentStep.speaker}</p>{" "}
-                <p className="mt-2">{currentStep.text}</p>{" "}
+                <p className="font-bold">{currentStep.speaker || ""}</p>{" "}
+                <p className="mt-2">{displayText || ""}</p>{" "}
               </div>
             ) : (
               ""
@@ -110,7 +137,7 @@ useEffect(() => {
 
             {showChoices && (
               <div className="choices mt-4 flex flex-col gap-2">
-                {scene.choices.map((choice, idx) => (
+                {scene && scene.choices ? scene.choices.map((choice, idx) => (
                   <button
                     key={idx}
                     onClick={() =>
@@ -131,7 +158,7 @@ useEffect(() => {
                   >
                     {choice.text}
                   </button>
-                ))}
+                )) : ""}
               </div>
             )}
 
