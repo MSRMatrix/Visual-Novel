@@ -4,12 +4,15 @@ import "./dashboard.css";
 import { SoundContext } from "../../context/SoundContext";
 
 function Dashboard() {
-  const { sound, setSound } = useContext(SoundContext);
+
+  const game_music = import.meta.env.VITE_GAME_MUSIC
+
+  const { sounds, setSounds } = useContext(SoundContext);
   return (
     <div className="dashboard">
-      <NavLink to="start" onClick={() => setSound((prev) => ({ ...prev, url: "https://www.youtube.com/watch?v=0iVgv5OP4so&list=PLfP6i5T0-DkLTWwznhWjQ1sm_GasKuMPY&index=23", playing: true }))}>Neues Spiel starten</NavLink>
+      <NavLink to="start" onClick={() => setSounds((prev) => ({ ...prev, url: game_music, playing: true }))}>Neues Spiel starten</NavLink>
       <NavLink to="load">Spiel laden</NavLink>
-      <NavLink to="options" onClick={() => setSound((prev) => ({...prev, hidePlayer: false}))}>Optionen</NavLink>
+      <NavLink to="options" onClick={() => setSounds((prev) => ({...prev, hidePlayer: false}))}>Optionen</NavLink>
     </div>
   );
 }

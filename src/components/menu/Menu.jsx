@@ -5,6 +5,8 @@ import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
 import Options from "./options/Options";
 import { SoundContext } from "../../context/SoundContext";
+import { mainMenu } from "../functions/mainMenu";
+import { newGame } from "../functions/newGame";
 
 function Menu({
   setQuickMenu,
@@ -18,76 +20,57 @@ function Menu({
   setChatHistory,
   quickMenu,
   playTime,
-setPlayTime,
-isPaused,
-setIsPaused
+  setPlayTime,
+  isPaused,
+  setIsPaused,
 }) {
+  const game_music = import.meta.env.VITE_GAME_MUSIC;
+
   const navigate = useNavigate();
-const {load, setLoad} = useContext(LoadContext)
-const { sound, setSound } = useContext(SoundContext);
+  const { load, setLoad } = useContext(LoadContext);
+  const { sounds, setSounds } = useContext(SoundContext);
   const [action, setAction] = useState("");
 
-  function mainMenu() {
-    const backToMenu = confirm(
-      "Alle ungespeicherten Fortschritte gehen verloren! Möchtest du wirklich das Spiel verlassen?"
-    );
-    if (backToMenu) {
-      setAction("");
-      setLoad({
-      currentChapter: "",
-      currentScene: "",
-      stepIndex: "",
-      history: "",
-      playTime: 0,
-    });
-    setPlayTime(0)
-    setSound((prev) => ({ ...prev, url: "https://www.youtube.com/watch?v=6Fv-wbsIA2s" }))
-      return navigate("/");
+  useEffect(() => {
+    if (action === "option") {
+      setSounds((prev) => ({ ...prev, hidePlayer: false }));
     } else {
-      return;
+      setSounds((prev) => ({ ...prev, hidePlayer: true }));
     }
-  }
-
-  function newGame() {
-    if (
-      confirm(
-        "Möchtest du ein neues Spiel starten? Alle deine ungespeicherten Daten gehen verloren!"
-      )
-    ) {
-      setCurrentChapter("prolog")
-      setCurrentScene("intro")
-      setStepIndex(0)
-      setChatHistory([])
-      setAction("");
-      setQuickMenu(false)
-      setPlayTime(0)
-      return;
-    } else {
-      console.log(`Neues Spiel abgebrochen!`);
-    }
-  }
-
-  useEffect( () => {
-if(action === "option"){
-    setSound((prev) => ({...prev, hidePlayer: false}))
-  } else {
-    setSound((prev) => ({...prev, hidePlayer: true}))
-  }
-
-  },[action])
-
+  }, [action]);
 
   return (
     <>
       <h1>Schnellmenü</h1>
       <button
         onClick={() => {
-          setQuickMenu(false), setAction(""), setIsPaused(false), setSound((prev) => ({...prev, url: "https://www.youtube.com/watch?v=0iVgv5OP4so&list=PLfP6i5T0-DkLTWwznhWjQ1sm_GasKuMPY&index=23", hidePlayer: true}));
+          setQuickMenu(false),
+            setAction(""),
+            setIsPaused(false),
+            setSounds((prev) => ({
+              ...prev,
+              url: game_music,
+              hidePlayer: true,
+            }));
         }}
       >
         Zurück zum Spiel
       </button>
-      <button onClick={() => newGame()}>Neues Spiel</button>
+      <button
+        onClick={() =>
+          newGame(
+            setCurrentChapter,
+            setCurrentScene,
+            setStepIndex,
+            setChatHistory,
+            setAction,
+            setQuickMenu,
+            setPlayTime
+          )
+        }
+      >
+        Neues Spiel
+      </button>
       <button
         style={{ background: action === "save" ? "blue" : "" }}
         onClick={() => setAction("save")}
@@ -134,7 +117,13 @@ if(action === "option"){
       ) : (
         ""
       )}
-      <button onClick={() => mainMenu()}>Ins Hauptmenü</button>
+      <button
+        onClick={() =>
+          mainMenu(setAction, setLoad, setPlayTime, setSounds, navigate)
+        }
+      >
+        Ins Hauptmenü
+      </button>
     </>
   );
 }

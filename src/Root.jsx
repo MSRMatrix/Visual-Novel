@@ -8,9 +8,8 @@ import { SoundContext } from "./context/SoundContext";
 
 function Root() {
   const [intro, setIntro] = useState(true)
-  const { sound, setSound } = useContext(SoundContext);
-  const [playClick] = useSound(sound.click, { volume: sound.clickVolume });
-  const [playType] = useSound(sound.typing, { volume: sound.textVolume });
+  const { sounds, setSounds } = useContext(SoundContext);
+  const [playClick] = useSound(sounds.click, { volume: sounds.clickVolume });
 
   return (
     <div onClick={() => playClick()}>

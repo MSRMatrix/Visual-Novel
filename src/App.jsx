@@ -13,6 +13,8 @@ import click from "./sound/normalClick.wav"
 import typing from "./sound/typing-1.wav"
 
 function App() {
+  const menu_music = import.meta.env.VITE_MENU_MUSIC
+  
   const router = createBrowserRouter([
     {
       element: <Root />,
@@ -37,22 +39,23 @@ function App() {
     playTime: 0,
   });
 
-  const [sound, setSound] = useState({
+  const [sounds, setSounds] = useState({
     hidePlayer : true,
-    url: "https://www.youtube.com/watch?v=6Fv-wbsIA2s",
+    url: menu_music,
     playing: false,
     masterVolume: 0.5,
     textVolume: 0.5,
     clickVolume: 0.5,
     musicVolume: 0.5,
     click: click,
-    typing: typing
+    typing: typing,
   })
+
 
   return (
     <>
       <LoadContext.Provider value={{ load, setLoad }}>
-        <SoundContext.Provider value={{sound, setSound}}>
+        <SoundContext.Provider value={{sounds, setSounds}}>
           <RouterProvider router={router} />
         </SoundContext.Provider>
       </LoadContext.Provider>

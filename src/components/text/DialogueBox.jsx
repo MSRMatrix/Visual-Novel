@@ -7,11 +7,17 @@ import { nextStep } from "../functions/nextStep";
 import DialogueAction from "./dialogueAction/DialogueAction";
 import { choose } from "../functions/choose";
 import { LoadContext } from "../../context/LoadContext";
+import useSound from "use-sound";
+import { SoundContext } from "../../context/SoundContext";
 
 export default function VisualNovel({ hide, setHide }) {
   
+  
   const navigate = useNavigate();
   const {load, setLoad} = useContext(LoadContext)
+  const { sounds, setSounds } = useContext(SoundContext);
+const [playType] = useSound(sounds.typing, { volume: sounds.textVolume });
+
 
   const [currentChapter, setCurrentChapter] = useState(load.currentChapter || "prolog");
   const [currentScene, setCurrentScene] = useState(load.currentScene || "intro");
@@ -81,6 +87,7 @@ useEffect(() => {
     if (i < currentStep.text.length) {
       setDisplayText(prev => prev + currentStep.text.charAt(i));
       i++;
+      
     } else {
       clearInterval(interval);
       setTextFinished(true); 
@@ -88,6 +95,10 @@ useEffect(() => {
   }, 10);
   return () => clearInterval(interval);
 }, [currentStep?.text]);
+
+useEffect(()=>{
+  playType()
+},[currentStep.text])
 
 // Auto-Modus
 useEffect(() => {
