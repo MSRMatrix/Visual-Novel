@@ -18,9 +18,50 @@ function ReactPlayerComponent({ intro }) {
   const test_music4 = import.meta.env.VITE_TEST_MUSIC4;
 
   const { sounds, setSounds } = useContext(SoundContext);
-  const [play1] = useSound(typing1);
-  const [play2] = useSound(typing2);
-  const [play3] = useSound(typing3);
+  const [playClick1, { stop: stopClick1 }] = useSound(click1);
+  const [playClick2, { stop: stopClick2 }] = useSound(click2);
+  const [playClick3, { stop: stopClick3 }] = useSound(click3);
+
+  const [playTyping1, { stop: stopTyping1 }] = useSound(typing1);
+  const [playTyping2, { stop: stopTyping2 }] = useSound(typing2);
+  const [playTyping3, { stop: stopTyping3 }] = useSound(typing3);
+
+  // Sauberes Mapping für alle Sounds
+  const players = {
+    click: {
+      click1: { play: playClick1, stop: stopClick1 },
+      click2: { play: playClick2, stop: stopClick2 },
+      click3: { play: playClick3, stop: stopClick3 },
+    },
+    typing: {
+      typing1: { play: playTyping1, stop: stopTyping1 },
+      typing2: { play: playTyping2, stop: stopTyping2 },
+      typing3: { play: playTyping3, stop: stopTyping3 },
+    },
+  };
+
+  const soundFiles = {
+    click1,
+    click2,
+    click3,
+    typing1,
+    typing2,
+    typing3,
+  };
+
+  function handleSound(category, soundKey, e) {
+    const currentPlayer = players[category][soundKey];
+
+    const soundFile = soundFiles[soundKey];
+
+    if (!currentPlayer) return;
+
+    Object.values(players[category]).forEach((p) => p.stop());
+
+    currentPlayer.play();
+
+    setSounds((prev) => ({ ...prev, [category]: soundFile }));
+  }
 
   useEffect(() => {
     if (!sounds.playing) {
@@ -30,19 +71,6 @@ function ReactPlayerComponent({ intro }) {
 
   function musicTest(music) {
     setSounds((prev) => ({ ...prev, url: music, playing: true }));
-  }
-
-
-const players = { play1, play2, play3 };
-
-function setTypeSound(e) {
-  const player = players[e.target.name];
-  if (player) player(); 
-  setSounds(prev => ({ ...prev, typing: e.target.value }));
-}
-
-  function setClickSound(e) {
-    setSounds((prev) => ({ ...prev, click: e.target.value }));
   }
 
   return (
@@ -104,58 +132,30 @@ function setTypeSound(e) {
 
         <div>
           <h2>Klickgeräusche</h2>
-          <button
-            value={click1}
-            disabled={sounds.click === click1}
-            onClick={(e) => setClickSound(e)}
-          >
-            Klicken 1
-          </button>
-          <button
-            value={click2}
-            disabled={sounds.click === click2}
-            onClick={(e) => setClickSound(e)}
-          >
-            Klicken 2
-          </button>
-          <button
-            value={click3}
-            disabled={sounds.click === click3}
-            onClick={(e) => setClickSound(e)}
-          >
-            Klicken 3
-          </button>
-        </div>
+          {Object.keys(players.click).map((key) => (
+            <button
+              key={key}
+              onClick={(e) => {
+                handleSound("click", key, e)
+              }}
+              disabled={sounds.click === soundFiles[key] }
+              style={{ background: sounds.click === soundFiles[key] ? "blue" : "" }}
+            >
+              {key}
+            </button>
+          ))}
 
-        <div>
           <h2>Tippgeräusche</h2>
-          <button
-            name="play1"
-            value={typing1}
-            style={{ background: sounds.typing === typing1 ? "blue" : "" }}
-            disabled={sounds.typing === typing1}
-            onClick={(e) => setTypeSound(e)}
-          >
-            Schreiben 1
-          </button>
-          <button
-            name="play2"
-            value={typing2}
-            style={{ background: sounds.typing === typing2 ? "blue" : "" }}
-            disabled={sounds.typing === typing2}
-            onClick={(e) => setTypeSound(e)}
-          >
-            Schreiben 2
-          </button>
-          <button
-            name="play3"
-            value={typing3}
-            style={{ background: sounds.typing === typing3 ? "blue" : "" }}
-            disabled={sounds.typing === typing3}
-            onClick={(e) => setTypeSound(e)}
-          >
-            Schreiben 3
-          </button>
+          {Object.keys(players.typing).map((key) => (
+            <button
+              key={key}
+              onClick={(e) => handleSound("typing", key, e)}
+              disabled={sounds.typing === soundFiles[key] }
+              style={{ background: sounds.typing === soundFiles[key] ? "blue" : "" }}
+            >
+              {key}
+            </button>
+          ))}
         </div>
 
         <AudioManager />

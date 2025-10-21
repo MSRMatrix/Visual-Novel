@@ -4,13 +4,13 @@ import { useContext } from 'react';
 import { SoundContext } from '../../context/SoundContext';
 
 function Options() {
-  const { sound, setSound } = useContext(SoundContext);
+  const { sounds, setSounds } = useContext(SoundContext);
   return (
     <>
     Musik Ein Aus Lautstärke
     Schreibgeräusch Ein Aus Lautstärke
     Helligkeit
-    <NavLink to="/" onClick={() => setSound((prev) => ({...prev, hideplay: true}))}>Zurück</NavLink>
+    <NavLink to="/" onClick={() => setSounds((prev) => ({...prev, hidePlayer: true}))}>Zurück</NavLink>
     </>
   )
 }
