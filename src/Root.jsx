@@ -6,12 +6,18 @@ import { SoundContext } from "./context/SoundContext";
 
 function Root() {
   const [intro, setIntro] = useState(true)
-  // const { sounds, setSounds } = useContext(SoundContext);
-  // const [playClick, { stop: stopClick }] = useSound(sounds.click, { volume: sounds.clickVolume });
+  const { sounds, setSounds } = useContext(SoundContext);
+  const [playClick, { stop: stopClick }] = useSound(sounds.click, { volume: sounds.clickVolume });
+
+  function globalClick(e){
+    if (e.target.closest("[data-nosound]")) return;
+    playClick()
+  }
+  
   
 
   return (
-    <div>
+    <div onClick={(e) => globalClick(e)}>
     {intro ? <h2 onClick={() => setIntro(false)}>{"klick mich"}</h2> : <div><Outlet />
     <ReactPlayerComponent intro={intro} 
     /></div>}

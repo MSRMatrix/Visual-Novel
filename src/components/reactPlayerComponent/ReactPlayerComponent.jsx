@@ -134,6 +134,7 @@ function ReactPlayerComponent({ intro }) {
           <h2>Klickgeräusche</h2>
           {Object.keys(players.click).map((key) => (
             <button
+              data-nosound
               key={key}
               onClick={(e) => {
                 handleSound("click", key, e)
@@ -148,6 +149,7 @@ function ReactPlayerComponent({ intro }) {
           <h2>Tippgeräusche</h2>
           {Object.keys(players.typing).map((key) => (
             <button
+            data-nosound
               key={key}
               onClick={(e) => handleSound("typing", key, e)}
               disabled={sounds.typing === soundFiles[key] }

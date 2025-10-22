@@ -11,16 +11,20 @@ import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
 
 export default function VisualNovel({ hide, setHide }) {
-  
-  
   const navigate = useNavigate();
-  const {load, setLoad} = useContext(LoadContext)
+  const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
-const [playType] = useSound(sounds.typing, { volume: sounds.textVolume });
+  const [play, { stop, sound }] = useSound(sounds.typing, {
+    volume: sounds.textVolume,
+    loop: true,
+  });
 
-
-  const [currentChapter, setCurrentChapter] = useState(load.currentChapter || "prolog");
-  const [currentScene, setCurrentScene] = useState(load.currentScene || "intro");
+  const [currentChapter, setCurrentChapter] = useState(
+    load.currentChapter || "prolog"
+  );
+  const [currentScene, setCurrentScene] = useState(
+    load.currentScene || "intro"
+  );
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
   const [chatHistory, setChatHistory] = useState(load.chatHistory || []);
   const [playTime, setPlayTime] = useState(load.playtime || 0);
@@ -29,100 +33,121 @@ const [playType] = useSound(sounds.typing, { volume: sounds.textVolume });
   const [auto, setAuto] = useState(false);
   const [autoTime, setAutoTime] = useState(5000);
   const [quickMenu, setQuickMenu] = useState(false);
-  const [skip, setSkip] = useState(false)
+  const [skip, setSkip] = useState(false);
   const [displayText, setDisplayText] = useState("");
-  const [textFinished, setTextFinished] = useState(false)
-
+  const [textFinished, setTextFinished] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
 
-// 🔹 Skip-Modus
+  // 🔹 Skip-Modus
+  useEffect(() => {
+    if (!skip || showChoices || quickMenu) return;
+
+    const interval = setInterval(() => {
+      nextStep(
+        scene,
+        stepIndex,
+        setStepIndex,
+        setShowChoices,
+        currentChapter,
+        navigate,
+        setChatHistory,
+        currentScene,
+        setCurrentChapter,
+        setCurrentScene
+      );
+    }, 80);
+
+    return () => clearInterval(interval);
+  }, [skip, showChoices, stepIndex, quickMenu]);
+
+  // Pausen Modus
+  useEffect(() => {
+    if (isPaused || quickMenu) return;
+
+    const interval = setInterval(() => {
+      setPlayTime((prev) => prev + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isPaused, quickMenu]);
+
+
+
+
+const [pausedText, setPausedText] = useState("");
+
 useEffect(() => {
-  if (!skip || showChoices) return;
-
-  const interval = setInterval(() => {
-    nextStep(
-      scene,
-      stepIndex,
-      setStepIndex,
-      setShowChoices,
-      currentChapter,
-      navigate,
-      setChatHistory,
-      currentScene,
-      setCurrentChapter,
-      setCurrentScene
-    );
-  }, 80);
-
-  return () => clearInterval(interval);
-}, [skip, showChoices, stepIndex]);
-
-const [isPaused, setIsPaused] = useState(false);
-
-// Pausen Modus
-useEffect(() => {
-  if (isPaused) return;
-
-  const interval = setInterval(() => {
-    setPlayTime((prev) => prev + 1);
-  }, 1000);
-
-  return () => clearInterval(interval);
-}, [isPaused]);
+  if(quickMenu){
+    setPausedText(displayText)
+  }
+},[quickMenu])
 
 
 
-// Typewriter Modus
-useEffect(() => {
-  if (!currentStep?.text || showChoices) return;
-  setDisplayText(""); 
-  let i = 0;
+  // Typewriter Modus
+  useEffect(() => {
+    if (!currentStep?.text || showChoices || quickMenu) return;
 
-  setDisplayText(currentStep.text.charAt(0));
+    setDisplayText("");
+    setTextFinished(false);
 
-  const interval = setInterval(() => {
-    if (i < currentStep.text.length) {
-      setDisplayText(prev => prev + currentStep.text.charAt(i));
-      i++;
-      
+    let i = pausedText.length;
+    
+    setDisplayText(pausedText + currentStep.text.charAt(i));
+    setPausedText("")
+    const interval = setInterval(() => {
+      if (i < currentStep.text.length) {
+        setDisplayText((prev) => prev + currentStep.text.charAt(i));
+        i++;
+      } else {
+        clearInterval(interval);
+        setTextFinished(true);
+      }
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [currentStep?.text, showChoices, quickMenu]);
+
+
+  // Schreib-Soundtrack
+  useEffect(() => {
+    if (!currentStep?.text || showChoices) return;
+
+    if (textFinished || quickMenu) {
+      stop();
     } else {
-      clearInterval(interval);
-      setTextFinished(true); 
+      play();
     }
-  }, 10);
-  return () => clearInterval(interval);
-}, [currentStep?.text]);
 
-useEffect(()=>{
-  playType()
-},[currentStep.text])
-
-// Auto-Modus
-useEffect(() => {
-  if (!auto || showChoices || !textFinished) return;
-
-  const interval = setInterval(() => {
-    nextStep(
-      scene,
-      stepIndex,
-      setStepIndex,
-      setShowChoices,
-      currentChapter,
-      navigate,
-      setChatHistory,
-      currentScene,
-      setCurrentChapter,
-      setCurrentScene
-    );
-  }, autoTime);
-
-  return () => clearInterval(interval);
-}, [auto, autoTime, showChoices, stepIndex, textFinished]);
+    return () => stop();
+  }, [currentStep?.text, textFinished, quickMenu, showChoices]);
 
 
+
+  // Auto-Modus
+  useEffect(() => {
+    if (!auto || showChoices || !textFinished || quickMenu) return;
+    const interval = setInterval(() => {
+      nextStep(
+        scene,
+        stepIndex,
+        setStepIndex,
+        setShowChoices,
+        currentChapter,
+        navigate,
+        setChatHistory,
+        currentScene,
+        setCurrentChapter,
+        setCurrentScene
+      );
+    }, autoTime);
+
+    return () => clearInterval(interval);
+  }, [auto, autoTime, showChoices, stepIndex, textFinished, quickMenu]);
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
@@ -148,28 +173,30 @@ useEffect(() => {
 
             {showChoices && (
               <div className="choices mt-4 flex flex-col gap-2">
-                {scene && scene.choices ? scene.choices.map((choice, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() =>
-                      choose(
-                        choice.next.chapter,
-                        choice.next.scene,
-                        setChatHistory,
-                        currentChapter,
-                        currentScene,
-                        stepIndex,
-                        setCurrentChapter,
-                        setCurrentScene,
-                        setStepIndex,
-                        setShowChoices
-                      )
-                    }
-                    className="bg-blue-600 p-2 rounded hover:bg-blue-500"
-                  >
-                    {choice.text}
-                  </button>
-                )) : ""}
+                {scene && scene.choices
+                  ? scene.choices.map((choice, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() =>
+                          choose(
+                            choice.next.chapter,
+                            choice.next.scene,
+                            setChatHistory,
+                            currentChapter,
+                            currentScene,
+                            stepIndex,
+                            setCurrentChapter,
+                            setCurrentScene,
+                            setStepIndex,
+                            setShowChoices
+                          )
+                        }
+                        className="bg-blue-600 p-2 rounded hover:bg-blue-500"
+                      >
+                        {choice.text}
+                      </button>
+                    ))
+                  : ""}
               </div>
             )}
 
