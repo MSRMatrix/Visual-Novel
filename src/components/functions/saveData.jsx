@@ -6,7 +6,8 @@ export function saveData(
   stepIndex,
   chatHistory,
   setSaves,
-  playTime
+  playTime,
+  showChoices,
 ) {
   const existing = saves.find((s) => s.name === slotName && s.timestamp);
 
@@ -22,7 +23,8 @@ export function saveData(
     currentScene,
     stepIndex,
     chatHistory,
-    playTime
+    playTime,
+    showChoices
   };
 
   // Speichern

@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveData } from "../../functions/saveData";
 import { loadData } from "../../functions/loadData";
 import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
+import { SoundContext } from "../../../context/SoundContext";
 
 function GameData({
   currentChapter,
@@ -20,7 +21,12 @@ function GameData({
   setQuickMenu,
   playTime,
   setPlayTime,
+  setDisplayText,
+  setPausedText,
+  showChoices,
+setShowChoices
 }) {
+  const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
   const [saves, setSaves] = useState(() => {
     const stored = JSON.parse(localStorage.getItem("vn_saves")) || [];
@@ -46,12 +52,13 @@ function GameData({
           stepIndex,
           chatHistory,
           setSaves,
-          playTime
+          playTime,
+          showChoices,
         );
       case "delete":
         return deleteData(slotName, saves, setSaves);
       case "load":
-        return loadData(
+        loadData(
           slotName,
           setCurrentChapter,
           setCurrentScene,
@@ -61,15 +68,18 @@ function GameData({
           setQuickMenu,
           navigate,
           quickMenu,
-          setPlayTime
+          setPlayTime,
+          setSounds,
+          setDisplayText,
+          setPausedText,
+          setShowChoices
         );
+        return;
       default:
         console.warn(`Unbekannter Modus: ${mode}`);
         break;
     }
   }
-
-  
 
   return (
     <>
@@ -81,8 +91,16 @@ function GameData({
           <p>
             {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
           </p>
-          <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>{isNaN(item.playTime) ? "" : `Spielzeit: ${formatTime(item.playTime)}`}</p>
+          <p>
+            {item.stepIndex >= 0
+              ? `Punkt in der Szene: ${item.stepIndex + 1}`
+              : ""}
+          </p>
+          <p>
+            {isNaN(item.playTime)
+              ? ""
+              : `Spielzeit: ${formatTime(item.playTime)}`}
+          </p>
         </div>
       ))}
     </>

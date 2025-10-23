@@ -23,6 +23,12 @@ function Menu({
   setPlayTime,
   isPaused,
   setIsPaused,
+  writeSpeed,
+  setWriteSpeed,
+  setDisplayText,
+setPausedText,
+showChoices,
+setShowChoices
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -73,18 +79,21 @@ function Menu({
       </button>
       <button
         style={{ background: action === "save" ? "blue" : "" }}
+        disabled={action === "save"}
         onClick={() => setAction("save")}
       >
         Speichern
       </button>
       <button
         style={{ background: action === "load" ? "green" : "" }}
+        disabled={action === "load"}
         onClick={() => setAction("load")}
       >
         Laden
       </button>
       <button
         style={{ background: action === "delete" ? "red" : "" }}
+        disabled={action === "delete"}
         onClick={() => setAction("delete")}
       >
         Löschen
@@ -111,9 +120,15 @@ function Menu({
           setQuickMenu={setQuickMenu}
           playTime={playTime}
           setPlayTime={setPlayTime}
+          setDisplayText={setDisplayText}
+          setPausedText={setPausedText} 
+          showChoices={showChoices}
+          setShowChoices={setShowChoices}
         />
       ) : action === "option" ? (
-        <Options />
+        <Options 
+        writeSpeed={writeSpeed} 
+        setWriteSpeed={setWriteSpeed} />
       ) : (
         ""
       )}

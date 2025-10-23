@@ -6,7 +6,7 @@ export const prolog = {
     steps: [
       {
         speaker: narrator,
-        text: "...",
+        text: "Was? wo bin ich? Achja...",
       },
       {
         speaker: narrator,

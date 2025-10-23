@@ -37,6 +37,7 @@ function App() {
     stepIndex: "",
     chatHistory: "",
     playTime: 0,
+    choice: false
   });
 
   const [sounds, setSounds] = useState({

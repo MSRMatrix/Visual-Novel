@@ -27,9 +27,9 @@ export default function VisualNovel({ hide, setHide }) {
   );
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
   const [chatHistory, setChatHistory] = useState(load.chatHistory || []);
-  const [playTime, setPlayTime] = useState(load.playtime || 0);
+  const [playTime, setPlayTime] = useState(load.playTime || 0);
 
-  const [showChoices, setShowChoices] = useState(false);
+  const [showChoices, setShowChoices] = useState(load.choice || false);
   const [auto, setAuto] = useState(false);
   const [autoTime, setAutoTime] = useState(5000);
   const [quickMenu, setQuickMenu] = useState(false);
@@ -37,6 +37,8 @@ export default function VisualNovel({ hide, setHide }) {
   const [displayText, setDisplayText] = useState("");
   const [textFinished, setTextFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const [pausedText, setPausedText] = useState("");
+  const [writeSpeed, setWriteSpeed] = useState(30)
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
@@ -76,10 +78,6 @@ export default function VisualNovel({ hide, setHide }) {
   }, [isPaused, quickMenu]);
 
 
-
-
-const [pausedText, setPausedText] = useState("");
-
 useEffect(() => {
   if(quickMenu){
     setPausedText(displayText)
@@ -107,7 +105,7 @@ useEffect(() => {
         clearInterval(interval);
         setTextFinished(true);
       }
-    }, 200);
+    }, writeSpeed);
 
     return () => clearInterval(interval);
   }, [currentStep?.text, showChoices, quickMenu]);
@@ -115,7 +113,7 @@ useEffect(() => {
 
   // Schreib-Soundtrack
   useEffect(() => {
-    if (!currentStep?.text || showChoices) return;
+    if (!currentStep?.text || showChoices || skip) return;
 
     if (textFinished || quickMenu) {
       stop();
@@ -240,6 +238,12 @@ useEffect(() => {
           setPlayTime={setPlayTime}
           isPaused={isPaused}
           setIsPaused={setIsPaused}
+          writeSpeed={writeSpeed}
+          setWriteSpeed={setWriteSpeed}
+          setDisplayText={setDisplayText}
+          setPausedText={setPausedText}
+          showChoices={showChoices}
+          setShowChoices={setShowChoices}
         />
       )}
     </div>
