@@ -24,6 +24,7 @@ const [saves, setSaves] = useState(() => {
     const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
   
+  
   if (!existing.timestamp) {
     console.log("Kein Speicherstand gefunden!");
     return;
@@ -38,6 +39,7 @@ const [saves, setSaves] = useState(() => {
       stepIndex: existing.stepIndex,
       chatHistory: existing.chatHistory,
       playTime: existing.playTime,
+      choice: existing.showChoices
     })
     navigate("/start")
   }
