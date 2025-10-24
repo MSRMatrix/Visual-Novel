@@ -3,18 +3,18 @@ import ReactPlayerComponent from "./components/reactPlayerComponent/ReactPlayerC
 import { useContext, useState } from "react";
 import useSound from "use-sound";
 import { SoundContext } from "./context/SoundContext";
+import { LoadContext } from "./context/LoadContext";
 
 function Root() {
   const [intro, setIntro] = useState(true)
   const { sounds, setSounds } = useContext(SoundContext);
+  const { load, setLoad } = useContext(LoadContext);
   const [playClick, { stop: stopClick }] = useSound(sounds.click, { volume: sounds.clickVolume });
 
   function globalClick(e){
     if (e.target.closest("[data-nosound]")) return;
     playClick()
   }
-  
-  
 
   return (
     <div onClick={(e) => globalClick(e)}>

@@ -7,6 +7,7 @@ import Options from "./options/Options";
 import { SoundContext } from "../../context/SoundContext";
 import { mainMenu } from "../functions/mainMenu";
 import { newGame } from "../functions/newGame";
+import Backlog from "./backlog/Backlog";
 
 function Menu({
   setQuickMenu,
@@ -26,9 +27,9 @@ function Menu({
   writeSpeed,
   setWriteSpeed,
   setDisplayText,
-setPausedText,
-showChoices,
-setShowChoices
+  setPausedText,
+  showChoices,
+  setShowChoices,
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -104,6 +105,14 @@ setShowChoices
       >
         Optionen
       </button>
+
+      <button
+        style={{ background: action === "backlog" ? "orange" : "" }}
+        onClick={() => setAction("backlog")}
+      >
+        Backlog
+      </button>
+
       {action === "save" || action === "load" || action === "delete" ? (
         <GameData
           currentChapter={currentChapter}
@@ -121,14 +130,19 @@ setShowChoices
           playTime={playTime}
           setPlayTime={setPlayTime}
           setDisplayText={setDisplayText}
-          setPausedText={setPausedText} 
+          setPausedText={setPausedText}
           showChoices={showChoices}
           setShowChoices={setShowChoices}
         />
       ) : action === "option" ? (
-        <Options 
-        writeSpeed={writeSpeed} 
-        setWriteSpeed={setWriteSpeed} />
+        <Options writeSpeed={writeSpeed} setWriteSpeed={setWriteSpeed} />
+      ) : action === "backlog" ? (
+        <Backlog
+          currentChapter={currentChapter}
+          currentScene={currentScene}
+          stepIndex={stepIndex}
+          chatHistory={chatHistory}
+        />
       ) : (
         ""
       )}
