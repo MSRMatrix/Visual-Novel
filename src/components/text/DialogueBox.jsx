@@ -38,7 +38,7 @@ export default function VisualNovel({ hide, setHide }) {
   const [textFinished, setTextFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [pausedText, setPausedText] = useState("");
-  const [writeSpeed, setWriteSpeed] = useState(30)
+  const [writeSpeed, setWriteSpeed] = useState(30);
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
@@ -77,14 +77,12 @@ export default function VisualNovel({ hide, setHide }) {
     return () => clearInterval(interval);
   }, [isPaused, quickMenu]);
 
-
-useEffect(() => {
-  if(quickMenu){
-    setPausedText(displayText)
-  }
-},[quickMenu])
-
-
+  useEffect(() => {
+    if (quickMenu) {
+      setPausedText(displayText);
+    }
+  }, [quickMenu]);
+  // 🔹 Skip-Modus
 
   // Typewriter Modus
   useEffect(() => {
@@ -94,9 +92,9 @@ useEffect(() => {
     setTextFinished(false);
 
     let i = pausedText.length;
-    
+
     setDisplayText(pausedText + currentStep.text.charAt(i));
-    setPausedText("")
+    setPausedText("");
     const interval = setInterval(() => {
       if (i < currentStep.text.length) {
         setDisplayText((prev) => prev + currentStep.text.charAt(i));
@@ -109,7 +107,7 @@ useEffect(() => {
 
     return () => clearInterval(interval);
   }, [currentStep?.text, showChoices, quickMenu]);
-
+  // Typewriter Modus
 
   // Schreib-Soundtrack
   useEffect(() => {
@@ -123,8 +121,7 @@ useEffect(() => {
 
     return () => stop();
   }, [currentStep?.text, textFinished, quickMenu, showChoices]);
-
-
+  // Schreib-Soundtrack
 
   // Auto-Modus
   useEffect(() => {
@@ -146,6 +143,7 @@ useEffect(() => {
 
     return () => clearInterval(interval);
   }, [auto, autoTime, showChoices, stepIndex, textFinished, quickMenu]);
+  // Auto-Modus
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
