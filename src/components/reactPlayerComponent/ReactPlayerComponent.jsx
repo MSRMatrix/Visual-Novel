@@ -10,6 +10,7 @@ import typing1 from "../../sound/typing-1.wav";
 import typing2 from "../../sound/typing-2.mp3";
 import typing3 from "../../sound/typing-3.mp3";
 import useSound from "use-sound";
+import ActionButton from "../text/ActionButton";
 
 function ReactPlayerComponent({ intro }) {
   const test_music1 = import.meta.env.VITE_TEST_MUSIC1;
@@ -132,31 +133,36 @@ function ReactPlayerComponent({ intro }) {
 
         <div>
           <h2>Klickgeräusche</h2>
+
           {Object.keys(players.click).map((key) => (
-            <button
-              data-nosound
+            <ActionButton
               key={key}
-              onClick={(e) => {
-                handleSound("click", key, e)
+              name={key}
+              customFunction={(e) => {
+                handleSound("click", key, e);
               }}
-              disabled={sounds.click === soundFiles[key] }
-              style={{ background: sounds.click === soundFiles[key] ? "blue" : "" }}
-            >
-              {key}
-            </button>
+              disabled={sounds.click === soundFiles[key]}
+              dataNosound={false}
+              style={{
+                background: sounds.click === soundFiles[key] ? "blue" : "",
+              }}
+            />
           ))}
 
           <h2>Tippgeräusche</h2>
           {Object.keys(players.typing).map((key) => (
-            <button
-            data-nosound
+            <ActionButton
               key={key}
-              onClick={(e) => handleSound("typing", key, e)}
-              disabled={sounds.typing === soundFiles[key] }
-              style={{ background: sounds.typing === soundFiles[key] ? "blue" : "" }}
-            >
-              {key}
-            </button>
+              name={key}
+              customFunction={(e) => {
+                handleSound("typing", key, e);
+              }}
+              disabled={sounds.typing === soundFiles[key]}
+              dataNosound={false}
+              style={{
+                background: sounds.typing === soundFiles[key] ? "blue" : "",
+              }}
+            />
           ))}
         </div>
 
@@ -167,3 +173,29 @@ function ReactPlayerComponent({ intro }) {
 }
 
 export default ReactPlayerComponent;
+
+// {Object.keys(players.click).map((key) => (
+//             <button
+//               data-nosound
+//               key={key}
+//               onClick={(e) => {
+//                 handleSound("click", key, e)
+//               }}
+//               disabled={sounds.click === soundFiles[key] }
+//               style={{ background: sounds.click === soundFiles[key] ? "blue" : "" }}
+//             >
+//               {key}
+//             </button>
+//           ))}
+
+// {Object.keys(players.typing).map((key) => (
+//             <button
+//             data-nosound
+//               key={key}
+//               onClick={(e) => handleSound("typing", key, e)}
+//               disabled={sounds.typing === soundFiles[key] }
+//               style={{ background: sounds.typing === soundFiles[key] ? "blue" : "" }}
+//             >
+//               {key}
+//             </button>
+//           ))}
