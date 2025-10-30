@@ -5,7 +5,10 @@ export function newGame(
   setChatHistory,
   setAction,
   setQuickMenu,
-  setPlayTime
+  setPlayTime,
+  setDisplayText,
+setPausedText,
+setShowChoices
 ) {
   if (
     confirm(
@@ -19,6 +22,9 @@ export function newGame(
     setAction("");
     setQuickMenu(false);
     setPlayTime(0);
+    setDisplayText("");
+    setPausedText("");
+    setShowChoices(false);
     return;
   } else {
     console.log(`Neues Spiel abgebrochen!`);

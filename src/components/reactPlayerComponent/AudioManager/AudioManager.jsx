@@ -5,84 +5,39 @@ import { checkboxHandler } from "../../functions/checkboxHandler";
 
 const AudioManager = () => {
   const { sounds, setSounds } = useContext(SoundContext);
+  const soundSettings = [
+    { name: "musicVolume", label: "Musik" },
+    { name: "textVolume", label: "Text" },
+    { name: "clickVolume", label: "Klicken" },
+    { name: "masterVolume", label: "Alles" },
+  ];
 
   return (
     <>
-      <div>
-        <div>
-          <h2>Music</h2>
-          <input
-            type="range"
-            name="musicVolume"
-            id=""
-            value={sounds.musicVolume * 100}
-            disabled={sounds.masterVolume <= 0}
-            onChange={(e) => handleVolumeChange(e.target.name, e.target.value, setSounds)}
-          />
-          <input
-            type="checkbox"
-            onChange={(e) => checkboxHandler(e.target.name, setSounds)}
-            disabled={sounds.masterVolume <= 0}
-            checked={sounds.musicVolume <= 0 ? true : false}
-            name="musicVolume"
-          />
-        </div>
+      {soundSettings.map((item) => (
+        <div key={item.name}>
+          <h2>{item.label}</h2>
+          <div>
+            <input
+              type="range"
+              name={item.name}
+              value={sounds[item.name] * 100}
+              disabled={sounds.masterVolume <= 0}
+              onChange={(e) =>
+                handleVolumeChange(e.target.name, e.target.value, setSounds)
+              }
+            />
 
-        <div>
-          <h2>Text</h2>
-          <input
-            type="range"
-            name="textVolume"
-            id=""
-            value={sounds.textVolume * 100}
-            disabled={sounds.masterVolume <= 0}
-            onChange={(e) => handleVolumeChange(e.target.name, e.target.value, setSounds)}
-          />
-          <input
-            type="checkbox"
-            onChange={(e) => checkboxHandler(e.target.name, setSounds)}
-            disabled={sounds.masterVolume <= 0}
-            checked={sounds.textVolume <= 0 ? true : false}
-            name="textVolume"
-          />
+            <input
+              type="checkbox"
+              onChange={(e) => checkboxHandler(e.target.name, setSounds)}
+              disabled={sounds.masterVolume <= 0}
+              checked={sounds[item.name] <= 0 ? true : false}
+              name={item.name}
+            />
+          </div>
         </div>
-
-        <div>
-          <h2>Klicken</h2>
-          <input
-            type="range"
-            name="clickVolume"
-            id=""
-            value={sounds.clickVolume * 100}
-            disabled={sounds.masterVolume <= 0}
-            onChange={(e) => handleVolumeChange(e.target.name, e.target.value, setSounds)}
-          />
-          <input
-            type="checkbox"
-            onChange={(e) => checkboxHandler(e.target.name, setSounds)}
-            disabled={sounds.masterVolume <= 0}
-            checked={sounds.clickVolume <= 0 ? true : false}
-            name="clickVolume"
-          />
-        </div>
-
-        <div>
-          <h2>Everything</h2>
-          <input
-            type="range"
-            name="masterVolume"
-            id=""
-            value={sounds.masterVolume * 100}
-            onChange={(e) => handleVolumeChange(e.target.name, e.target.value, setSounds)}
-          />
-          <input
-            type="checkbox"
-            onChange={(e) => checkboxHandler(e.target.name, setSounds)}
-            checked={sounds.masterVolume <= 0 ? true : false}
-            name="masterVolume"
-          />
-        </div>
-      </div>
+      ))}
     </>
   );
 };

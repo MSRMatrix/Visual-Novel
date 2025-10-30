@@ -10,7 +10,15 @@ export const prolog = {
       },
       {
         speaker: narrator,
-        text: "Willkommen! Was möchtest du heute spielen?",
+        text: "Heute ist es soweit! Bist du auch aufgeregt?",
+      },
+      {
+        speaker: narrator,
+        text: "... du redest wohl nicht viel oder?",
+      },
+      {
+        speaker: narrator,
+        text: "Also dann... Was möchtest du heute spielen?",
       },
     ],
     choices: [

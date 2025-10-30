@@ -9,11 +9,13 @@ import { choose } from "../functions/choose";
 import { LoadContext } from "../../context/LoadContext";
 import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
+import { WriteContext } from "../../context/WriteContext";
 
 export default function VisualNovel({ hide, setHide }) {
   const navigate = useNavigate();
   const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
+  const {writeSpeed, setWriteSpeed} = useContext(WriteContext)
   const [play, { stop, sound }] = useSound(sounds.typing, {
     volume: sounds.textVolume,
     loop: true,
@@ -38,8 +40,8 @@ export default function VisualNovel({ hide, setHide }) {
   const [textFinished, setTextFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [pausedText, setPausedText] = useState("");
-  const [writeSpeed, setWriteSpeed] = useState(30);
   const scene = story[currentChapter][currentScene];
+
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
@@ -236,8 +238,6 @@ export default function VisualNovel({ hide, setHide }) {
           setPlayTime={setPlayTime}
           isPaused={isPaused}
           setIsPaused={setIsPaused}
-          writeSpeed={writeSpeed}
-          setWriteSpeed={setWriteSpeed}
           setDisplayText={setDisplayText}
           setPausedText={setPausedText}
           showChoices={showChoices}

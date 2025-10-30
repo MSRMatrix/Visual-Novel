@@ -24,8 +24,6 @@ function Menu({
   setPlayTime,
   isPaused,
   setIsPaused,
-  writeSpeed,
-  setWriteSpeed,
   setDisplayText,
   setPausedText,
   showChoices,
@@ -46,72 +44,66 @@ function Menu({
     }
   }, [action]);
 
+  const menuButtons = [
+    { label: "Speichern", action: "save", color: "blue" },
+    { label: "Laden", action: "load", color: "green" },
+    { label: "Löschen", action: "delete", color: "red" },
+    { label: "Optionen", action: "option", color: "violet" },
+    { label: "Backlog", action: "backlog", color: "orange" },
+  ];
+
+  const menuButtons2 = [
+    {
+      label: "Zurück zum Spiel",
+      onClick: () => {
+        setQuickMenu(false);
+        setAction("");
+        setIsPaused(false);
+        setSounds((prev) => ({
+          ...prev,
+          url: game_music,
+          hidePlayer: true,
+        }));
+      },
+    },
+    {
+      label: "Neues Spiel",
+      onClick: () => {
+        newGame(
+          setCurrentChapter,
+          setCurrentScene,
+          setStepIndex,
+          setChatHistory,
+          setAction,
+          setQuickMenu,
+          setPlayTime,
+          setDisplayText,
+          setPausedText,
+          setShowChoices
+        );
+      },
+    },
+  ];
+
   return (
     <>
       <h1>Schnellmenü</h1>
-      <button
-        onClick={() => {
-          setQuickMenu(false),
-            setAction(""),
-            setIsPaused(false),
-            setSounds((prev) => ({
-              ...prev,
-              url: game_music,
-              hidePlayer: true,
-            }));
-        }}
-      >
-        Zurück zum Spiel
-      </button>
-      <button
-        onClick={() =>
-          newGame(
-            setCurrentChapter,
-            setCurrentScene,
-            setStepIndex,
-            setChatHistory,
-            setAction,
-            setQuickMenu,
-            setPlayTime
-          )
-        }
-      >
-        Neues Spiel
-      </button>
-      <button
-        style={{ background: action === "save" ? "blue" : "" }}
-        disabled={action === "save"}
-        onClick={() => setAction("save")}
-      >
-        Speichern
-      </button>
-      <button
-        style={{ background: action === "load" ? "green" : "" }}
-        disabled={action === "load"}
-        onClick={() => setAction("load")}
-      >
-        Laden
-      </button>
-      <button
-        style={{ background: action === "delete" ? "red" : "" }}
-        disabled={action === "delete"}
-        onClick={() => setAction("delete")}
-      >
-        Löschen
-      </button>
-      <button
-        style={{ background: action === "option" ? "violet" : "" }}
-        onClick={() => setAction("option")}
-      >
-        Optionen
-      </button>
+      {menuButtons2.map((btn) => (
+        <button key={btn.label} onClick={btn.onClick}>
+          {btn.label}
+        </button>
+      ))}
 
-      <button
-        style={{ background: action === "backlog" ? "orange" : "" }}
-        onClick={() => setAction("backlog")}
-      >
-        Backlog
-      </button>
+      {menuButtons.map((item) => (
+        <button
+          key={item.action}
+          style={{ background: item.action === action ? item.color : "" }}
+          disabled={item.action === action}
+          onClick={() => setAction(item.action)}
+        >
+          {item.label}
+        </button>
+      ))}
 
       {action === "save" || action === "load" || action === "delete" ? (
         <GameData
@@ -135,7 +127,7 @@ function Menu({
           setShowChoices={setShowChoices}
         />
       ) : action === "option" ? (
-        <Options writeSpeed={writeSpeed} setWriteSpeed={setWriteSpeed} />
+        <Options />
       ) : action === "backlog" ? (
         <Backlog
           currentChapter={currentChapter}

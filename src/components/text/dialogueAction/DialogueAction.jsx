@@ -22,88 +22,95 @@ const DialogueAction = ({
   setHide,
   skip,
   setSkip,
-setIsPaused
+  setIsPaused,
 }) => {
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
   }
+
+  const menuButtons = [
+    {
+      label: "Weiter ▶",
+      onClick: () => {
+        nextStep(
+          scene,
+          stepIndex,
+          setStepIndex,
+          setShowChoices,
+          currentChapter,
+          navigate,
+          setChatHistory,
+          currentScene,
+          setCurrentChapter,
+          setCurrentScene,
+          chatHistory
+        );
+        setAuto(false);
+      },
+      disabled: showChoices,
+    },
+    {
+      label: "Menü",
+      onClick: () => {
+        setQuickMenu(true);
+        setSkip(false);
+        setAuto(false);
+        setIsPaused(true);
+      },
+    },
+    {
+      label: "Auto",
+      onClick: () => {
+        setAuto((prev) => !prev);
+        setSkip(false);
+      },
+      disabled: showChoices,
+      style: { background: auto ? "blue" : "" },
+    },
+    {
+      label: "Skip",
+      onClick: () => skipText(),
+      style: { background: skip ? "blue" : "" },
+    },
+    {
+      label: "Zurück",
+      onClick: () => {
+        stepBack(
+          stepIndex,
+          setStepIndex,
+          setCurrentChapter,
+          setCurrentScene,
+          setChatHistory,
+          chatHistory,
+          setShowChoices,
+          scene,
+          showChoices
+        );
+        setAuto(false);
+      },
+      disabled: !chatHistory,
+    },
+    {
+      label: "Hide",
+      onClick: () => setHide((prev) => !prev),
+    },
+  ];
+
   return (
-    <div>
-      <button
-        onClick={() => {
-          nextStep(
-            scene,
-            stepIndex,
-            setStepIndex,
-            setShowChoices,
-            currentChapter,
-            navigate,
-            setChatHistory,
-            currentScene,
-            setCurrentChapter,
-            setCurrentScene,
-            chatHistory
-          ),
-            setAuto(false);
-        }}
-        className="window-action"
-        disabled={showChoices}
-      >
-        Weiter ▶
-      </button>
-      <button
-        className="window-action"
-        onClick={() => {
-          setQuickMenu(true), setSkip(false), setAuto(false), setIsPaused(true);
-        }}
-      >
-        Menü
-      </button>
-      <button
-        className="window-action"
-        onClick={() => {
-          setAuto((prevMode) => !prevMode), setSkip(false);
-        }}
-        style={{ background: auto ? "blue" : "" }}
-        disabled={showChoices}
-      >
-        Auto
-      </button>
-      <button
-        className="window-action"
-        style={{ background: skip ? "blue" : "" }}
-        onClick={() => skipText()}
-      >
-        Skip
-      </button>
-      <button
-        onClick={() => {
-          stepBack(
-            stepIndex,
-            setStepIndex,
-            setCurrentChapter,
-            setCurrentScene,
-            setChatHistory,
-            chatHistory,
-            setShowChoices,
-            scene,
-            showChoices
-          ),
-            setAuto(false);
-        }}
-        className="window-action"
-        disabled={!chatHistory}
-      >
-        Zurück
-      </button>
-      <button
-        className="window-action"
-        onClick={() => setHide((prevMode) => !prevMode)}
-      >
-        Hide
-      </button>
-    </div>
+      <div>
+        {menuButtons.map((btn, index) => (
+          <button
+            key={index}
+            className="window-action"
+            onClick={btn.onClick}
+            disabled={btn.disabled}
+            style={btn.style}
+          >
+            {btn.label}
+          </button>
+        ))}
+      </div>
   );
 };
 

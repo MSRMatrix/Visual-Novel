@@ -11,6 +11,7 @@ import Root from "./Root";
 import { SoundContext } from "./context/SoundContext";
 import click from "./sound/normalClick.wav"
 import typing from "./sound/typing-1.wav"
+import { WriteContext } from "./context/WriteContext";
 
 function App() {
   const menu_music = import.meta.env.VITE_MENU_MUSIC
@@ -52,14 +53,18 @@ function App() {
     typing: typing,
   })
 
+  const [writeSpeed, setWriteSpeed] = useState(30)
+
 
   return (
     <>
+    <WriteContext.Provider value={{writeSpeed, setWriteSpeed}}>
       <LoadContext.Provider value={{ load, setLoad }}>
         <SoundContext.Provider value={{sounds, setSounds}}>
           <RouterProvider router={router} />
         </SoundContext.Provider>
       </LoadContext.Provider>
+      </WriteContext.Provider>
     </>
   );
 }
