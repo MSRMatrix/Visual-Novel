@@ -22,7 +22,7 @@ const AudioManager = () => {
               type="range"
               name={item.name}
               value={sounds[item.name] * 100}
-              disabled={sounds.masterVolume <= 0}
+               disabled={item.name !== "masterVolume" && sounds.masterVolume <= 0}
               onChange={(e) =>
                 handleVolumeChange(e.target.name, e.target.value, setSounds)
               }
@@ -31,7 +31,7 @@ const AudioManager = () => {
             <input
               type="checkbox"
               onChange={(e) => checkboxHandler(e.target.name, setSounds)}
-              disabled={sounds.masterVolume <= 0}
+               disabled={item.name !== "masterVolume" && sounds.masterVolume <= 0}
               checked={sounds[item.name] <= 0 ? true : false}
               name={item.name}
             />

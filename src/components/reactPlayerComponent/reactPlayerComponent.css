@@ -2,10 +2,24 @@
 
 }
 
-.hide-player{
+.hide{
     display: none;
 }
 
 .show-player{
     display: block;
 }
+
+
+.click-action{
+
+}
+
+.type-action{
+
+}
+
+.sound-volume{
+
+}
+
