@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
+import { SoundContext } from "../../context/SoundContext";
 
 function Rate() {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
-
+  const { sounds, setSounds } = useContext(SoundContext);
   return (
     <>
       <div>
@@ -39,6 +40,7 @@ function Rate() {
             Langsam
           </button>
         </div>
+        <button onClick={() => setSounds((prev) => ({...prev, options: ""}))}>Zurück</button>
       </div>
     </>
   );

@@ -3,11 +3,11 @@ import "./menu.css";
 import { useContext, useEffect, useState } from "react";
 import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
-import Options from "./options/Options";
 import { SoundContext } from "../../context/SoundContext";
 import { mainMenu } from "../functions/mainMenu";
 import { newGame } from "../functions/newGame";
 import Backlog from "./backlog/Backlog";
+import Options from "../options/Options";
 
 function Menu({
   setQuickMenu,
@@ -127,7 +127,7 @@ function Menu({
           setShowChoices={setShowChoices}
         />
       ) : action === "option" ? (
-        <Options />
+        <Options quickMenu={quickMenu}/>
       ) : action === "backlog" ? (
         <Backlog
           currentChapter={currentChapter}

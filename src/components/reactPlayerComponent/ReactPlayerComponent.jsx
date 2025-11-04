@@ -5,29 +5,21 @@ import AudioManager from "./AudioManager/AudioManager";
 import Click from "./click/Click";
 import Write from "./write/Write";
 import MusicData from "./musicData/MusicData";
+import "./reactPlayerComponent.css";
+import { handleKeyDown } from "../functions/handleKeyDown";
 
-function ReactPlayerComponent({ intro }) {
+function ReactPlayerComponent({ intro, setOptions }) {
   const { sounds, setSounds } = useContext(SoundContext);
-  const focusableRef = useRef([]); // ref array für die Buttons
+  const focusableRef = useRef([]);
 
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   // Tastaturnavigation
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowDown") {
-        setFocusedIndex((prev) => (prev + 1) % focusableRef.current.length);
-      }
-      if (e.key === "ArrowUp") {
-        setFocusedIndex(
-          (prev) => (prev - 1 + focusableRef.current.length) % focusableRef.current.length
-        );
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+useEffect(() => {
+  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+  window.addEventListener("keydown", listener);
+  return () => window.removeEventListener("keydown", listener);
+}, [focusedIndex]);
 
   // Fokus setzen
   useEffect(() => {
@@ -51,12 +43,13 @@ function ReactPlayerComponent({ intro }) {
         volume={sounds.musicVolume}
         loop
         onError={(e) => console.log("Player-Error:", e)}
-        style={{ display: "none" }}
+        // style={{display: "none"}}
       />
 
       <div className="react-player-action">
         <div className="music-test">
           <button
+          ref={(el) => (focusableRef.current[0] = el)}
             onClick={() =>
               setSounds((prev) => ({ ...prev, playing: !prev.playing }))
             }
@@ -68,25 +61,26 @@ function ReactPlayerComponent({ intro }) {
         <div className="placeholder">
           <div className="musicData">
             <h2>Music zum testen</h2>
-            <MusicData focusableRef={focusableRef} startIndex={0} />
+            <MusicData focusableRef={focusableRef} startIndex={1} />
           </div>
 
           <div className="click-action">
             <h2>Klickgeräusche</h2>
-            <Click />
+            <Click focusableRef={focusableRef} startIndex={5} />
           </div>
 
           <div className="type-action">
             <h2>Tippgeräusche</h2>
-            <Write />
+            <Write focusableRef={focusableRef} startIndex={8} />
           </div>
 
           <div className="sound-volume">
             <h2>Sound Lautstärke</h2>
-            <AudioManager />
+            <AudioManager focusableRef={focusableRef} startIndex={11} />
           </div>
         </div>
       </div>
+       <button ref={(el) => (focusableRef.current[19] = el)} onClick={() => setSounds((prev) => ({...prev, hidePlayer: true, options: ""}))}>Zurück</button>
     </div>
   );
 }

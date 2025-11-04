@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { SoundContext } from "../../../context/SoundContext";
 import { handleVolumeChange } from "../../functions/handleVolumeChange";
 import { checkboxHandler } from "../../functions/checkboxHandler";
 
-const AudioManager = () => {
+const AudioManager = ({focusableRef, startIndex}) => {
   const { sounds, setSounds } = useContext(SoundContext);
   const soundSettings = [
     { name: "musicVolume", label: "Musik" },
@@ -12,13 +12,22 @@ const AudioManager = () => {
     { name: "masterVolume", label: "Alles" },
   ];
 
+ useEffect(() => {
+    if (focusableRef.current[startIndex]) {
+      focusableRef.current[startIndex].focus();
+    }
+  }, [focusableRef, startIndex]);
+
+
+
   return (
     <>
-      {soundSettings.map((item) => (
+      {soundSettings.map((item, i) => (
         <div key={item.name}>
           <h2>{item.label}</h2>
           <div>
-            <input
+            <input 
+            ref={(el) => (focusableRef.current[startIndex + i * 2] = el)}
               type="range"
               name={item.name}
               value={sounds[item.name] * 100}
@@ -28,7 +37,7 @@ const AudioManager = () => {
               }
             />
 
-            <input
+            <input ref={(el) => (focusableRef.current[startIndex + i * 2 + 1] = el)}
               type="checkbox"
               onChange={(e) => checkboxHandler(e.target.name, setSounds)}
                disabled={item.name !== "masterVolume" && sounds.masterVolume <= 0}

@@ -13,7 +13,6 @@ export function handleMenuAction(route, navigate,setSounds, setActiveMenu) {
       return;
     }
     if (route === "options") {
-      setSounds((prev) => ({ ...prev, hidePlayer: false }));
       setActiveMenu(false);
       navigate(`/${route}`);
       return;

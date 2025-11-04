@@ -51,6 +51,7 @@ function App() {
     musicVolume: 0.5,
     click: click,
     typing: typing,
+    options: ""
   })
 
   const [writeSpeed, setWriteSpeed] = useState(30)
