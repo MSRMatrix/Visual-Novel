@@ -1,6 +1,10 @@
 export function handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex) {
       if (!focusableRef.current.length) return;
+let focusables = focusableRef.current.filter(Boolean);
 
+if(isNaN(focusedIndex)){
+  setFocusedIndex(0)
+}
       const activeEl = document.activeElement;
       if (
         activeEl &&
@@ -14,21 +18,22 @@ export function handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex) {
 
       if (e.key === "ArrowDown") {
         e.preventDefault();
-        let nextIndex = (focusedIndex + 1) % focusableRef.current.length;
+        let nextIndex = (focusedIndex + 1) % focusables.length;
         while (focusableRef.current[nextIndex]?.disabled) {
-          nextIndex = (nextIndex + 1) % focusableRef.current.length;
+          nextIndex = (nextIndex + 1) % focusables.length;
         }
+        
         setFocusedIndex(nextIndex);
         focusableRef.current[nextIndex]?.focus();
       }
 
       if (e.key === "ArrowUp") {
         e.preventDefault();
-        let previousIndex = (focusedIndex - 1 + focusableRef.current.length) % focusableRef.current.length;
+        let previousIndex = (focusedIndex - 1 + focusables.length) % focusables.length;
         while (focusableRef.current[previousIndex]?.disabled) {
            previousIndex =
-            (previousIndex - 1 + focusableRef.current.length) %
-            focusableRef.current.length;
+            (previousIndex - 1 + focusables.length) %
+            focusables.length;
         }
         setFocusedIndex(previousIndex);
         focusableRef.current[previousIndex]?.focus();

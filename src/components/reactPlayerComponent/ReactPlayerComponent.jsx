@@ -13,20 +13,23 @@ function ReactPlayerComponent({ intro, setOptions }) {
   const focusableRef = useRef([]);
 
   const [focusedIndex, setFocusedIndex] = useState(0);
-
   // Tastaturnavigation
 useEffect(() => {
+  if(!sounds.hidePlayer){
   const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
   window.addEventListener("keydown", listener);
   return () => window.removeEventListener("keydown", listener);
-}, [focusedIndex]);
+}
+}, [focusedIndex, sounds.hidePlayer]);
 
   // Fokus setzen
   useEffect(() => {
+    if(!sounds.hidePlayer){
     if (focusableRef.current[focusedIndex]) {
       focusableRef.current[focusedIndex].focus();
     }
-  }, [focusedIndex]);
+    }
+  }, [focusedIndex, sounds.hidePlayer]);
 
   // Musik starten, falls noch nicht spielend
   useEffect(() => {
@@ -80,7 +83,7 @@ useEffect(() => {
           </div>
         </div>
       </div>
-       <button ref={(el) => (focusableRef.current[19] = el)} onClick={() => setSounds((prev) => ({...prev, hidePlayer: true, options: ""}))}>Zurück</button>
+       <button ref={(el) => (focusableRef.current[19] = el)} onClick={() => {setSounds((prev) => ({...prev, hidePlayer: true, options: ""})),setFocusedIndex(0)}}>Zurück</button>
     </div>
   );
 }

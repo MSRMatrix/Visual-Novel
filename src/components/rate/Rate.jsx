@@ -3,14 +3,22 @@ import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
 import { SoundContext } from "../../context/SoundContext";
 
-function Rate() {
+function Rate({focusableRef, startIndex, setFocusedIndex}) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const { sounds, setSounds } = useContext(SoundContext);
+
+  const speed = [
+    { name: "Schnell", rate: 40 },
+    { name: "Normal", rate: 70 },
+    { name: "Langsam", rate: 100 },
+  ];
+  
   return (
     <>
       <div>
         <p>Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)} </p>
         <input
+       ref={(el) => (focusableRef.current[0] = el)}
           value={writeSpeed}
           type="range"
           max={150}
@@ -18,29 +26,22 @@ function Rate() {
           onChange={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
         />
         <div style={{ display: "flex" }}>
-          <button
-            disabled={writeSpeed === 40}
-            value={40}
-            onClick={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
-          >
-            Schnell
-          </button>
-          <button
-            disabled={writeSpeed === 70}
-            value={70}
-            onClick={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
-          >
-            Normal
-          </button>
-          <button
-            disabled={writeSpeed === 100}
-            value={100}
-            onClick={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
-          >
-            Langsam
-          </button>
+          {speed.map((item, i) => (
+            <button
+            ref={(el) => (focusableRef.current[startIndex + i + 1] = el)}
+              value={item.rate}
+              disabled={item.rate === writeSpeed}
+              key={item.name}
+              onClick={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
+            >
+              {item.name}
+            </button>
+          ))}
+
         </div>
-        <button onClick={() => setSounds((prev) => ({...prev, options: ""}))}>Zurück</button>
+        <button ref={(el) => (focusableRef.current[startIndex + speed.length + 1] = el)} onClick={() => {setSounds((prev) => ({ ...prev, options: "" })), setFocusedIndex(0)}}>
+          Zurück
+        </button>
       </div>
     </>
   );
