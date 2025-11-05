@@ -25,7 +25,7 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
   console.log(active);
 
   useEffect(() => {
-    if (!active) return; // Effekt nur laufen, wenn aktiv
+    if (!active) return;
 
     setDisplayExample("");
     setExampleFinished(false);
@@ -39,7 +39,7 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
       } else {
         clearInterval(interval);
         setExampleFinished(true);
-        setActive(false); // direkt hier, wenn fertig
+        setActive(false); 
       }
     }, writeSpeed);
 
