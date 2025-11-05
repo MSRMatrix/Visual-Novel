@@ -8,8 +8,10 @@ export function choose(
   setCurrentChapter,
   setCurrentScene,
   setStepIndex,
-  setShowChoices
+  setShowChoices,
+  setFocusedIndex
 ) {
+  setFocusedIndex(0)
   // 💾 Aktuellen Zustand merken
   setChatHistory((prev) => [
     ...prev,

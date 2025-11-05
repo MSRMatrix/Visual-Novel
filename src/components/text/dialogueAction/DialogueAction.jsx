@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { nextStep } from "../../functions/nextStep";
 import { stepBack } from "../../functions/stepBack";
+import { handleKeyDown } from "../../functions/handleKeyDown";
 
 const DialogueAction = ({
   scene,
@@ -23,7 +24,10 @@ const DialogueAction = ({
   skip,
   setSkip,
   setIsPaused,
-}) => {
+  focusableRef,
+startIndex,
+setFocusedIndex
+}) => {  
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
@@ -70,6 +74,7 @@ const DialogueAction = ({
     },
     {
       label: "Skip",
+      disabled: showChoices,
       onClick: () => skipText(),
       style: { background: skip ? "blue" : "" },
     },
@@ -85,7 +90,8 @@ const DialogueAction = ({
           chatHistory,
           setShowChoices,
           scene,
-          showChoices
+          showChoices,
+          setFocusedIndex
         );
         setAuto(false);
       },
@@ -97,10 +103,15 @@ const DialogueAction = ({
     },
   ];
 
+
+
+  // Tastaturnavigation
+
   return (
       <div>
         {menuButtons.map((btn, index) => (
           <button
+           ref={(el) => (focusableRef.current[startIndex + index] = el)}
             key={index}
             className="window-action"
             onClick={btn.onClick}

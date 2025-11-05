@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { story } from "./data/story";
 import { useNavigate } from "react-router-dom";
 import "./dialogueBox.css";
@@ -10,6 +10,7 @@ import { LoadContext } from "../../context/LoadContext";
 import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
 import { WriteContext } from "../../context/WriteContext";
+import { handleKeyDown } from "../functions/handleKeyDown";
 
 export default function VisualNovel({ hide, setHide }) {
   const navigate = useNavigate();
@@ -147,6 +148,32 @@ export default function VisualNovel({ hide, setHide }) {
   }, [auto, autoTime, showChoices, stepIndex, textFinished, quickMenu]);
   // Auto-Modus
 
+
+
+
+
+    const focusableRef = useRef([]);
+
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  // Tastaturnavigation
+useEffect(() => {
+  if(!quickMenu){
+  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+  window.addEventListener("keydown", listener);
+  return () => window.removeEventListener("keydown", listener);
+}
+}, [focusedIndex, showChoices, quickMenu]);
+
+  // Fokus setzen
+  useEffect(() => {
+     if(!quickMenu){
+    if (focusableRef.current[focusedIndex]) {
+      focusableRef.current[focusedIndex].focus();
+    } 
+     }
+  }, [focusedIndex, showChoices, quickMenu]);
+
+
   return (
     <div style={{ display: hide ? "none" : "block" }}>
       {!quickMenu ? (
@@ -173,7 +200,8 @@ export default function VisualNovel({ hide, setHide }) {
               <div className="choices mt-4 flex flex-col gap-2">
                 {scene && scene.choices
                   ? scene.choices.map((choice, idx) => (
-                      <button
+                      <button    
+                      ref={(el) => (focusableRef.current[0 + idx] = el)}
                         key={idx}
                         onClick={() =>
                           choose(
@@ -186,7 +214,8 @@ export default function VisualNovel({ hide, setHide }) {
                             setCurrentChapter,
                             setCurrentScene,
                             setStepIndex,
-                            setShowChoices
+                            setShowChoices,
+                            setFocusedIndex
                           )
                         }
                         className="bg-blue-600 p-2 rounded hover:bg-blue-500"
@@ -219,7 +248,10 @@ export default function VisualNovel({ hide, setHide }) {
               skip={skip}
               setSkip={setSkip}
               setIsPaused={setIsPaused}
-            />
+              focusableRef={focusableRef}
+              startIndex={showChoices ? 2 : 0}
+              setFocusedIndex={setFocusedIndex}
+                    />
           </>
         </div>
       ) : (

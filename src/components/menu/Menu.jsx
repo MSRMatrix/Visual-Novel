@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import GameData from "./gameData/GameData";
 import { LoadContext } from "../../context/LoadContext";
 import { SoundContext } from "../../context/SoundContext";
@@ -8,6 +8,7 @@ import { mainMenu } from "../functions/mainMenu";
 import { newGame } from "../functions/newGame";
 import Backlog from "./backlog/Backlog";
 import Options from "../options/Options";
+import { handleKeyDown } from "../functions/handleKeyDown";
 
 function Menu({
   setQuickMenu,
@@ -77,17 +78,41 @@ function Menu({
     },
   ];
 
+  const focusableRef = useRef([]);
+
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  useEffect(() => {
+  if(quickMenu && !action){
+  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+  window.addEventListener("keydown", listener);
+  return () => window.removeEventListener("keydown", listener);
+}
+}, [focusedIndex, showChoices, quickMenu, action]);
+
+  // Fokus setzen
+  useEffect(() => {
+     if(quickMenu && !action){
+    if (focusableRef.current[focusedIndex]) {
+      focusableRef.current[focusedIndex].focus();
+    } 
+     }
+  }, [focusedIndex, showChoices, quickMenu, action]);
+
   return (
     <>
       <h1>Schnellmenü</h1>
-      {menuButtons2.map((btn) => (
-        <button key={btn.label} onClick={btn.onClick}>
+      {menuButtons2.map((btn, idx) => (
+        <button 
+        ref={(el) => (focusableRef.current[0 + idx] = el)}
+        key={btn.label} onClick={btn.onClick}>
           {btn.label}
         </button>
       ))}
 
-      {menuButtons.map((item) => (
+      {menuButtons.map((item, idx) => (
         <button
+        ref={(el) => (focusableRef.current[2 + idx] = el)}
           key={item.action}
           style={{ background: item.action === action ? item.color : "" }}
           disabled={item.action === action}
@@ -117,20 +142,28 @@ function Menu({
           setPausedText={setPausedText}
           showChoices={showChoices}
           setShowChoices={setShowChoices}
+          action={action}
+          setAction={setAction}
+          
         />
       ) : action === "option" ? (
-        <Options quickMenu={quickMenu}/>
+        <Options quickMenu={quickMenu} action={action} setAction={setAction}/>
       ) : action === "backlog" ? (
         <Backlog
           currentChapter={currentChapter}
           currentScene={currentScene}
           stepIndex={stepIndex}
           chatHistory={chatHistory}
+          setAction={setAction}
+           showChoices={showChoices}
+           quickMenu={quickMenu}
+           action={action}
         />
       ) : (
         ""
       )}
       <button
+      ref={(el) => (focusableRef.current[7] = el)}
         onClick={() =>
           mainMenu(setAction, setLoad, setPlayTime, setSounds, navigate)
         }

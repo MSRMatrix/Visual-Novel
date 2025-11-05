@@ -7,12 +7,14 @@ export function stepBack(
   chatHistory,
   setShowChoices,
   scene,
-  showChoices
+  showChoices,
+  setFocusedIndex
 ) {
   if (stepIndex > 0) {
     if (!showChoices) {
     return  setStepIndex(stepIndex - 1);
     } else {
+      setFocusedIndex(0)
      return setShowChoices(false);
     }
   } else if (chatHistory.length > 0) {

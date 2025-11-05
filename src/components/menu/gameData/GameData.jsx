@@ -1,10 +1,12 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import "./gameData.css";
 import { useNavigate } from "react-router-dom";
 import { saveData } from "../../functions/saveData";
 import { loadData } from "../../functions/loadData";
 import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
 import { SoundContext } from "../../../context/SoundContext";
+import { handleKeyDown } from "../../functions/handleKeyDown";
 
 function GameData({
   currentChapter,
@@ -24,7 +26,9 @@ function GameData({
   setDisplayText,
   setPausedText,
   showChoices,
-setShowChoices
+  setShowChoices,
+  action,
+  setAction,
 }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
@@ -53,7 +57,7 @@ setShowChoices
           chatHistory,
           setSaves,
           playTime,
-          showChoices,
+          showChoices
         );
       case "delete":
         return deleteData(slotName, saves, setSaves);
@@ -81,10 +85,39 @@ setShowChoices
     }
   }
 
+  const focusableRef = useRef([]);
+
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  useEffect(() => {
+    if (action === "save" || action === "load" || action === "delete") {
+      const listener = (e) =>
+        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      window.addEventListener("keydown", listener);
+      return () => window.removeEventListener("keydown", listener);
+    }
+  }, [focusedIndex, showChoices, quickMenu, action]);
+
+  // Fokus setzen
+  useEffect(() => {
+    if (action === "save" || action === "load" || action === "delete") {
+      if (focusableRef.current[focusedIndex]) {
+        focusableRef.current[focusedIndex].focus();
+      }
+    }
+  }, [focusedIndex, showChoices, quickMenu, action]);
+
   return (
     <>
-      {saves.map((item, key) => (
-        <div key={key} onClick={() => actionFunction(item.name)}>
+      {saves.map((item, idx) => (
+        <button
+          disabled={action !== "save" && !item.timestamp}
+          className="gameData"
+          tabIndex={0}
+          ref={(el) => (focusableRef.current[0 + idx] = el)}
+          key={item.name}
+          onClick={() => actionFunction(item.name)}
+        >
           <h2>{item.name}</h2>
           <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
           <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
@@ -101,8 +134,14 @@ setShowChoices
               ? ""
               : `Spielzeit: ${formatTime(item.playTime)}`}
           </p>
-        </div>
+        </button>
       ))}
+      <button
+        ref={(el) => (focusableRef.current[5] = el)}
+        onClick={() => setAction("")}
+      >
+        Zurück
+      </button>
     </>
   );
 }

@@ -5,7 +5,7 @@ import { SoundContext } from "../../context/SoundContext";
 import Rate from "../rate/Rate";
 import { handleKeyDown } from "../functions/handleKeyDown";
 
-function Options({ quickMenu }) {
+function Options({ quickMenu, action, setAction }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
   const focusableRef = useRef([]); 
@@ -31,6 +31,16 @@ function Options({ quickMenu }) {
     }
   }
   }, [focusedIndex, sounds.hidePlayer]);
+
+  function backFunction(){
+    if(action){
+      setAction("")
+      return
+    } else{
+     setSounds((prev) => ({ ...prev, hidePlayer: true })), navigate("/"); 
+     return   
+    }  
+  }
 
 
   return (
@@ -74,14 +84,12 @@ function Options({ quickMenu }) {
       ) : (
         ""
       )}
-      {!sounds.hidePlayer || quickMenu || sounds.options ? (
+      {!sounds.hidePlayer || sounds.options ? (
         ""
       ) : (
         <button
         ref={(el) => (focusableRef.current[2] = el)}
-          onClick={() => {
-            setSounds((prev) => ({ ...prev, hidePlayer: true })), navigate("/");
-          }}
+          onClick={() => backFunction()}
         >
           Zurück
         </button>

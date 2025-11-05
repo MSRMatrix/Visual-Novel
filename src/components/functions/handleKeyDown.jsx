@@ -22,9 +22,9 @@ if(isNaN(focusedIndex)){
         while (focusableRef.current[nextIndex]?.disabled) {
           nextIndex = (nextIndex + 1) % focusables.length;
         }
-        
         setFocusedIndex(nextIndex);
         focusableRef.current[nextIndex]?.focus();
+        
       }
 
       if (e.key === "ArrowUp") {
