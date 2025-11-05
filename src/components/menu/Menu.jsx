@@ -36,14 +36,6 @@ function Menu({
   const { sounds, setSounds } = useContext(SoundContext);
   const [action, setAction] = useState("");
 
-  useEffect(() => {
-    if (action === "option") {
-      setSounds((prev) => ({ ...prev, hidePlayer: false }));
-    } else {
-      setSounds((prev) => ({ ...prev, hidePlayer: true }));
-    }
-  }, [action]);
-
   const menuButtons = [
     { label: "Speichern", action: "save", color: "blue" },
     { label: "Laden", action: "load", color: "green" },
