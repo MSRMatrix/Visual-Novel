@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { LoadContext } from "../../context/LoadContext";
 import { formatTime } from "../functions/formatTime";
+import { handleKeyDown } from "../functions/handleKeyDown";
 
 function Load() {
     const {load, setLoad} = useContext(LoadContext)
@@ -43,12 +44,34 @@ const [saves, setSaves] = useState(() => {
     })
     navigate("/start")
   }
+
+
+    const focusableRef = useRef([]);
+
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  // Tastaturnavigation
+useEffect(() => {
+  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+  window.addEventListener("keydown", listener);
+  return () => window.removeEventListener("keydown", listener);
+
+}, [focusedIndex]);
+
+  // Fokus setzen
+  useEffect(() => {
+    if (focusableRef.current[focusedIndex]) {
+      focusableRef.current[focusedIndex].focus();
+    } 
+     
+  }, [focusedIndex]);
+
+
   
   
   return (
     <>
-     {saves.map((item, key) => (
-        <div key={key} onClick={() => handleLoad(item.name)}>
+     {saves.map((item, index) => (
+        <button disabled={!item.timestamp} ref={(el) => (focusableRef.current[0 + index] = el)} key={item.name} onClick={() => handleLoad(item.name)}>
           <h2>{item.name}</h2>
        <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
           <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
@@ -57,9 +80,9 @@ const [saves, setSaves] = useState(() => {
           </p>
           <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
           <p>{item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}</p>
-        </div>
+        </button>
       ))}
-     <NavLink to="/">Zurück</NavLink>
+     <button ref={(el) => (focusableRef.current[5] = el)}  onClick={() => navigate("/")}>Zurück</button>
     </>
   );
 }
