@@ -3,7 +3,7 @@ import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
 import { SoundContext } from "../../context/SoundContext";
 
-function Rate({ focusableRef, startIndex, setFocusedIndex }) {
+function Rate({ focusableRef, startIndex, setFocusedIndex, setExampleFinished, active, setActive}) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const { sounds, setSounds } = useContext(SoundContext);
 
@@ -19,10 +19,6 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
   });
 
   const [displayExample, setDisplayExample] = useState("");
-  const [exampleFinished, setExampleFinished] = useState(false);
-  const [active, setActive] = useState(false);
-
-  console.log(active);
 
   useEffect(() => {
     if (!active) return;
@@ -46,6 +42,12 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
     return () => clearInterval(interval);
   }, [active, writeSpeed]);
 
+  function writeHelper(e){
+    if(active) return;
+writespeedHandler(e.target.value, setWriteSpeed)
+
+  }
+
   return (
     <>
       <div>
@@ -58,7 +60,7 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
           type="range"
           max={150}
           min={15}
-          onChange={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
+          onChange={(e) => writeHelper(e)}
         />
         <div style={{ display: "flex" }}>
           {speed.map((item, i) => (
@@ -67,7 +69,7 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
               value={item.rate}
               disabled={item.rate === writeSpeed}
               key={item.name}
-              onClick={(e) => writespeedHandler(e.target.value, setWriteSpeed)}
+              onClick={(e) => writeHelper(e)}
             >
               {item.name}
             </button>
@@ -88,7 +90,7 @@ function Rate({ focusableRef, startIndex, setFocusedIndex }) {
             (focusableRef.current[startIndex + speed.length + 2] = el)
           }
           onClick={() => {
-            setSounds((prev) => ({ ...prev, options: "" })), setFocusedIndex(0);
+            setSounds((prev) => ({ ...prev, options: "" })), setFocusedIndex(0), setDisplayExample(""), setExampleFinished(true), setActive(false);
           }}
         >
           Zurück

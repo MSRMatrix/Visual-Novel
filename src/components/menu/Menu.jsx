@@ -83,40 +83,49 @@ function Menu({
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   useEffect(() => {
-  if(quickMenu && !action){
-  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-  window.addEventListener("keydown", listener);
-  return () => window.removeEventListener("keydown", listener);
-}
-}, [focusedIndex, showChoices, quickMenu, action]);
+    if (quickMenu && !action) {
+      const listener = (e) =>
+        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      window.addEventListener("keydown", listener);
+      return () => window.removeEventListener("keydown", listener);
+    }
+  }, [focusedIndex, showChoices, quickMenu, action]);
 
   // Fokus setzen
   useEffect(() => {
-     if(quickMenu && !action){
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
-    } 
-     }
+    if (quickMenu && !action) {
+      if (focusableRef.current[focusedIndex]) {
+        focusableRef.current[focusedIndex].focus();
+      }
+    }
   }, [focusedIndex, showChoices, quickMenu, action]);
 
   return (
     <>
       <h1>Schnellmenü</h1>
       {menuButtons2.map((btn, idx) => (
-        <button 
-        ref={(el) => (focusableRef.current[0 + idx] = el)}
-        key={btn.label} onClick={btn.onClick}>
+        <button
+          ref={(el) => (focusableRef.current[0 + idx] = el)}
+          key={btn.label}
+          onClick={btn.onClick}
+        >
           {btn.label}
         </button>
       ))}
 
       {menuButtons.map((item, idx) => (
         <button
-        ref={(el) => (focusableRef.current[2 + idx] = el)}
+          ref={(el) => (focusableRef.current[2 + idx] = el)}
           key={item.action}
           style={{ background: item.action === action ? item.color : "" }}
           disabled={item.action === action}
-          onClick={() => setAction(item.action)}
+          onClick={() => {
+            setAction(item.action),
+              setSounds((prev) => ({
+                ...prev,
+                options: "",
+              }));
+          }}
         >
           {item.label}
         </button>
@@ -144,10 +153,9 @@ function Menu({
           setShowChoices={setShowChoices}
           action={action}
           setAction={setAction}
-          
         />
       ) : action === "option" ? (
-        <Options quickMenu={quickMenu} action={action} setAction={setAction}/>
+        <Options quickMenu={quickMenu} action={action} setAction={setAction} />
       ) : action === "backlog" ? (
         <Backlog
           currentChapter={currentChapter}
@@ -155,15 +163,15 @@ function Menu({
           stepIndex={stepIndex}
           chatHistory={chatHistory}
           setAction={setAction}
-           showChoices={showChoices}
-           quickMenu={quickMenu}
-           action={action}
+          showChoices={showChoices}
+          quickMenu={quickMenu}
+          action={action}
         />
       ) : (
         ""
       )}
       <button
-      ref={(el) => (focusableRef.current[7] = el)}
+        ref={(el) => (focusableRef.current[7] = el)}
         onClick={() =>
           mainMenu(setAction, setLoad, setPlayTime, setSounds, navigate)
         }

@@ -4,33 +4,53 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
 import Rate from "../rate/Rate";
 import { handleKeyDown } from "../functions/handleKeyDown";
+import { WriteContext } from "../../context/WriteContext";
 
 function Options({ quickMenu, action, setAction }) {
   const { sounds, setSounds } = useContext(SoundContext);
+  const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const navigate = useNavigate();
   const focusableRef = useRef([]); 
   const [focusedIndex, setFocusedIndex] = useState(0);
-
-  console.log(focusedIndex);
+  const [exampleFinished, setExampleFinished] = useState(false);
+  const [active, setActive] = useState(false);
   
   // Tastaturnavigation
   useEffect(() => {
     if(sounds.hidePlayer){
     const listener = (e) =>
-      handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex, active);
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
   }
-  }, [focusedIndex, sounds.hidePlayer]);
+  }, [focusedIndex, sounds.hidePlayer, active]);
 
   // Fokus setzen
-  useEffect(() => {
-    if(sounds.hidePlayer){
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
+useEffect(() => {
+  if (!sounds.hidePlayer) return;
+
+  const timer = setTimeout(() => {
+    const current = focusableRef.current[focusedIndex];
+    if (!current) return;
+
+    if (current.disabled && focusableRef.current[focusedIndex].textContent !== "Test") {
+      const focusables = focusableRef.current.filter(Boolean);
+      let nextIndex = (focusedIndex + 1) % focusables.length;
+
+      while (focusableRef.current[nextIndex]?.disabled) {
+        nextIndex = (nextIndex + 1) % focusables.length;
+      }
+
+      setFocusedIndex(nextIndex);
+      focusableRef.current[nextIndex]?.focus();
+    } else {
+      current.focus();
     }
-  }
-  }, [focusedIndex, sounds.hidePlayer]);
+  }, 0); // 🔹 Wartet bis nach dem Render-Zyklus
+
+  return () => clearTimeout(timer);
+}, [focusedIndex, sounds.hidePlayer, writeSpeed, active]);
+
 
   function backFunction(){
     if(action){
@@ -80,7 +100,10 @@ function Options({ quickMenu, action, setAction }) {
       )}
 
       {sounds.options === "type-rate" ? (
-        <Rate focusableRef={focusableRef} startIndex={0} setFocusedIndex={setFocusedIndex}/>
+        <Rate focusableRef={focusableRef} startIndex={0} setFocusedIndex={setFocusedIndex}
+        setExampleFinished={setExampleFinished}
+        active={active} 
+        setActive={setActive} />
       ) : (
         ""
       )}

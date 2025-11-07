@@ -3,8 +3,11 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { LoadContext } from "../../context/LoadContext";
 import { formatTime } from "../functions/formatTime";
 import { handleKeyDown } from "../functions/handleKeyDown";
+import { SoundContext } from "../../context/SoundContext";
 
 function Load() {
+  const game_music = import.meta.env.VITE_GAME_MUSIC
+  const { sounds, setSounds } = useContext(SoundContext);
     const {load, setLoad} = useContext(LoadContext)
     const navigate = useNavigate()
 const [saves, setSaves] = useState(() => {
@@ -41,7 +44,8 @@ const [saves, setSaves] = useState(() => {
       chatHistory: existing.chatHistory,
       playTime: existing.playTime,
       choice: existing.showChoices
-    })
+    }) 
+    setSounds((prev) => ({...prev, url: game_music}))
     navigate("/start")
   }
 
