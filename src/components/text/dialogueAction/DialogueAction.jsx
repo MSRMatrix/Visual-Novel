@@ -26,8 +26,13 @@ const DialogueAction = ({
   setIsPaused,
   focusableRef,
 startIndex,
-setFocusedIndex
+setFocusedIndex,
+showGame,
+setShowGame, 
+gameState, 
+setGameState 
 }) => {  
+  
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
@@ -38,21 +43,23 @@ setFocusedIndex
       label: "Weiter ▶",
       onClick: () => {
         nextStep(
-          scene,
-          stepIndex,
-          setStepIndex,
-          setShowChoices,
-          currentChapter,
-          navigate,
-          setChatHistory,
-          currentScene,
-          setCurrentChapter,
-          setCurrentScene,
-          chatHistory
+       scene,
+  stepIndex,
+  setStepIndex,
+  setShowChoices,
+  currentChapter,
+  navigate,
+  setChatHistory,
+  currentScene,
+  setCurrentChapter,
+  setCurrentScene,
+  setShowGame,
+  showGame,
+  setGameState
         );
         setAuto(false);
       },
-      disabled: showChoices,
+      disabled: showChoices || showGame,
     },
     {
       label: "Menü",
@@ -69,7 +76,7 @@ setFocusedIndex
         setAuto((prev) => !prev);
         setSkip(false);
       },
-      disabled: showChoices,
+      disabled: showChoices || showGame,
       style: { background: auto ? "blue" : "" },
     },
     {
@@ -91,7 +98,10 @@ setFocusedIndex
           setShowChoices,
           scene,
           showChoices,
-          setFocusedIndex
+          setFocusedIndex,  
+          setShowGame,
+          showGame,
+  setGameState
         );
         setAuto(false);
       },

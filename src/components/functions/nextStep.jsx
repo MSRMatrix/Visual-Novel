@@ -8,7 +8,10 @@ export function nextStep(
   setChatHistory,
   currentScene,
   setCurrentChapter,
-  setCurrentScene
+  setCurrentScene,
+  setShowGame,
+  showGame,
+  setGameState
 ) {
   const steps = scene.steps;
 
@@ -18,6 +21,7 @@ export function nextStep(
     // Steps vorbei
     if (scene.choices) {
       setShowChoices(true);
+      setShowGame(false)
     } else if (scene.next) {
       // Kapitel/Szenenwechsel
       const nextChapter = scene.next.chapter || currentChapter;
@@ -38,7 +42,15 @@ export function nextStep(
       setCurrentScene(nextScene);
       setStepIndex(0);
       setShowChoices(false);
-    } else {
+
+    } 
+    else if(scene.game){
+      setGameState(scene.game.mode)
+       setShowGame(true)
+      setShowChoices(false);
+    }
+    
+    else {
       console.log("Ende der Story");
     }
   }

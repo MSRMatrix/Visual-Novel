@@ -14,17 +14,13 @@ export const chapterOne = {
         },
         
       ],
-     choices: 
-         [
-      {
-        text: "Weiter...",
+     game: 
+      { 
+        speaker: narrator,
+        text: "An welche Zahl denke ich gerade?",
+        mode: "number",
         next: { chapter: "chapterOne", scene: "path_life_continue_2" },
       },
-      {
-        text: "Zum Ende springe",
-        next: { chapter: "end", scene: "ending" },
-      },
-    ],
     },
 
     path_life_continue_2: {
@@ -39,6 +35,18 @@ export const chapterOne = {
           text: "Es kommt nocht Text...",
         },
       ],
+
+      choices: 
+         [
+      {
+        text: "Weiter...",
+        next: { chapter: "chapterOne", scene: "path_life_continue_2" },
+      },
+      {
+        text: "Zum Ende springe",
+        next: { chapter: "end", scene: "ending" },
+      },
+    ],
       next: {chapter: "chapterTwo", scene: "the_beginning_1"},
     },
   }

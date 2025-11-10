@@ -3,7 +3,14 @@ import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
 import { SoundContext } from "../../context/SoundContext";
 
-function Rate({ focusableRef, startIndex, setFocusedIndex, setExampleFinished, active, setActive}) {
+function Rate({
+  focusableRef,
+  startIndex,
+  setFocusedIndex,
+  setExampleFinished,
+  active,
+  setActive,
+}) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const { sounds, setSounds } = useContext(SoundContext);
 
@@ -22,30 +29,30 @@ function Rate({ focusableRef, startIndex, setFocusedIndex, setExampleFinished, a
 
   useEffect(() => {
     if (!active) return;
+    setTimeout(() => {
+      setDisplayExample("");
+      setExampleFinished(false);
 
-    setDisplayExample("");
-    setExampleFinished(false);
+      let i = -1;
 
-    let i = -1;
+      const interval = setInterval(() => {
+        if (i < example.text.length) {
+          setDisplayExample((prev) => prev + example.text.charAt(i));
+          i++;
+        } else {
+          clearInterval(interval);
+          setExampleFinished(true);
+          setActive(false);
+        }
+      }, writeSpeed);
 
-    const interval = setInterval(() => {
-      if (i < example.text.length) {
-        setDisplayExample((prev) => prev + example.text.charAt(i));
-        i++;
-      } else {
-        clearInterval(interval);
-        setExampleFinished(true);
-        setActive(false); 
-      }
-    }, writeSpeed);
-
-    return () => clearInterval(interval);
+      return () => clearInterval(interval);
+    }, 20);
   }, [active, writeSpeed]);
 
-  function writeHelper(e){
-    if(active) return;
-writespeedHandler(e.target.value, setWriteSpeed)
-
+  function writeHelper(e) {
+    if (active) return;
+    writespeedHandler(e.target.value, setWriteSpeed);
   }
 
   return (
@@ -76,7 +83,7 @@ writespeedHandler(e.target.value, setWriteSpeed)
           ))}
 
           <button
-          disabled={active}
+            disabled={active}
             ref={(el) =>
               (focusableRef.current[startIndex + speed.length + 1] = el)
             }
@@ -90,7 +97,11 @@ writespeedHandler(e.target.value, setWriteSpeed)
             (focusableRef.current[startIndex + speed.length + 2] = el)
           }
           onClick={() => {
-            setSounds((prev) => ({ ...prev, options: "" })), setFocusedIndex(0), setDisplayExample(""), setExampleFinished(true), setActive(false);
+            setSounds((prev) => ({ ...prev, options: "" })),
+              setFocusedIndex(0),
+              setDisplayExample(""),
+              setExampleFinished(true),
+              setActive(false);
           }}
         >
           Zurück

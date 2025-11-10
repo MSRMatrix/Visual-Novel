@@ -11,12 +11,13 @@ import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
 import { WriteContext } from "../../context/WriteContext";
 import { handleKeyDown } from "../functions/handleKeyDown";
+import Games from "../games/Games";
 
 export default function VisualNovel({ hide, setHide }) {
   const navigate = useNavigate();
   const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
-  const {writeSpeed, setWriteSpeed} = useContext(WriteContext)
+  const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const [play, { stop, sound }] = useSound(sounds.typing, {
     volume: sounds.textVolume,
     loop: true,
@@ -32,6 +33,9 @@ export default function VisualNovel({ hide, setHide }) {
   const [chatHistory, setChatHistory] = useState(load.chatHistory || []);
   const [playTime, setPlayTime] = useState(load.playTime || 0);
 
+  const [showGame, setShowGame] = useState(false);
+  const [gameState, setGameState] = useState("");
+
   const [showChoices, setShowChoices] = useState(load.choice || false);
   const [auto, setAuto] = useState(false);
   const [autoTime, setAutoTime] = useState(5000);
@@ -43,13 +47,12 @@ export default function VisualNovel({ hide, setHide }) {
   const [pausedText, setPausedText] = useState("");
   const scene = story[currentChapter][currentScene];
 
-
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
 
   // 🔹 Skip-Modus
   useEffect(() => {
-    if (!skip || showChoices || quickMenu) return;
+    if (!skip || showChoices || quickMenu || showGame) return;
 
     const interval = setInterval(() => {
       nextStep(
@@ -62,7 +65,8 @@ export default function VisualNovel({ hide, setHide }) {
         setChatHistory,
         currentScene,
         setCurrentChapter,
-        setCurrentScene
+        setCurrentScene,
+        setShowGame
       );
     }, 80);
 
@@ -128,7 +132,7 @@ export default function VisualNovel({ hide, setHide }) {
 
   // Auto-Modus
   useEffect(() => {
-    if (!auto || showChoices || !textFinished || quickMenu) return;
+    if (!auto || showChoices || !textFinished || quickMenu || showGame) return;
     const interval = setInterval(() => {
       nextStep(
         scene,
@@ -140,7 +144,8 @@ export default function VisualNovel({ hide, setHide }) {
         setChatHistory,
         currentScene,
         setCurrentChapter,
-        setCurrentScene
+        setCurrentScene,
+        setShowGame
       );
     }, autoTime);
 
@@ -148,31 +153,27 @@ export default function VisualNovel({ hide, setHide }) {
   }, [auto, autoTime, showChoices, stepIndex, textFinished, quickMenu]);
   // Auto-Modus
 
-
-
-
-
-    const focusableRef = useRef([]);
+  const focusableRef = useRef([]);
 
   const [focusedIndex, setFocusedIndex] = useState(0);
   // Tastaturnavigation
-useEffect(() => {
-  if(!quickMenu){
-  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-  window.addEventListener("keydown", listener);
-  return () => window.removeEventListener("keydown", listener);
-}
-}, [focusedIndex, showChoices, quickMenu]);
+  useEffect(() => {
+    if (!quickMenu) {
+      const listener = (e) =>
+        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      window.addEventListener("keydown", listener);
+      return () => window.removeEventListener("keydown", listener);
+    }
+  }, [focusedIndex, showChoices, quickMenu]);
 
   // Fokus setzen
   useEffect(() => {
-     if(!quickMenu){
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
-    } 
-     }
+    if (!quickMenu) {
+      if (focusableRef.current[focusedIndex]) {
+        focusableRef.current[focusedIndex].focus();
+      }
+    }
   }, [focusedIndex, showChoices, quickMenu]);
-
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
@@ -200,8 +201,8 @@ useEffect(() => {
               <div className="choices mt-4 flex flex-col gap-2">
                 {scene && scene.choices
                   ? scene.choices.map((choice, idx) => (
-                      <button    
-                      ref={(el) => (focusableRef.current[0 + idx] = el)}
+                      <button
+                        ref={(el) => (focusableRef.current[0 + idx] = el)}
                         key={idx}
                         onClick={() =>
                           choose(
@@ -225,6 +226,16 @@ useEffect(() => {
                     ))
                   : ""}
               </div>
+            )}
+
+            {showGame && scene && scene.game ? (
+              <Games
+                setShowGame={setShowGame}
+                gameState={gameState}
+                setGameState={setGameState}
+              />
+            ) : (
+              ""
             )}
 
             <DialogueAction
@@ -251,7 +262,11 @@ useEffect(() => {
               focusableRef={focusableRef}
               startIndex={showChoices ? 2 : 0}
               setFocusedIndex={setFocusedIndex}
-                    />
+              showGame={showGame}
+              setShowGame={setShowGame}
+                gameState={gameState}
+                setGameState={setGameState}
+            />
           </>
         </div>
       ) : (

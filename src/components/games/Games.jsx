@@ -3,17 +3,28 @@ import MemorieGame from "./memorieGame/MemorieGame";
 import NumberGame from "./numberGame/NumberGame";
 import PuzzleGame from "./puzzleGame/PuzzleGame";
 
-const Games = () => {
-  const [gameState, setGameState] = useState("");
+const Games = ({ setShowGame, gameState, setGameState }) => {
   return (
     <>
       Games
       {gameState === "number" ? (
-        <NumberGame />
+        <NumberGame
+          setShowGame={setShowGame}
+          gameState={gameState}
+          setGameState={setGameState}
+        />
       ) : gameState === "puzzle" ? (
-        <PuzzleGame />
+        <PuzzleGame
+          setShowGame={setShowGame}
+          gameState={gameState}
+          setGameState={setGameState}
+        />
       ) : gameState === "memorie" ? (
-        <MemorieGame />
+        <MemorieGame
+          setShowGame={setShowGame}
+          gameState={gameState}
+          setGameState={setGameState}
+        />
       ) : (
         ""
       )}

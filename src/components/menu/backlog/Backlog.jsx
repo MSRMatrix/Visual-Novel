@@ -3,25 +3,37 @@ import { story } from "../../text/data/story";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 
 function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setAction, showChoices, quickMenu, action}) {
+function buildBacklog() {
+  const backlogSteps = [];
 
-  function buildBacklog() {
-    const backlogSteps = [];
+  chatHistory.forEach(entry => {
+    const { chapter, scene } = entry;
+    console.log(chapter, scene);
+    const sceneData = story?.[chapter]?.[scene];
 
-    chatHistory.forEach(entry => {
-      const { chapter, scene } = entry;
-      const sceneData = story?.[chapter]?.[scene];
-      if (sceneData) {
-        backlogSteps.push(...sceneData.steps);
+    if (sceneData) {
+      // Alle Textschritte hinzufügen
+      backlogSteps.push(...sceneData.steps);
+
+      // Entscheidungen hinzufügen, falls vorhanden
+      if (sceneData.choices && sceneData.choices.length > 0) {
+        const choicesText = sceneData.choices
+          .map(choice => choice.text)
+          .join(", "); // oder "\n" für neue Zeile
+        backlogSteps.push({text: `Entscheidung: ${choicesText}`});
       }
-    });
-
-    const currentSceneData = story?.[currentChapter]?.[currentScene];
-    if (currentSceneData) {
-      backlogSteps.push(...currentSceneData.steps.slice(0, stepIndex + 1));
     }
+  });
 
-    return backlogSteps;
+  // Aktuelle Szene bis zum aktuellen Schritt hinzufügen
+  const currentSceneData = story?.[currentChapter]?.[currentScene];
+  if (currentSceneData) {
+    backlogSteps.push(...currentSceneData.steps.slice(0, stepIndex + 1));
   }
+
+  return backlogSteps;
+}
+
 
   const steps = buildBacklog();
 
@@ -47,14 +59,14 @@ function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setActi
   }, [focusedIndex, showChoices, quickMenu, action]);
 
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
-
+console.log(steps);
 
   return (
     <>
       <h2>Backlog</h2>
       <ul>
         {steps.map((step, i) => (
-          <li key={i}>
+          <li key={i} style={{background: step.speaker ? "royalblue" : ""}}>
             <strong>{step.speaker}:</strong> {step.text}
           </li>
         ))}
