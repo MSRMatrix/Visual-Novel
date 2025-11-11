@@ -8,9 +8,9 @@ function buildBacklog() {
 
   chatHistory.forEach(entry => {
     const { chapter, scene } = entry;
-    console.log(chapter, scene);
+    
     const sceneData = story?.[chapter]?.[scene];
-
+console.log(sceneData);
     if (sceneData) {
       // Alle Textschritte hinzufügen
       backlogSteps.push(...sceneData.steps);
@@ -59,7 +59,6 @@ function buildBacklog() {
   }, [focusedIndex, showChoices, quickMenu, action]);
 
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
-console.log(steps);
 
   return (
     <>

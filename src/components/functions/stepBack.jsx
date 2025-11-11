@@ -1,58 +1,40 @@
 export function stepBack(
   stepIndex,
   setStepIndex,
+  currentStep,
   setCurrentChapter,
   setCurrentScene,
   setChatHistory,
   chatHistory,
-  setShowChoices,
-  scene,
-  showChoices,
-  setFocusedIndex,
-  setShowGame,
-          showGame,
-  setGameState
+  setFocusedIndex,setGameState, setShowGame
 ) {
-
-
- console.log(scene);
-
+  console.log(currentStep.type);
+  // 1️⃣ Wenn wir im aktuellen Scene-Step zurückgehen können
   if (stepIndex > 0) {
-    if (!showChoices) {
-    return  setStepIndex(stepIndex - 1);
-    } 
-    else {
-      setFocusedIndex(0)
-     return setShowChoices(false);
-    }
-
-  } else if (chatHistory.length > 0) {
-    const last = chatHistory[chatHistory.length - 1];
-
-
-
- if(!last.game){
     setStepIndex(stepIndex - 1);
-    setShowGame(false);
-  } 
+    setFocusedIndex(0);
+    return;
+  }
 
 
+  if(currentStep.type !== "game"){
+    setGameState("")
+    setShowGame(false)
+  }
+
+  // 2️⃣ Wenn wir am ersten Step sind, aber History vorhanden ist
+  if (chatHistory.length > 0) {
+    const last = chatHistory[chatHistory.length - 1];
 
     setCurrentChapter(last.chapter);
     setCurrentScene(last.scene);
-    if (last.choice) {
-      setShowChoices(true);
-    }
-    if(last.game){
-      setShowGame(true)
-      setGameState(last.game.mode)
-    }
-
     setStepIndex(last.step);
-    setChatHistory((prev) => prev.slice(0, -1));
 
-    // letzten Eintrag löschen
-  } else {
-    console.log("Am Anfang der Story.");
+    setChatHistory((prev) => prev.slice(0, -1));
+    setFocusedIndex(0);
+    return;
   }
+
+  // 3️⃣ Wenn wir am Anfang der Story sind
+  console.log("Am Anfang der Story.");
 }

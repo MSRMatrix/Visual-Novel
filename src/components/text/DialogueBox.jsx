@@ -5,7 +5,6 @@ import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import { nextStep } from "../functions/nextStep";
 import DialogueAction from "./dialogueAction/DialogueAction";
-import { choose } from "../functions/choose";
 import { LoadContext } from "../../context/LoadContext";
 import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
@@ -49,11 +48,11 @@ export default function VisualNovel({ hide, setHide }) {
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
+  console.log(currentStep);
 
   // 🔹 Skip-Modus
   useEffect(() => {
     if (!skip || showChoices || quickMenu || showGame) return;
-
     const interval = setInterval(() => {
       nextStep(
         scene,
@@ -66,12 +65,14 @@ export default function VisualNovel({ hide, setHide }) {
         currentScene,
         setCurrentChapter,
         setCurrentScene,
-        setShowGame
+        setShowGame,
+        setGameState,
+        gameState
       );
     }, 80);
 
     return () => clearInterval(interval);
-  }, [skip, showChoices, stepIndex, quickMenu]);
+  }, [skip, showChoices, stepIndex, quickMenu, currentStep, chatHistory]);
 
   // Pausen Modus
   useEffect(() => {
@@ -145,7 +146,9 @@ export default function VisualNovel({ hide, setHide }) {
         currentScene,
         setCurrentChapter,
         setCurrentScene,
-        setShowGame
+        setShowGame,
+        setGameState,
+        gameState
       );
     }, autoTime);
 
@@ -187,7 +190,7 @@ export default function VisualNovel({ hide, setHide }) {
           </div>
 
           <>
-            {!showChoices ? (
+            {currentStep?.type === "text" ? (
               <div>
                 {" "}
                 <p className="font-bold">{currentStep.speaker || ""}</p>{" "}
@@ -197,42 +200,54 @@ export default function VisualNovel({ hide, setHide }) {
               ""
             )}
 
-            {showChoices && (
+            {currentStep?.type === "choice" && (
               <div className="choices mt-4 flex flex-col gap-2">
-                {scene && scene.choices
-                  ? scene.choices.map((choice, idx) => (
-                      <button
-                        ref={(el) => (focusableRef.current[0 + idx] = el)}
-                        key={idx}
-                        onClick={() =>
-                          choose(
-                            choice.next.chapter,
-                            choice.next.scene,
-                            setChatHistory,
-                            currentChapter,
-                            currentScene,
-                            stepIndex,
-                            setCurrentChapter,
-                            setCurrentScene,
-                            setStepIndex,
-                            setShowChoices,
-                            setFocusedIndex
-                          )
-                        }
-                        className="bg-blue-600 p-2 rounded hover:bg-blue-500"
-                      >
-                        {choice.text}
-                      </button>
-                    ))
-                  : ""}
+                {currentStep.options.map((choice, idx) => (
+                  <button
+                    ref={(el) => (focusableRef.current[idx] = el)}
+                    key={idx}
+                    onClick={() => {
+                      // Chat-History speichern
+                      setChatHistory((prev) => [
+                        ...prev,
+                        {
+                          chapter: currentChapter,
+                          scene: currentScene,
+                          step: stepIndex,
+                          choice: choice.text,
+                        },
+                      ]);
+
+                      // Zum nächsten Step springen
+                      setCurrentChapter(choice.next.chapter);
+                      setCurrentScene(choice.next.scene);
+                      setStepIndex(0);
+                      setShowChoices(false);
+                      setFocusedIndex(0);
+                    }}
+                    className="bg-blue-600 p-2 rounded hover:bg-blue-500"
+                  >
+                    {choice.text}
+                  </button>
+                ))}
               </div>
             )}
 
-            {showGame && scene && scene.game ? (
+            {currentStep?.type === "game" ? (
               <Games
                 setShowGame={setShowGame}
                 gameState={gameState}
                 setGameState={setGameState}
+                stepIndex={stepIndex}
+                setStepIndex={setStepIndex}
+                setShowChoices={setShowChoices}
+                currentChapter={currentChapter}
+                setChatHistory={setChatHistory}
+                currentScene={currentScene}
+                setCurrentChapter={setCurrentChapter}
+                setCurrentScene={setCurrentScene}
+                currentStep={currentStep}
+                setFocusedIndex={setFocusedIndex}
               />
             ) : (
               ""
@@ -264,8 +279,9 @@ export default function VisualNovel({ hide, setHide }) {
               setFocusedIndex={setFocusedIndex}
               showGame={showGame}
               setShowGame={setShowGame}
-                gameState={gameState}
-                setGameState={setGameState}
+              gameState={gameState}
+              setGameState={setGameState}
+              currentStep={currentStep}
             />
           </>
         </div>

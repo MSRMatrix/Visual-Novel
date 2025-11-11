@@ -30,7 +30,7 @@ setFocusedIndex,
 showGame,
 setShowGame, 
 gameState, 
-setGameState 
+setGameState,currentStep
 }) => {  
   
   function skipText() {
@@ -43,7 +43,7 @@ setGameState
       label: "Weiter ▶",
       onClick: () => {
         nextStep(
-       scene,
+         scene,
   stepIndex,
   setStepIndex,
   setShowChoices,
@@ -54,12 +54,11 @@ setGameState
   setCurrentChapter,
   setCurrentScene,
   setShowGame,
-  showGame,
-  setGameState
+  setGameState,gameState
         );
         setAuto(false);
       },
-      disabled: showChoices || showGame,
+      disabled: currentStep.type !== "text",
     },
     {
       label: "Menü",
@@ -76,12 +75,12 @@ setGameState
         setAuto((prev) => !prev);
         setSkip(false);
       },
-      disabled: showChoices || showGame,
+      disabled: currentStep?.type !== "text",
       style: { background: auto ? "blue" : "" },
     },
     {
       label: "Skip",
-      disabled: showChoices,
+      disabled: currentStep?.type !== "text",
       onClick: () => skipText(),
       style: { background: skip ? "blue" : "" },
     },
@@ -89,21 +88,17 @@ setGameState
       label: "Zurück",
       onClick: () => {
         stepBack(
-          stepIndex,
-          setStepIndex,
-          setCurrentChapter,
-          setCurrentScene,
-          setChatHistory,
-          chatHistory,
-          setShowChoices,
-          scene,
-          showChoices,
-          setFocusedIndex,  
-          setShowGame,
-          showGame,
-  setGameState
+       stepIndex,
+  setStepIndex,
+  currentStep,
+  setCurrentChapter,
+  setCurrentScene,
+  setChatHistory,
+  chatHistory,
+  setFocusedIndex,setGameState,setShowGame
         );
         setAuto(false);
+        setSkip(false)
       },
       disabled: !chatHistory,
     },
