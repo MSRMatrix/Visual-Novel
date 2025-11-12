@@ -48,7 +48,25 @@ export default function VisualNovel({ hide, setHide }) {
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
-  console.log(currentStep);
+
+  useEffect(() => {
+    const newStep = scene.steps[stepIndex];
+
+    if (!newStep) return;
+
+    if (newStep.type === "game") {
+      setGameState(newStep.mode);
+      setShowGame(true);
+      setShowChoices(false);
+    } else if (newStep.type === "choice") {
+      setShowChoices(true);
+      setShowGame(false);
+    } else {
+      // text oder andere Step-Typen
+      setShowGame(false);
+      setShowChoices(false);
+    }
+  }, [stepIndex, scene]);
 
   // 🔹 Skip-Modus
   useEffect(() => {
@@ -114,7 +132,7 @@ export default function VisualNovel({ hide, setHide }) {
     }, writeSpeed);
 
     return () => clearInterval(interval);
-  }, [currentStep?.text, showChoices, quickMenu]);
+  }, [currentStep?.text, showChoices, quickMenu, skip]);
   // Typewriter Modus
 
   // Schreib-Soundtrack

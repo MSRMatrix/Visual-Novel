@@ -25,14 +25,14 @@ const DialogueAction = ({
   setSkip,
   setIsPaused,
   focusableRef,
-startIndex,
-setFocusedIndex,
-showGame,
-setShowGame, 
-gameState, 
-setGameState,currentStep
-}) => {  
-  
+  startIndex,
+  setFocusedIndex,
+  showGame,
+  setShowGame,
+  gameState,
+  setGameState,
+  currentStep,
+}) => {
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
@@ -43,22 +43,23 @@ setGameState,currentStep
       label: "Weiter ▶",
       onClick: () => {
         nextStep(
-         scene,
-  stepIndex,
-  setStepIndex,
-  setShowChoices,
-  currentChapter,
-  navigate,
-  setChatHistory,
-  currentScene,
-  setCurrentChapter,
-  setCurrentScene,
-  setShowGame,
-  setGameState,gameState
+          scene,
+          stepIndex,
+          setStepIndex,
+          setShowChoices,
+          currentChapter,
+          navigate,
+          setChatHistory,
+          currentScene,
+          setCurrentChapter,
+          setCurrentScene,
+          setShowGame,
+          setGameState,
+          gameState
         );
         setAuto(false);
       },
-      disabled: currentStep.type !== "text",
+      disabled: currentStep?.type !== "text",
     },
     {
       label: "Menü",
@@ -75,12 +76,12 @@ setGameState,currentStep
         setAuto((prev) => !prev);
         setSkip(false);
       },
-      disabled: currentStep?.type !== "text",
+      // disabled: currentStep?.type !== "text",
       style: { background: auto ? "blue" : "" },
     },
     {
       label: "Skip",
-      disabled: currentStep?.type !== "text",
+      // disabled: currentStep?.type !== "text",
       onClick: () => skipText(),
       style: { background: skip ? "blue" : "" },
     },
@@ -88,45 +89,52 @@ setGameState,currentStep
       label: "Zurück",
       onClick: () => {
         stepBack(
-       stepIndex,
-  setStepIndex,
-  currentStep,
-  setCurrentChapter,
-  setCurrentScene,
-  setChatHistory,
-  chatHistory,
-  setFocusedIndex,setGameState,setShowGame
+          stepIndex,
+          setStepIndex,
+          currentStep,
+          setCurrentChapter,
+          setCurrentScene,
+          setChatHistory,
+          chatHistory,
+          setFocusedIndex,
+          setGameState,
+          setShowGame,
+          setShowChoices,
+          scene
         );
         setAuto(false);
-        setSkip(false)
+        setSkip(false);
       },
-      disabled: !chatHistory,
+      disabled:
+        chatHistory.length <= 0 && scene.id === "intro" && stepIndex === 0,
     },
     {
       label: "Hide",
-      onClick: () => setHide((prev) => !prev),
+      onClick: () => {
+        setHide((prev) => !prev);
+        setAuto(false);
+        setSkip(false);
+      },
     },
   ];
-
-
 
   // Tastaturnavigation
 
   return (
-      <div>
-        {menuButtons.map((btn, index) => (
-          <button
-           ref={(el) => (focusableRef.current[startIndex + index] = el)}
-            key={index}
-            className="window-action"
-            onClick={btn.onClick}
-            disabled={btn.disabled}
-            style={btn.style}
-          >
-            {btn.label}
-          </button>
-        ))}
-      </div>
+    <div>
+      {menuButtons.map((btn, index) => (
+        <button
+          ref={(el) => (focusableRef.current[startIndex + index] = el)}
+          key={index}
+          className="window-action"
+          onClick={btn.onClick}
+          disabled={btn.disabled}
+          style={btn.style}
+        >
+          {btn.label}
+        </button>
+      ))}
+    </div>
   );
 };
 

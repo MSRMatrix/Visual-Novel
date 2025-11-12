@@ -6,20 +6,21 @@ export function stepBack(
   setCurrentScene,
   setChatHistory,
   chatHistory,
-  setFocusedIndex,setGameState, setShowGame
+  setFocusedIndex,
+  setGameState,
+  setShowGame,
+  setShowChoices,
+  scene
 ) {
-  console.log(currentStep.type);
   // 1️⃣ Wenn wir im aktuellen Scene-Step zurückgehen können
+  if(chatHistory.length <= 0 && scene.id === "intro" && stepIndex === 0){
+    return
+  }
+
   if (stepIndex > 0) {
     setStepIndex(stepIndex - 1);
     setFocusedIndex(0);
     return;
-  }
-
-
-  if(currentStep.type !== "game"){
-    setGameState("")
-    setShowGame(false)
   }
 
   // 2️⃣ Wenn wir am ersten Step sind, aber History vorhanden ist
@@ -33,6 +34,14 @@ export function stepBack(
     setChatHistory((prev) => prev.slice(0, -1));
     setFocusedIndex(0);
     return;
+  }
+  if (currentStep.type !== "game") {
+    setGameState("");
+    setShowGame(false);
+  }
+
+  if (currentStep.type !== "choice") {
+    setShowChoices(false);
   }
 
   // 3️⃣ Wenn wir am Anfang der Story sind
