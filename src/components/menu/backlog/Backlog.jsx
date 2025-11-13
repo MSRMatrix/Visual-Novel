@@ -1,41 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { story } from "../../text/data/story";
 import { handleKeyDown } from "../../functions/handleKeyDown";
+import { buildBacklog } from "../../functions/buildBacklog";
 
 function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setAction, showChoices, quickMenu, action}) {
-function buildBacklog() {
-  const backlogSteps = [];
 
-  chatHistory.forEach(entry => {
-    const { chapter, scene } = entry;
-    
-    const sceneData = story?.[chapter]?.[scene];
-console.log(sceneData);
-    if (sceneData) {
-      // Alle Textschritte hinzufügen
-      backlogSteps.push(...sceneData.steps);
-
-      // Entscheidungen hinzufügen, falls vorhanden
-      if (sceneData.choices && sceneData.choices.length > 0) {
-        const choicesText = sceneData.choices
-          .map(choice => choice.text)
-          .join(", "); // oder "\n" für neue Zeile
-        backlogSteps.push({text: `Entscheidung: ${choicesText}`});
-      }
-    }
-  });
-
-  // Aktuelle Szene bis zum aktuellen Schritt hinzufügen
-  const currentSceneData = story?.[currentChapter]?.[currentScene];
-  if (currentSceneData) {
-    backlogSteps.push(...currentSceneData.steps.slice(0, stepIndex + 1));
-  }
-
-  return backlogSteps;
-}
-
-
-  const steps = buildBacklog();
+  const steps = buildBacklog(chatHistory, story, currentChapter, currentScene, stepIndex);
 
   const focusableRef = useRef([]);
 
@@ -65,7 +35,7 @@ console.log(sceneData);
       <h2>Backlog</h2>
       <ul>
         {steps.map((step, i) => (
-          <li key={i} style={{background: step.speaker ? "royalblue" : ""}}>
+          <li key={i} style={{background: step.speaker === "Spieler" ? "red" : "royalblue"}}>
             <strong>{step.speaker}:</strong> {step.text}
           </li>
         ))}

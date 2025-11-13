@@ -1,4 +1,5 @@
 const narrator = "Erzähler";
+const player = "Spieler"
 
 export const chapterOne = {
   path_life_continue_1: {
@@ -16,22 +17,41 @@ export const chapterOne = {
       },
       {
         type: "game",
-        speaker: narrator,
-        text: "An welche Zahl denke ich gerade?",
         mode: "number",
-        next: { chapter: "chapterOne", scene: "path_life_continue_2" },
       },
     ],
   },
 
-  path_life_continue_2: {
-    id: "path_life_continue_2",
+
+wrong_answer:{
+ id: "wrong_answer",
     steps: [
       {
         type: "text",
         speaker: narrator,
-        text: "Irgendwas zum Auffüllen...",
+        text: "Leider die falsche Antwort!",
+          next: { chapter: "chapterOne", scene: "path_life_continue_2" },
       },
+    ]
+} ,
+
+
+right_answer:{
+ id: "right_answer",
+    steps: [
+      {
+        type: "text",
+        speaker: narrator,
+        text: "Richtige Antwort!",
+          next: { chapter: "chapterOne", scene: "path_life_continue_2" },
+      },
+    ]
+} ,
+
+
+  path_life_continue_2: {
+    id: "path_life_continue_2",
+    steps: [
       {
         type: "text",
         speaker: narrator,
