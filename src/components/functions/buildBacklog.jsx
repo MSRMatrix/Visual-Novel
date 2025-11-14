@@ -11,6 +11,7 @@ export function buildBacklog(
     const { chapter, scene, choice, answer, mode } = entry;
 
     const sceneData = story?.[chapter]?.[scene];
+    
     sceneData.steps.forEach((step) => {
       if (step.type !== "choice" && step.type !== "game") {
         backlogSteps.push(step);
@@ -24,6 +25,7 @@ export function buildBacklog(
       });
     }
 
+
     if (mode === "number" && answer !== undefined) {
       backlogSteps.push({
         speaker: "Spieler",
@@ -35,11 +37,12 @@ export function buildBacklog(
   const currentSceneData = story?.[currentChapter]?.[currentScene];
   if (currentSceneData) {
     currentSceneData.steps.slice(0, stepIndex + 1).forEach((step) => {
-      if (step.type !== "choice") {
+      if (step.type !== "choice" && step.type !== "game") {
         backlogSteps.push(step);
       }
     });
   }
+console.log(backlogSteps);
 
   return backlogSteps;
 }

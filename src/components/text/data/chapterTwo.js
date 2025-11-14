@@ -18,7 +18,12 @@ export const chapterTwo = {
         type: "text",
         speaker: narrator,
         text: "Kapitelende: Weiter zum letzten Kapitel",
-        next: { chapter: "lastChapter", scene: "the_ending" },
+        // next: { chapter: "lastChapter", scene: "the_ending" },
+      },
+
+       {
+        type: "game",
+        mode: "memorie",
       },
     ],
   },
