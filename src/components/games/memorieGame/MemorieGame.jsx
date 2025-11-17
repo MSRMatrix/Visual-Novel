@@ -1,89 +1,118 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./memorieGame.css";
+import { cardHandler, createDeck } from "./cardFunctions";
 
-const baseCards = [
-  { value: "Eins", name: "Eins", flipped: false },
-  { value: "Zwei", name: "Zwei", flipped: false },
-  { value: "Drei", name: "Drei", flipped: false },
-  { value: "Vier", name: "Vier", flipped: false },
-  { value: "Fünf", name: "Fünf", flipped: false },
-  { value: "Sechs", name: "Sechs", flipped: false },
-];
+const MemorieGame = ({
+  setShowGame,
+  gameState,
+  setGameState,
+  setCurrentChapter,
+  setCurrentScene,
+  setStepIndex,
+  setShowChoices,
+  setFocusedIndex,
 
-function createDeck() {
-  // Duplizieren + eindeutige IDs erzeugen
-  const doubled = baseCards.flatMap((c) => [
-    { ...c, id: c.value + "_1" },
-    { ...c, id: c.value + "_2" },
-  ]);
-
-  // Mischen
-  return doubled.sort(() => Math.random() - 0.5);
-}
-
-const MemorieGame = () => {
+  setChatHistory,
+  currentChapter,
+currentScene,
+stepIndex,
+}) => {
   const [cards, setCards] = useState(() => createDeck());
   const [findCard, setFindCard] = useState(null);
   const [cooldown, setCooldown] = useState(false);
+  const [triesleft, setTriesleft] = useState(15);
+  const [gameEnd, setGameEnd] = useState(false);
 
-  function cardHandler(value, id) {
-    if (cooldown) return;
-
-    setCards((prev) =>
-      prev.map((card) => (card.id === id ? { ...card, flipped: true } : card))
-    );
-
-    if (!findCard) {
-      setFindCard({ value, id });
-    } else {
-      if (findCard.id === id) return;
-      if (findCard.value === value) {
-        setFindCard(null);
-        setCards((prev) => {
-          const newCards = prev.map((card) =>
-            card.id === id ? { ...card, flipped: true } : card
-          );
-          const allFlipped = newCards.every((card) => card.flipped);
-          if (allFlipped){
-            setTimeout(() => {
-                // Kapitel Wechsel
-             console.log("Gewonnen!");   
-            }, 400);
-            
-          } 
-          return newCards;
-        });
-      } else {
-        setCooldown(true);
-        const firstCardId = findCard.id;
-
-        setTimeout(() => {
-          setCards((prev) =>
-            prev.map((card) =>
-              card.id === id || card.id === firstCardId
-                ? { ...card, flipped: false }
-                : card
-            )
-          );
-          setFindCard(null);
-          setCooldown(false);
-        }, 800);
-      }
+  useEffect(() => {
+    if (triesleft <= 0) {
+      setGameEnd(true);
+      setTimeout(() => {
+        setCurrentChapter("chapterTwo");
+        setCurrentScene("lost");
+        setStepIndex(0);
+        setShowChoices(false);
+        setFocusedIndex(0);
+        setGameState("");
+        setShowGame(false);
+      }, 1000);
+      setChatHistory((prev) => [
+        ...prev,
+        {
+          chapter: currentChapter,
+          scene: currentScene,
+          step: stepIndex,
+          type: "game",
+          mode: "memorie",
+          status: true
+        },
+      ]);
     }
-  }
+  }, [triesleft <= 0]);
+
+  useEffect(() => {
+    if (cards.every((card) => card.solved)) {
+      setTimeout(() => {
+        setCurrentChapter("chapterTwo");
+        setCurrentScene("win");
+        setStepIndex(0);
+        setShowChoices(false);
+        setFocusedIndex(0);
+        setGameState("");
+        setShowGame(false);
+
+        setChatHistory((prev) => [
+        ...prev,
+        {
+          chapter: currentChapter,
+          scene: currentScene,
+          step: stepIndex,
+          type: "game",
+          mode: "memorie",
+          status: true
+        },
+      ]);
+      }, 1000);
+    }
+  }, [gameEnd, cards.every((card) => card.solved)]);
 
   return (
     <>
       <h2>Memory Game</h2>
-
+      <h3>
+        {triesleft > 0
+          ? `Vesuche noch übrig: ${triesleft}`
+          : "Du hast verloren!"}
+      </h3>
       <div className="card-container">
         {cards.map((card) => (
           <div
-            onClick={() => cardHandler(card.value, card.id, card.flipped)}
+            style={{
+              background: card.solved
+                ? "green"
+                : gameEnd && !card.solved
+                ? "red"
+                : "",
+            }}
+            onClick={() =>
+              cardHandler(
+                card.value,
+                card.id,
+                cooldown,
+                gameEnd,
+                cards,
+                triesleft,
+                setGameEnd,
+                setCards,
+                findCard,
+                setFindCard,
+                setTriesleft,
+                setCooldown
+              )
+            }
             className="cards"
             key={card.id}
           >
-            {card.flipped ? card.name : "?"}
+            {card.flipped || card.solved || gameEnd ? card.name : "?"}
           </div>
         ))}
       </div>

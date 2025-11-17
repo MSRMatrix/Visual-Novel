@@ -3,15 +3,21 @@ import MemorieGame from "./memorieGame/MemorieGame";
 import NumberGame from "./numberGame/NumberGame";
 import PuzzleGame from "./puzzleGame/PuzzleGame";
 
-const Games = ({ setShowGame, gameState, setGameState
- ,stepIndex,
+const Games = ({
+  setShowGame,
+  gameState,
+  setGameState,
+  stepIndex,
   setStepIndex,
   setShowChoices,
   currentChapter,
   setChatHistory,
   currentScene,
   setCurrentChapter,
-  setCurrentScene, currentStep, setFocusedIndex}) => {
+  setCurrentScene,
+  currentStep,
+  setFocusedIndex,
+}) => {
   return (
     <>
       Games
@@ -20,16 +26,16 @@ const Games = ({ setShowGame, gameState, setGameState
           setShowGame={setShowGame}
           gameState={gameState}
           setGameState={setGameState}
-      stepIndex={stepIndex}
-                setStepIndex={setStepIndex}
-                setShowChoices={setShowChoices}
-                currentChapter={currentChapter}
-                setChatHistory={setChatHistory}
-                currentScene={currentScene}
-                setCurrentChapter={setCurrentChapter}
-                setCurrentScene={setCurrentScene}
-                currentStep={currentStep}
-                setFocusedIndex={setFocusedIndex}
+          stepIndex={stepIndex}
+          setStepIndex={setStepIndex}
+          setShowChoices={setShowChoices}
+          currentChapter={currentChapter}
+          setChatHistory={setChatHistory}
+          currentScene={currentScene}
+          setCurrentChapter={setCurrentChapter}
+          setCurrentScene={setCurrentScene}
+          currentStep={currentStep}
+          setFocusedIndex={setFocusedIndex}
         />
       ) : gameState === "puzzle" ? (
         <PuzzleGame
@@ -42,6 +48,15 @@ const Games = ({ setShowGame, gameState, setGameState
           setShowGame={setShowGame}
           gameState={gameState}
           setGameState={setGameState}
+          setCurrentChapter={setCurrentChapter}
+          setCurrentScene={setCurrentScene}
+          setStepIndex={setStepIndex}
+          setShowChoices={setShowChoices}
+          setFocusedIndex={setFocusedIndex}
+          setChatHistory={setChatHistory}
+          currentChapter={currentChapter}
+          currentScene={currentScene}
+          stepIndex={stepIndex}
         />
       ) : (
         ""

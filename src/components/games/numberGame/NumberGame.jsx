@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import { nextStep } from "../../functions/nextStep";
 
 const NumberGame = ({
   setShowGame,

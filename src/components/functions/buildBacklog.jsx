@@ -8,10 +8,10 @@ export function buildBacklog(
   const backlogSteps = [];
 
   chatHistory.forEach((entry) => {
-    const { chapter, scene, choice, answer, mode } = entry;
+    const { chapter, scene, choice, answer, mode, status } = entry;
 
     const sceneData = story?.[chapter]?.[scene];
-    
+
     sceneData.steps.forEach((step) => {
       if (step.type !== "choice" && step.type !== "game") {
         backlogSteps.push(step);
@@ -25,11 +25,17 @@ export function buildBacklog(
       });
     }
 
-
     if (mode === "number" && answer !== undefined) {
       backlogSteps.push({
         speaker: "Spieler",
         text: answer,
+      });
+    }
+
+    if (mode === "memorie") {
+      backlogSteps.push({
+        speaker: "Spieler",
+        text: status ? "Ich habe gewonnen" : "Ich habe verloren",
       });
     }
   });
@@ -42,7 +48,7 @@ export function buildBacklog(
       }
     });
   }
-console.log(backlogSteps);
+  console.log(backlogSteps);
 
   return backlogSteps;
 }
