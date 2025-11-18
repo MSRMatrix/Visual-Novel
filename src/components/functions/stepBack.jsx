@@ -19,7 +19,7 @@ export function stepBack(
 
   if (stepIndex > 0) {
     setStepIndex(stepIndex - 1);
-    setFocusedIndex(0);
+    // setFocusedIndex(0);
     return;
   }
 
@@ -32,16 +32,17 @@ export function stepBack(
     setStepIndex(last.step);
 
     setChatHistory((prev) => prev.slice(0, -1));
-    setFocusedIndex(0);
+    // setFocusedIndex(0);
     return;
   }
   if (currentStep.type !== "game") {
     setGameState("");
     setShowGame(false);
-  }
-
-  if (currentStep.type !== "choice") {
-    setShowChoices(false);
+    
+  } else if(currentStep.type !== "choice"){
+setShowChoices(false);
+  } else {
+    setFocusedIndex(0);
   }
 
   // 3️⃣ Wenn wir am Anfang der Story sind

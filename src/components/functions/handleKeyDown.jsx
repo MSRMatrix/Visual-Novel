@@ -6,8 +6,20 @@ export function handleKeyDown(
   active
 ) {
 
+
+
+
   if (!focusableRef.current.length || active) return;
   let focusables = focusableRef.current.filter(Boolean);
+
+
+  // Escape einbauen zum togglen. Gegebenfalls einen Boolean einbauen um dann die ausgewählten mit disabled togglen zu können
+  if(e.key === "Escape" && focusables.length <= 6){
+  focusables = focusables.filter((item) => item.className === "window-action");
+} else {
+  focusables = focusableRef.current.filter(Boolean);
+}
+console.log(focusables);
 
   if (isNaN(focusedIndex)) {
     setFocusedIndex(0);

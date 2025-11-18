@@ -1,4 +1,3 @@
-import { useState } from "react";
 import MemorieGame from "./memorieGame/MemorieGame";
 import NumberGame from "./numberGame/NumberGame";
 import PuzzleGame from "./puzzleGame/PuzzleGame";
@@ -16,7 +15,7 @@ const Games = ({
   setCurrentChapter,
   setCurrentScene,
   currentStep,
-  setFocusedIndex,
+  setFocusedIndex,focusableRef
 }) => {
   return (
     <>
@@ -36,6 +35,7 @@ const Games = ({
           setCurrentScene={setCurrentScene}
           currentStep={currentStep}
           setFocusedIndex={setFocusedIndex}
+          focusableRef={focusableRef}
         />
       ) : gameState === "puzzle" ? (
         <PuzzleGame
@@ -57,6 +57,7 @@ const Games = ({
           currentChapter={currentChapter}
           currentScene={currentScene}
           stepIndex={stepIndex}
+          focusableRef={focusableRef}
         />
       ) : (
         ""

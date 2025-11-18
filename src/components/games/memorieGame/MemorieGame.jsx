@@ -16,12 +16,14 @@ const MemorieGame = ({
   currentChapter,
 currentScene,
 stepIndex,
+focusableRef,
 }) => {
   const [cards, setCards] = useState(() => createDeck());
   const [findCard, setFindCard] = useState(null);
   const [cooldown, setCooldown] = useState(false);
   const [triesleft, setTriesleft] = useState(15);
   const [gameEnd, setGameEnd] = useState(false);
+  const [escape, setEscape] = useState(false)
 
   useEffect(() => {
     if (triesleft <= 0) {
@@ -84,8 +86,9 @@ stepIndex,
           : "Du hast verloren!"}
       </h3>
       <div className="card-container">
-        {cards.map((card) => (
-          <div
+        {cards.map((card, index) => (
+          <button ref={(el) => (focusableRef.current[index] = el)}
+          disabled={card.flipped || card.solved || escape}
             style={{
               background: card.solved
                 ? "green"
@@ -113,7 +116,7 @@ stepIndex,
             key={card.id}
           >
             {card.flipped || card.solved || gameEnd ? card.name : "?"}
-          </div>
+          </button>
         ))}
       </div>
     </>

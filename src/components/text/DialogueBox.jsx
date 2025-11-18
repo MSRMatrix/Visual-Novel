@@ -266,6 +266,7 @@ export default function VisualNovel({ hide, setHide }) {
                 setCurrentScene={setCurrentScene}
                 currentStep={currentStep}
                 setFocusedIndex={setFocusedIndex}
+                focusableRef={focusableRef}
               />
             ) : (
               ""
@@ -293,7 +294,7 @@ export default function VisualNovel({ hide, setHide }) {
               setSkip={setSkip}
               setIsPaused={setIsPaused}
               focusableRef={focusableRef}
-              startIndex={showChoices ? 2 : 0}
+              startIndex={showChoices || currentStep.type === "game" && currentStep.mode === "number" ? 2 : currentStep.mode === "memorie" ? 12 : 0}
               setFocusedIndex={setFocusedIndex}
               showGame={showGame}
               setShowGame={setShowGame}
