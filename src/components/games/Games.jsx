@@ -15,7 +15,7 @@ const Games = ({
   setCurrentChapter,
   setCurrentScene,
   currentStep,
-  setFocusedIndex,focusableRef
+  setFocusedIndex,focusableRef, gamePaused
 }) => {
   return (
     <>
@@ -58,6 +58,7 @@ const Games = ({
           currentScene={currentScene}
           stepIndex={stepIndex}
           focusableRef={focusableRef}
+                gamePaused={gamePaused}
         />
       ) : (
         ""

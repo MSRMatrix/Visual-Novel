@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { nextStep } from "../../functions/nextStep";
 import { stepBack } from "../../functions/stepBack";
-import { handleKeyDown } from "../../functions/handleKeyDown";
 
 const DialogueAction = ({
   scene,
@@ -32,11 +31,17 @@ const DialogueAction = ({
   gameState,
   setGameState,
   currentStep,
+  setGamePaused,
+  gamePaused,
 }) => {
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
   }
+
+  useEffect(() => {
+    setGamePaused(false);
+  }, [showChoices, showGame]);
 
   const menuButtons = [
     {
@@ -54,10 +59,10 @@ const DialogueAction = ({
           setCurrentChapter,
           setCurrentScene,
           setShowGame,
-          setGameState,
-          gameState
+          setGameState
         );
         setAuto(false);
+        setGamePaused(false);
       },
       disabled: currentStep?.type !== "text",
     },
@@ -104,6 +109,7 @@ const DialogueAction = ({
         );
         setAuto(false);
         setSkip(false);
+        setGamePaused(false);
       },
       disabled:
         chatHistory.length <= 0 && scene.id === "intro" && stepIndex === 0,
@@ -119,12 +125,27 @@ const DialogueAction = ({
   ];
 
   // Tastaturnavigation
+  function test(index) {
+    if (gamePaused) {
+      if (showGame || showChoices) {
+        return index;
+      }
+      
+    }
+    
+    if(!gamePaused && !showChoices && !showGame){
+      return index + startIndex;
+    }
+  }
+
+  console.log(gamePaused ? "pause" : "Weiter");
+  
 
   return (
     <div>
       {menuButtons.map((btn, index) => (
         <button
-          ref={(el) => (focusableRef.current[startIndex + index] = el)}
+          ref={(el) => (focusableRef.current[test(index)] = el)}
           key={index}
           className="window-action"
           onClick={btn.onClick}

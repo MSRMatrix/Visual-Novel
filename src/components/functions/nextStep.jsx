@@ -1,17 +1,16 @@
 export function nextStep(
-  scene,
-  stepIndex,
-  setStepIndex,
-  setShowChoices,
-  currentChapter,
-  navigate,
-  setChatHistory,
-  currentScene,
-  setCurrentChapter,
-  setCurrentScene,
-  setShowGame,
-  setGameState,
-  gameState
+scene,
+        stepIndex,
+        setStepIndex,
+        setShowChoices,
+        currentChapter,
+        navigate,
+        setChatHistory,
+        currentScene,
+        setCurrentChapter,
+        setCurrentScene,
+        setShowGame,
+        setGameState
 ) {
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
@@ -51,17 +50,16 @@ export function nextStep(
     case "choice":
       // Choice anzeigen
       setShowChoices(true);
-      setShowGame(false);
-
       break;
 
     case "game":
       setGameState(currentStep.mode);
       setShowGame(true);
-      setShowChoices(false);
       break;
 
     default:
       console.warn("Unbekannter Step-Type:", currentStep.type);
   }
 }
+
+

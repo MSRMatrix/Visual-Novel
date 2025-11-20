@@ -44,10 +44,28 @@ export default function VisualNovel({ hide, setHide }) {
   const [textFinished, setTextFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
   const [pausedText, setPausedText] = useState("");
+  const [gamePaused, setGamePaused] = useState(false);
+  const [startIndex, setStartIndex] = useState(0);
   const scene = story[currentChapter][currentScene];
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
+
+  useEffect(() => {
+    setStartIndex(
+      showChoices || currentStep.mode === "number"
+        ? 2
+        : currentStep.mode === "memorie"
+        ? 11
+        : gamePaused
+        ? null
+        : 0
+    );
+  }, [showChoices, showGame, gamePaused]);
+
+  useEffect(() => {
+    setGamePaused(false);
+  }, [showChoices, showGame]);
 
   useEffect(() => {
     const newStep = scene.steps[stepIndex];
@@ -62,7 +80,6 @@ export default function VisualNovel({ hide, setHide }) {
       setShowChoices(true);
       setShowGame(false);
     } else {
-      // text oder andere Step-Typen
       setShowGame(false);
       setShowChoices(false);
     }
@@ -84,8 +101,7 @@ export default function VisualNovel({ hide, setHide }) {
         setCurrentChapter,
         setCurrentScene,
         setShowGame,
-        setGameState,
-        gameState
+        setGameState
       );
     }, 80);
 
@@ -165,8 +181,7 @@ export default function VisualNovel({ hide, setHide }) {
         setCurrentChapter,
         setCurrentScene,
         setShowGame,
-        setGameState,
-        gameState
+        setGameState
       );
     }, autoTime);
 
@@ -181,11 +196,19 @@ export default function VisualNovel({ hide, setHide }) {
   useEffect(() => {
     if (!quickMenu) {
       const listener = (e) =>
-        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+        handleKeyDown(
+          e,
+          focusableRef,
+          focusedIndex,
+          setFocusedIndex,
+          false,
+          gamePaused,
+          setGamePaused
+        );
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, showChoices, quickMenu]);
+  }, [focusedIndex, showChoices, quickMenu, gamePaused]);
 
   // Fokus setzen
   useEffect(() => {
@@ -195,6 +218,7 @@ export default function VisualNovel({ hide, setHide }) {
       }
     }
   }, [focusedIndex, showChoices, quickMenu]);
+  
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
@@ -222,7 +246,8 @@ export default function VisualNovel({ hide, setHide }) {
               <div className="choices mt-4 flex flex-col gap-2">
                 {currentStep.options.map((choice, idx) => (
                   <button
-                    ref={(el) => (focusableRef.current[idx] = el)}
+                   ref={gamePaused ? null : (el) => (focusableRef.current[idx] = el)}
+
                     key={idx}
                     onClick={() => {
                       // Chat-History speichern
@@ -267,6 +292,7 @@ export default function VisualNovel({ hide, setHide }) {
                 currentStep={currentStep}
                 setFocusedIndex={setFocusedIndex}
                 focusableRef={focusableRef}
+                gamePaused={gamePaused}
               />
             ) : (
               ""
@@ -294,13 +320,15 @@ export default function VisualNovel({ hide, setHide }) {
               setSkip={setSkip}
               setIsPaused={setIsPaused}
               focusableRef={focusableRef}
-              startIndex={showChoices || currentStep.type === "game" && currentStep.mode === "number" ? 2 : currentStep.mode === "memorie" ? 12 : 0}
+              startIndex={startIndex}
               setFocusedIndex={setFocusedIndex}
               showGame={showGame}
               setShowGame={setShowGame}
               gameState={gameState}
               setGameState={setGameState}
               currentStep={currentStep}
+              setGamePaused={setGamePaused}
+              gamePaused={gamePaused}
             />
           </>
         </div>

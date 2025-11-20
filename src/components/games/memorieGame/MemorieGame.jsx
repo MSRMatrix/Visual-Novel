@@ -16,7 +16,7 @@ const MemorieGame = ({
   currentChapter,
 currentScene,
 stepIndex,
-focusableRef,
+focusableRef,gamePaused
 }) => {
   const [cards, setCards] = useState(() => createDeck());
   const [findCard, setFindCard] = useState(null);
@@ -87,7 +87,7 @@ focusableRef,
       </h3>
       <div className="card-container">
         {cards.map((card, index) => (
-          <button ref={(el) => (focusableRef.current[index] = el)}
+          <button ref={(el) => (focusableRef.current[gamePaused ? null : index] = el)}
           disabled={card.flipped || card.solved || escape}
             style={{
               background: card.solved

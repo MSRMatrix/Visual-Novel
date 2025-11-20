@@ -3,7 +3,9 @@ export function handleKeyDown(
   focusableRef,
   focusedIndex,
   setFocusedIndex,
-  active
+  active, 
+  gamePaused, 
+  setGamePaused
 ) {
 
 
@@ -12,14 +14,15 @@ export function handleKeyDown(
   if (!focusableRef.current.length || active) return;
   let focusables = focusableRef.current.filter(Boolean);
 
-
-  // Escape einbauen zum togglen. Gegebenfalls einen Boolean einbauen um dann die ausgewählten mit disabled togglen zu können
-  if(e.key === "Escape" && focusables.length <= 6){
-  focusables = focusables.filter((item) => item.className === "window-action");
-} else {
-  focusables = focusableRef.current.filter(Boolean);
+if (e.key === "Escape" && !gamePaused) {
+  setGamePaused(true);
+} 
+else if (e.key === "Escape" && gamePaused) {
+  setGamePaused(false);
 }
-console.log(focusables);
+
+console.log(focusedIndex);
+
 
   if (isNaN(focusedIndex)) {
     setFocusedIndex(0);
