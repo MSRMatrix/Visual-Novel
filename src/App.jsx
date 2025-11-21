@@ -33,7 +33,7 @@ function App() {
   ]);
 
   const [load, setLoad] = useState({
-    currentChapter: "",
+    chapter: "",
     currentScene: "",
     stepIndex: "",
     chatHistory: "",

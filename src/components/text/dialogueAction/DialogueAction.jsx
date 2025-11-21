@@ -4,18 +4,10 @@ import { stepBack } from "../../functions/stepBack";
 
 const DialogueAction = ({
   scene,
-  stepIndex,
-  setStepIndex,
-  currentChapter,
   navigate,
-  setChatHistory,
-  currentScene,
-  setCurrentChapter,
-  setCurrentScene,
   setAuto,
   setQuickMenu,
   auto,
-  chatHistory,
   hide,
   setHide,
   skip,
@@ -27,6 +19,8 @@ const DialogueAction = ({
   currentStep,
   setGamePaused,
   gamePaused,
+  storyState,
+setStoryState
 }) => {
   function skipText() {
     setSkip((prevMode) => !prevMode);
@@ -43,14 +37,9 @@ const DialogueAction = ({
       onClick: () => {
         nextStep(
           scene,
-          stepIndex,
-          setStepIndex,
-          currentChapter,
-          navigate,
-          setChatHistory,
-          currentScene,
-          setCurrentChapter,
-          setCurrentScene,
+  navigate,
+  storyState,
+  setStoryState,
         );
         setAuto(false);
         setGamePaused(false);
@@ -85,22 +74,18 @@ const DialogueAction = ({
       label: "Zurück",
       onClick: () => {
         stepBack(
-          stepIndex,
-          setStepIndex,
           currentStep,
-          setCurrentChapter,
-          setCurrentScene,
-          setChatHistory,
-          chatHistory,
           setFocusedIndex,
-          scene
+          scene,
+          storyState,
+          setStoryState
         );
         setAuto(false);
         setSkip(false);
         setGamePaused(false);
       },
       disabled:
-        chatHistory.length <= 0 && scene.id === "intro" && stepIndex === 0,
+        storyState.history.length <= 0 && scene.id === "intro" && storyState.step === 0,
     },
     {
       label: "Hide",

@@ -1,12 +1,8 @@
 export function saveData(
   slotName,
   saves,
-  currentChapter,
-  currentScene,
-  stepIndex,
-  chatHistory,
   setSaves,
-  playTime,
+  storyState
 ) {
   const existing = saves.find((s) => s.name === slotName && s.timestamp);
 
@@ -18,11 +14,11 @@ export function saveData(
   const newSave = {
     name: slotName,
     timestamp: new Date().toLocaleTimeString(),
-    currentChapter,
-    currentScene,
-    stepIndex,
-    chatHistory,
-    playTime,
+    chapter: storyState.chapter,
+    scene: storyState.scene,
+    step: storyState.step,
+    history: storyState.history,
+    playTime: storyState.playTime,
   };
 
   // Speichern

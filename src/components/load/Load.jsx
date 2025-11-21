@@ -38,10 +38,10 @@ const [saves, setSaves] = useState(() => {
     return 
   }
   setLoad({
-      currentChapter: existing.currentChapter,
-      currentScene: existing.currentScene,
-      stepIndex: existing.stepIndex,
-      chatHistory: existing.chatHistory,
+      chapter: existing.chapter,
+      scene: existing.scene,
+      step: existing.step,
+      history: existing.history,
       playTime: existing.playTime,
     }) 
     setSounds((prev) => ({...prev, url: game_music}))

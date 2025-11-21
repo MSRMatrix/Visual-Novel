@@ -3,9 +3,9 @@ import { story } from "../../text/data/story";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 import { buildBacklog } from "../../functions/buildBacklog";
 
-function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setAction, quickMenu, action, currentStep}) {
+function Backlog({setAction, quickMenu, action, currentStep, storyState}) {
 
-  const steps = buildBacklog(chatHistory, story, currentChapter, currentScene, stepIndex);
+  const steps = buildBacklog(story, storyState);
 
   const focusableRef = useRef([]);
 

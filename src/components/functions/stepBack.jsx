@@ -1,34 +1,35 @@
 export function stepBack(
-  stepIndex,
-  setStepIndex,
   currentStep,
-  setCurrentChapter,
-  setCurrentScene,
-  setChatHistory,
-  chatHistory,
   setFocusedIndex,
-  scene
+  scene,
+  storyState,
+  setStoryState
 ) {
   // 1️⃣ Wenn wir im aktuellen Scene-Step zurückgehen können
-  if(chatHistory.length <= 0 && scene.id === "intro" && stepIndex === 0){
+  if(storyState.history.length <= 0 && scene.id === "intro" && storyState.step === 0){
     return
   }
 
-  if (stepIndex > 0) {
-    setStepIndex(stepIndex - 1);
+  if (storyState.step > 0) { 
+    setStoryState((prev) => ({
+          ...prev,
+          step: storyState.step - 1
+        }));
     // setFocusedIndex(0);
     return;
   }
 
   // 2️⃣ Wenn wir am ersten Step sind, aber History vorhanden ist
-  if (chatHistory.length > 0) {
-    const last = chatHistory[chatHistory.length - 1];
+  if (storyState.history.length > 0) {
+    const last = storyState.history[storyState.history.length - 1];
 
-    setCurrentChapter(last.chapter);
-    setCurrentScene(last.scene);
-    setStepIndex(last.step);
-
-    setChatHistory((prev) => prev.slice(0, -1));
+    setStoryState((prev) => ({
+          ...prev,
+          chapter: last.chapter,
+          scene: last.scene,
+          step: last.step,
+          history: prev.history.slice(0, -1)
+        }));
     // setFocusedIndex(0);
     return;
   }

@@ -1,13 +1,10 @@
 export function buildBacklog(
-  chatHistory,
   story,
-  currentChapter,
-  currentScene,
-  stepIndex
+  storyState
 ) {
   const backlogSteps = [];
 
-  chatHistory.forEach((entry) => {
+  storyState.history.forEach((entry) => {
     const { chapter, scene, choice, answer, mode, status } = entry;
 
     const sceneData = story?.[chapter]?.[scene];
@@ -40,9 +37,9 @@ export function buildBacklog(
     }
   });
 
-  const currentSceneData = story?.[currentChapter]?.[currentScene];
+  const currentSceneData = story?.[storyState.chapter]?.[storyState.scene];
   if (currentSceneData) {
-    currentSceneData.steps.slice(0, stepIndex + 1).forEach((step) => {
+    currentSceneData.steps.slice(0, storyState.step + 1).forEach((step) => {
       if (step.type !== "choice" && step.type !== "game") {
         backlogSteps.push(step);
       }

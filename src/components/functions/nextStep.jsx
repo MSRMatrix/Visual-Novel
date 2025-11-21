@@ -1,44 +1,43 @@
 export function nextStep(
   scene,
-  stepIndex,
-  setStepIndex,
-  currentChapter,
   navigate,
-  setChatHistory,
-  currentScene,
-  setCurrentChapter,
-  setCurrentScene,
+  storyState,
+  setStoryState,
 ) {
   const steps = scene.steps;
-  const currentStep = steps[stepIndex];
+  const currentStep = steps[storyState.step];
 
   // 🔹 Typ-basierte Logik
   switch (currentStep.type) {
     case "text":
-      if (stepIndex < steps.length - 1) {
-        setStepIndex(stepIndex + 1);
+      if (storyState.step < steps.length - 1) {
+         setStoryState((prev) => ({
+          ...prev,
+          step: storyState.step + 1
+        }));
       } else if (currentStep.next) {
         // Nächstes Kapitel / Szene
-        const nextChapter = currentStep.next.chapter || currentChapter;
+        const nextChapter = currentStep.next.chapter || storyState.chapter;
         const nextScene = currentStep.next.scene;
 
         if (nextChapter === "exit" && nextScene === "close") {
           return navigate("/credits");
         }
 
-        setChatHistory((prev) => [
-          ...prev,
-          {
-            chapter: currentChapter,
-            scene: currentScene,
-            step: stepIndex,
+        const newEntry = {
+            chapter: storyState.chapter,
+            scene: storyState.scene,
+            step: storyState.step,
             choice: false,
-          },
-        ]);
+          };
 
-        setCurrentChapter(nextChapter);
-        setCurrentScene(nextScene);
-        setStepIndex(0);
+         setStoryState((prev) => ({
+          ...prev,
+          chapter: nextChapter,
+          scene: nextScene,
+          step: 0,
+          history: [...prev.history, newEntry]
+        }));
       }
       break;
 

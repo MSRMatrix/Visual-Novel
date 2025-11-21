@@ -2,18 +2,14 @@ const game_music = import.meta.env.VITE_GAME_MUSIC
 
 export function loadData(
   slotName,
-  setCurrentChapter,
-  setCurrentScene,
-  setStepIndex,
-  setChatHistory,
   setMode,
   setQuickMenu,
   navigate,
   quickMenu,
-  setPlayTime,
   setSounds,
   setDisplayText,
 setPausedText,
+setStoryState
 ) {
   const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
@@ -30,11 +26,14 @@ setPausedText,
 
 
   // Gespeicherte Daten anwenden
-  setCurrentChapter(existing.currentChapter);
-  setCurrentScene(existing.currentScene);
-  setStepIndex(existing.stepIndex);
-  setChatHistory(existing.chatHistory);
-  setPlayTime(existing.playTime)
+  setStoryState((prev) => ({
+          ...prev,
+          chapter: existing.chapter,
+          scene: existing.scene,
+          step: existing.step,
+          history: existing.history,
+          playTime: existing.playTime
+        }));
   setSounds((prev) => ({...prev, url: game_music}))
   setDisplayText("")
   setPausedText("")

@@ -9,24 +9,16 @@ import { SoundContext } from "../../../context/SoundContext";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 
 function GameData({
-  currentChapter,
-  currentScene,
-  stepIndex,
-  chatHistory,
   mode,
-  setCurrentChapter,
-  setCurrentScene,
-  setStepIndex,
-  setChatHistory,
   setMode,
   quickMenu,
   setQuickMenu,
-  playTime,
-  setPlayTime,
   setDisplayText,
   setPausedText,
   action,
-  setAction, currentStep
+  setAction, currentStep,
+                storyState,
+                setStoryState,
 }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
@@ -49,30 +41,22 @@ function GameData({
         return saveData(
           slotName,
           saves,
-          currentChapter,
-          currentScene,
-          stepIndex,
-          chatHistory,
           setSaves,
-          playTime,
+          storyState
         );
       case "delete":
         return deleteData(slotName, saves, setSaves);
       case "load":
         loadData(
           slotName,
-          setCurrentChapter,
-          setCurrentScene,
-          setStepIndex,
-          setChatHistory,
           setMode,
           setQuickMenu,
           navigate,
           quickMenu,
-          setPlayTime,
           setSounds,
           setDisplayText,
           setPausedText,
+          setStoryState
         );
         return;
       default:
@@ -116,13 +100,13 @@ function GameData({
         >
           <h2>{item.name}</h2>
           <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
-          <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
+          <p>{item.chapter ? `Kapitel: ${item.chapter}` : ""}</p>
           <p>
-            {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
+            {item.scene ? `Szene im Kapitel: ${item.scene}` : ""}
           </p>
           <p>
-            {item.stepIndex >= 0
-              ? `Punkt in der Szene: ${item.stepIndex + 1}`
+            {item.step >= 0
+              ? `Punkt in der Szene: ${item.step + 1}`
               : ""}
           </p>
           <p>

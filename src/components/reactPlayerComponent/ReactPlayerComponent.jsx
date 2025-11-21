@@ -14,20 +14,21 @@ function ReactPlayerComponent({ intro, setOptions }) {
 
   const [focusedIndex, setFocusedIndex] = useState(0);
   // Tastaturnavigation
-useEffect(() => {
-  if(!sounds.hidePlayer){
-  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-  window.addEventListener("keydown", listener);
-  return () => window.removeEventListener("keydown", listener);
-}
-}, [focusedIndex, sounds.hidePlayer]);
+  useEffect(() => {
+    if (!sounds.hidePlayer) {
+      const listener = (e) =>
+        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      window.addEventListener("keydown", listener);
+      return () => window.removeEventListener("keydown", listener);
+    }
+  }, [focusedIndex, sounds.hidePlayer]);
 
   // Fokus setzen
   useEffect(() => {
-    if(!sounds.hidePlayer){
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
-    }
+    if (!sounds.hidePlayer) {
+      if (focusableRef.current[focusedIndex]) {
+        focusableRef.current[focusedIndex].focus();
+      }
     }
   }, [focusedIndex, sounds.hidePlayer]);
 
@@ -52,7 +53,7 @@ useEffect(() => {
       <div className="react-player-action">
         <div className="music-test">
           <button
-          ref={(el) => (focusableRef.current[0] = el)}
+            ref={(el) => (focusableRef.current[0] = el)}
             onClick={() =>
               setSounds((prev) => ({ ...prev, playing: !prev.playing }))
             }
@@ -83,7 +84,15 @@ useEffect(() => {
           </div>
         </div>
       </div>
-       <button ref={(el) => (focusableRef.current[19] = el)} onClick={() => {setSounds((prev) => ({...prev, hidePlayer: true, options: ""})),setFocusedIndex(0)}}>Zurück</button>
+      <button
+        ref={(el) => (focusableRef.current[19] = el)}
+        onClick={() => {
+          setSounds((prev) => ({ ...prev, hidePlayer: true, options: "" })),
+            setFocusedIndex(0);
+        }}
+      >
+        Zurück
+      </button>
     </div>
   );
 }

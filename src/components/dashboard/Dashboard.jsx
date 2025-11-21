@@ -25,7 +25,9 @@ function Dashboard() {
       if (e.key === "ArrowDown") {
         setFocusedIndex((prev) => (prev + 1) % menuItems.length);
       } else if (e.key === "ArrowUp") {
-        setFocusedIndex((prev) => (prev === 0 ? menuItems.length - 1 : prev - 1));
+        setFocusedIndex((prev) =>
+          prev === 0 ? menuItems.length - 1 : prev - 1
+        );
       }
     };
 

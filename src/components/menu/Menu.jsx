@@ -12,22 +12,14 @@ import { handleKeyDown } from "../functions/handleKeyDown";
 
 function Menu({
   setQuickMenu,
-  currentChapter,
-  currentScene,
-  stepIndex,
-  chatHistory,
-  setCurrentChapter,
-  setCurrentScene,
-  setStepIndex,
-  setChatHistory,
   quickMenu,
-  playTime,
-  setPlayTime,
   isPaused,
   setIsPaused,
   setDisplayText,
   setPausedText,
-  currentStep
+  currentStep,
+  storyState,
+setStoryState
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -62,15 +54,11 @@ function Menu({
       label: "Neues Spiel",
       onClick: () => {
         newGame(
-          setCurrentChapter,
-          setCurrentScene,
-          setStepIndex,
-          setChatHistory,
           setAction,
           setQuickMenu,
-          setPlayTime,
           setDisplayText,
           setPausedText,
+          setStoryState
         );
       },
     },
@@ -131,38 +119,27 @@ function Menu({
 
       {action === "save" || action === "load" || action === "delete" ? (
         <GameData
-          currentChapter={currentChapter}
-          currentScene={currentScene}
-          stepIndex={stepIndex}
-          chatHistory={chatHistory}
           mode={action}
-          setCurrentChapter={setCurrentChapter}
-          setCurrentScene={setCurrentScene}
-          setStepIndex={setStepIndex}
-          setChatHistory={setChatHistory}
           setMode={setAction}
           quickMenu={quickMenu}
           setQuickMenu={setQuickMenu}
-          playTime={playTime}
-          setPlayTime={setPlayTime}
           setDisplayText={setDisplayText}
           setPausedText={setPausedText}
           action={action}
           setAction={setAction}
           currentStep={currentStep}
+                storyState={storyState}
+                setStoryState={setStoryState}
         />
       ) : action === "option" ? (
         <Options quickMenu={quickMenu} action={action} setAction={setAction} />
       ) : action === "backlog" ? (
         <Backlog
-          currentChapter={currentChapter}
-          currentScene={currentScene}
-          stepIndex={stepIndex}
-          chatHistory={chatHistory}
           setAction={setAction}
           quickMenu={quickMenu}
           action={action}
           currentStep={currentStep}
+                storyState={storyState}
         />
       ) : (
         ""
@@ -170,7 +147,7 @@ function Menu({
       <button
         ref={(el) => (focusableRef.current[7] = el)}
         onClick={() =>
-          mainMenu(setAction, setLoad, setPlayTime, setSounds, navigate)
+          mainMenu(setAction, setLoad, setSounds, navigate, setStoryState)
         }
       >
         Ins Hauptmenü

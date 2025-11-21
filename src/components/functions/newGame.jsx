@@ -1,26 +1,25 @@
 export function newGame(
-  setCurrentChapter,
-  setCurrentScene,
-  setStepIndex,
-  setChatHistory,
   setAction,
   setQuickMenu,
-  setPlayTime,
   setDisplayText,
 setPausedText,
+          setStoryState
 ) {
   if (
     confirm(
       "Möchtest du ein neues Spiel starten? Alle deine ungespeicherten Daten gehen verloren!"
     )
   ) {
-    setCurrentChapter("prolog");
-    setCurrentScene("intro");
-    setStepIndex(0);
-    setChatHistory([]);
+    setStoryState((prev) => ({
+          ...prev,
+          chapter: "prolog",
+          scene: "intro",
+          step: 0,
+          history: [],
+          playTime: 0,
+        }));
     setAction("");
     setQuickMenu(false);
-    setPlayTime(0);
     setDisplayText("");
     setPausedText("");
     return;

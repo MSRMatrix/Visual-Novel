@@ -1,21 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 
 const NumberGame = ({
-  stepIndex,
-  setStepIndex,
-  currentChapter,
-  setChatHistory,
-  currentScene,
-  setCurrentChapter,
-  setCurrentScene,
   setFocusedIndex,
-  focusableRef
+  focusableRef,
+  storyState,
+  setStoryState,
 }) => {
   // Random Number Function
   const [number, setNumber] = useState(0);
   const [guess, setGuess] = useState(0);
   const [tries, setTries] = useState(3);
-  const [numberArray, setNumberArray] = useState([])
+  const [numberArray, setNumberArray] = useState([]);
 
   useEffect(() => {
     setNumber(Math.floor(Math.random() * 10));
@@ -26,49 +21,47 @@ const NumberGame = ({
 
     if (number !== Number(guess)) {
       setTries((prev) => prev - 1);
-      setNumberArray(prev => [...prev, guess]);
-      setGuess(0)
+      setNumberArray((prev) => [...prev, guess]);
+      setGuess(0);
       return;
     }
 
-    setChatHistory((prev) => [
-      ...prev,
-      {
-        chapter: currentChapter,
-        scene: currentScene,
-        step: stepIndex,
+     const newEntry = {
+                chapter: storyState.chapter,
+        scene: storyState.scene,
+        step: storyState.step,
         answer: Number(number),
         type: "game",
-        mode: "number",
-      },
-    ]);
-
-    setCurrentChapter("chapterOne");
-    setCurrentScene(number !== Number(guess) ? "wrong_answer" : "right_answer");
-    setStepIndex(0);
+        mode: "number",        
+                      };
+    setStoryState((prev) => ({
+      ...prev,
+      chapter: "chapterOne",
+      scene: number !== Number(guess) ? "wrong_answer" : "right_answer",
+      step: 0,
+      history: [...prev.history, newEntry],
+    }));
     setFocusedIndex(0);
   }
 
   useEffect(() => {
     if (tries < 0 && number !== Number(guess)) {
+      const newEntry = {
+        chapter: storyState.chapter,
+        scene: storyState.scene,
+        step: storyState.step,
+        answer: Number(guess),
+        type: "game",
+        mode: "number",
+                      };
 
-      setChatHistory((prev) => [
+      setStoryState((prev) => ({
         ...prev,
-        {
-          chapter: currentChapter,
-          scene: currentScene,
-          step: stepIndex,
-          answer: Number(guess),
-          type: "game",
-          mode: "number",
-        },
-      ]);
-
-      setCurrentChapter("chapterOne");
-      setCurrentScene(
-        number !== Number(guess) ? "wrong_answer" : "right_answer"
-      );
-      setStepIndex(0);
+        chapter: "chapterOne",
+      scene: number !== Number(guess) ? "wrong_answer" : "right_answer",
+      step: 0,
+      history: [...prev.history, newEntry],
+      }));
       setFocusedIndex(0);
     }
   }, [tries < 0 && number !== Number(guess)]);
@@ -77,7 +70,14 @@ const NumberGame = ({
     <>
       <p>Eine Zahl von 1 - 10</p>
       <p>Versuche übrig: {tries}</p>
-      {numberArray.length > 0 ? <p>Deine Eingabe{numberArray.length > 1 ? "n" : ""}: {numberArray.join(", ")}</p> : ""}
+      {numberArray.length > 0 ? (
+        <p>
+          Deine Eingabe{numberArray.length > 1 ? "n" : ""}:{" "}
+          {numberArray.join(", ")}
+        </p>
+      ) : (
+        ""
+      )}
       <input
         type="number"
         defaultValue={guess}
