@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { nextStep } from "../../functions/nextStep";
+import { useNavigate } from "react-router-dom";
 
-export function useAutoMode({auto, currentStep, textFinished, quickMenu, scene, navigate, storyState, setStoryState, autoTime}){
+export function useAutoMode({auto, currentStep, textFinished, quickMenu, scene, storyState, setStoryState, autoTime}){
+  const navigate = useNavigate();
     useEffect(() => {
     if (
       !auto ||

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { nextStep } from "../../functions/nextStep";
 import { stepBack } from "../../functions/stepBack";
+import { useNavigate } from "react-router-dom";
 
 const DialogueAction = ({
   scene,
-  navigate,
   setAuto,
   setQuickMenu,
   auto,
@@ -20,8 +20,9 @@ const DialogueAction = ({
   setGamePaused,
   gamePaused,
   storyState,
-setStoryState
+  setStoryState,
 }) => {
+  const navigate = useNavigate();
   function skipText() {
     setSkip((prevMode) => !prevMode);
     setAuto(false);
@@ -29,18 +30,13 @@ setStoryState
 
   useEffect(() => {
     setGamePaused(false);
-  }, [currentStep.type === "choice" , currentStep.type === "game",]);
+  }, [currentStep.type === "choice", currentStep.type === "game"]);
 
   const menuButtons = [
     {
       label: "Weiter ▶",
       onClick: () => {
-        nextStep(
-          scene,
-  navigate,
-  storyState,
-  setStoryState,
-        );
+        nextStep(scene, navigate, storyState, setStoryState);
         setAuto(false);
         setGamePaused(false);
       },
@@ -85,7 +81,9 @@ setStoryState
         setGamePaused(false);
       },
       disabled:
-        storyState.history.length <= 0 && scene.id === "intro" && storyState.step === 0,
+        storyState.history.length <= 0 &&
+        scene.id === "intro" &&
+        storyState.step === 0,
     },
     {
       label: "Hide",
@@ -103,14 +101,17 @@ setStoryState
       if (currentStep.type === "choice" || currentStep.type === "game") {
         return index;
       }
-      
     }
-    
-    if(!gamePaused && currentStep.type !== "choice" && currentStep.type !== "game"){
+
+    if (
+      !gamePaused &&
+      currentStep.type !== "choice" &&
+      currentStep.type !== "game"
+    ) {
       return index + startIndex;
     }
   }
-  
+
   return (
     <div>
       {menuButtons.map((btn, index) => (

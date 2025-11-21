@@ -1,6 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { story } from "./data/story";
-import { useNavigate } from "react-router-dom";
 import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import DialogueAction from "./dialogueAction/DialogueAction";
@@ -8,7 +7,6 @@ import { LoadContext } from "../../context/LoadContext";
 import useSound from "use-sound";
 import { SoundContext } from "../../context/SoundContext";
 import { WriteContext } from "../../context/WriteContext";
-import { handleKeyDown } from "../functions/handleKeyDown";
 import Games from "../games/Games";
 import { useSkipMode } from "./modes/useSkipMode";
 import { useBreakMode } from "./modes/useBreakMode";
@@ -16,12 +14,11 @@ import { useTypeWriterMode } from "./modes/useTypeWriterMode";
 import { useWriteSoundMode } from "./modes/useWriteSoundMode";
 import { useAutoMode } from "./modes/useAutoMode";
 import { useFocusMode, useKeyControl } from "./modes/useControl";
+import { useIndexMode } from "./modes/useIndexMode";
 
 export default function VisualNovel({ hide, setHide }) {
   const focusableRef = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
-
-  const navigate = useNavigate();
 
   const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
@@ -55,41 +52,21 @@ export default function VisualNovel({ hide, setHide }) {
   const steps = scene.steps;
   const currentStep = steps[storyState.step];
 
- useEffect(() => {
-  if (gamePaused) {
-    setStartIndex(null);
-    return;
-  }
+  // Index-Rechner
+  useIndexMode({gamePaused, setStartIndex, currentStep})
+  // Index-Rechner
 
-  if (currentStep.type === "choice") {
-    setStartIndex(2);
-  } else if (currentStep.mode === "number") {
-    setStartIndex(2);
-  } else if (currentStep.mode === "memorie") {
-    setStartIndex(11);
-  } else {
-    setStartIndex(0);
-  }
-}, [currentStep.type, currentStep.mode, gamePaused]);
-
-
-useEffect(() => {
-  setGamePaused(false);
-}, [currentStep.type]);
-
+  // Esc
+  useEffect(() => { setGamePaused(false); }, [currentStep.type]);
+  // Esc
 
   // 🔹 Skip-Modus
-useSkipMode({ skip, currentStep, quickMenu, scene, navigate, storyState, setStoryState });
-// 🔹 Skip-Modus
+  useSkipMode({ skip, currentStep, quickMenu, scene, storyState, setStoryState });
+  // 🔹 Skip-Modus
   
   // Pausen Modus
   useBreakMode({isPaused, quickMenu, setStoryState})
-
-  useEffect(() => {
-    if (quickMenu) {
-      setPausedText(displayText);
-    }
-  }, [quickMenu]);
+  useEffect(() => { if (quickMenu) { setPausedText(displayText);} }, [quickMenu]);
   // Pausen Modus
 
   // Typewriter Modus
@@ -101,10 +78,8 @@ useSkipMode({ skip, currentStep, quickMenu, scene, navigate, storyState, setStor
   // Schreib-Soundtrack
 
   // Auto-Modus
-  useAutoMode({auto, currentStep, textFinished, quickMenu, scene, navigate, storyState, setStoryState, autoTime})
+  useAutoMode({auto, currentStep, textFinished, quickMenu, scene, storyState, setStoryState, autoTime})
   // Auto-Modus
-
-  
 
   // Tastaturnavigation
   useKeyControl({quickMenu,focusableRef,focusedIndex,setFocusedIndex,gamePaused,setGamePaused,currentStep,})
@@ -188,7 +163,6 @@ useSkipMode({ skip, currentStep, quickMenu, scene, navigate, storyState, setStor
 
             <DialogueAction
               scene={scene}
-              navigate={navigate}
               setAuto={setAuto}
               setQuickMenu={setQuickMenu}
               auto={auto}
