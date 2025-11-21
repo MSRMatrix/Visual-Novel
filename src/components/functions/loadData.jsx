@@ -14,7 +14,6 @@ export function loadData(
   setSounds,
   setDisplayText,
 setPausedText,
-setShowChoices
 ) {
   const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
@@ -36,7 +35,6 @@ setShowChoices
   setStepIndex(existing.stepIndex);
   setChatHistory(existing.chatHistory);
   setPlayTime(existing.playTime)
-  setShowChoices(existing.showChoices)
   setSounds((prev) => ({...prev, url: game_music}))
   setDisplayText("")
   setPausedText("")

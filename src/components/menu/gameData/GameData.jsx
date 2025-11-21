@@ -25,10 +25,8 @@ function GameData({
   setPlayTime,
   setDisplayText,
   setPausedText,
-  showChoices,
-  setShowChoices,
   action,
-  setAction,
+  setAction, currentStep
 }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
@@ -57,7 +55,6 @@ function GameData({
           chatHistory,
           setSaves,
           playTime,
-          showChoices
         );
       case "delete":
         return deleteData(slotName, saves, setSaves);
@@ -76,7 +73,6 @@ function GameData({
           setSounds,
           setDisplayText,
           setPausedText,
-          setShowChoices
         );
         return;
       default:
@@ -96,7 +92,7 @@ function GameData({
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, showChoices, quickMenu, action]);
+  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
 
   // Fokus setzen
   useEffect(() => {
@@ -105,7 +101,7 @@ function GameData({
         focusableRef.current[focusedIndex].focus();
       }
     }
-  }, [focusedIndex, showChoices, quickMenu, action]);
+  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
 
   return (
     <>

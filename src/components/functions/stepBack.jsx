@@ -7,9 +7,6 @@ export function stepBack(
   setChatHistory,
   chatHistory,
   setFocusedIndex,
-  setGameState,
-  setShowGame,
-  setShowChoices,
   scene
 ) {
   // 1️⃣ Wenn wir im aktuellen Scene-Step zurückgehen können
@@ -35,15 +32,8 @@ export function stepBack(
     // setFocusedIndex(0);
     return;
   }
-  if (currentStep.type !== "game") {
-    setGameState("");
-    setShowGame(false);
-    
-  } else if(currentStep.type !== "choice"){
-setShowChoices(false);
-  } else {
     setFocusedIndex(0);
-  }
+  
 
   // 3️⃣ Wenn wir am Anfang der Story sind
   console.log("Am Anfang der Story.");

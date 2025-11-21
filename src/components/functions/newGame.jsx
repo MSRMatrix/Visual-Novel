@@ -8,7 +8,6 @@ export function newGame(
   setPlayTime,
   setDisplayText,
 setPausedText,
-setShowChoices
 ) {
   if (
     confirm(
@@ -24,7 +23,6 @@ setShowChoices
     setPlayTime(0);
     setDisplayText("");
     setPausedText("");
-    setShowChoices(false);
     return;
   } else {
     console.log(`Neues Spiel abgebrochen!`);

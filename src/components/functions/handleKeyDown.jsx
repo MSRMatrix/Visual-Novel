@@ -3,26 +3,25 @@ export function handleKeyDown(
   focusableRef,
   focusedIndex,
   setFocusedIndex,
-  active, 
-  gamePaused, 
-  setGamePaused
+  active,
+  gamePaused,
+  setGamePaused,
+  currentStep
 ) {
-
-
-
-
   if (!focusableRef.current.length || active) return;
   let focusables = focusableRef.current.filter(Boolean);
 
-if (e.key === "Escape" && !gamePaused) {
-  setGamePaused(true);
-} 
-else if (e.key === "Escape" && gamePaused) {
-  setGamePaused(false);
-}
-
-console.log(focusedIndex);
-
+  if (
+    (e.key === "Escape" && !gamePaused && currentStep.type === "game") ||
+    (e.key === "Escape" && !gamePaused && currentStep.type === "choice")
+  ) {
+    setGamePaused(true);
+  } else if (
+    (e.key === "Escape" && gamePaused && currentStep.type === "game") ||
+    (e.key === "Escape" && gamePaused && currentStep.type === "choice")
+  ) {
+    setGamePaused(false);
+  }
 
   if (isNaN(focusedIndex)) {
     setFocusedIndex(0);

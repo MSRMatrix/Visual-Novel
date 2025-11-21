@@ -3,15 +3,10 @@ import "./memorieGame.css";
 import { cardHandler, createDeck } from "./cardFunctions";
 
 const MemorieGame = ({
-  setShowGame,
-  gameState,
-  setGameState,
   setCurrentChapter,
   setCurrentScene,
   setStepIndex,
-  setShowChoices,
   setFocusedIndex,
-
   setChatHistory,
   currentChapter,
 currentScene,
@@ -32,10 +27,7 @@ focusableRef,gamePaused
         setCurrentChapter("chapterTwo");
         setCurrentScene("lost");
         setStepIndex(0);
-        setShowChoices(false);
         setFocusedIndex(0);
-        setGameState("");
-        setShowGame(false);
       }, 1000);
       setChatHistory((prev) => [
         ...prev,
@@ -57,11 +49,7 @@ focusableRef,gamePaused
         setCurrentChapter("chapterTwo");
         setCurrentScene("win");
         setStepIndex(0);
-        setShowChoices(false);
         setFocusedIndex(0);
-        setGameState("");
-        setShowGame(false);
-
         setChatHistory((prev) => [
         ...prev,
         {

@@ -22,20 +22,30 @@ export default function VisualNovel({ hide, setHide }) {
     loop: true,
   });
 
+const [storyState, setStoryState] = useState(() => ({
+  chapter: load.currentChapter || "prolog",
+  scene: load.currentScene || "intro",
+  step: load.stepIndex ?? 0,
+  history: load.chatHistory || [],
+  playTime: load.playTime || 0
+}));
+
+
+
+
   const [currentChapter, setCurrentChapter] = useState(
     load.currentChapter || "prolog"
   );
   const [currentScene, setCurrentScene] = useState(
     load.currentScene || "intro"
   );
+
   const [stepIndex, setStepIndex] = useState(load.stepIndex || 0);
+
   const [chatHistory, setChatHistory] = useState(load.chatHistory || []);
+
   const [playTime, setPlayTime] = useState(load.playTime || 0);
-
-  const [showGame, setShowGame] = useState(false);
-  const [gameState, setGameState] = useState("");
-
-  const [showChoices, setShowChoices] = useState(load.choice || false);
+  
   const [auto, setAuto] = useState(false);
   const [autoTime, setAutoTime] = useState(5000);
   const [quickMenu, setQuickMenu] = useState(false);
@@ -50,10 +60,11 @@ export default function VisualNovel({ hide, setHide }) {
 
   const steps = scene.steps;
   const currentStep = steps[stepIndex];
+  
 
   useEffect(() => {
     setStartIndex(
-      showChoices || currentStep.mode === "number"
+      currentStep.type === "choice" || currentStep.mode === "number"
         ? 2
         : currentStep.mode === "memorie"
         ? 11
@@ -61,52 +72,31 @@ export default function VisualNovel({ hide, setHide }) {
         ? null
         : 0
     );
-  }, [showChoices, showGame, gamePaused]);
+  }, [currentStep.type === "choice" , currentStep.type === "game" , gamePaused]);
 
   useEffect(() => {
     setGamePaused(false);
-  }, [showChoices, showGame]);
-
-  useEffect(() => {
-    const newStep = scene.steps[stepIndex];
-
-    if (!newStep) return;
-
-    if (newStep.type === "game") {
-      setGameState(newStep.mode);
-      setShowGame(true);
-      setShowChoices(false);
-    } else if (newStep.type === "choice") {
-      setShowChoices(true);
-      setShowGame(false);
-    } else {
-      setShowGame(false);
-      setShowChoices(false);
-    }
-  }, [stepIndex, scene]);
+  }, [currentStep.type === "choice" , currentStep.type === "game" ]);
 
   // 🔹 Skip-Modus
   useEffect(() => {
-    if (!skip || showChoices || quickMenu || showGame) return;
+    if (!skip || currentStep.type === "choice" || currentStep.type === "game" || quickMenu) return;
     const interval = setInterval(() => {
       nextStep(
         scene,
         stepIndex,
         setStepIndex,
-        setShowChoices,
         currentChapter,
         navigate,
         setChatHistory,
         currentScene,
         setCurrentChapter,
         setCurrentScene,
-        setShowGame,
-        setGameState
       );
     }, 80);
 
     return () => clearInterval(interval);
-  }, [skip, showChoices, stepIndex, quickMenu, currentStep, chatHistory]);
+  }, [skip, stepIndex, quickMenu, currentStep, chatHistory, currentStep.type === "choice" , currentStep.type === "game" ]);
 
   // Pausen Modus
   useEffect(() => {
@@ -128,7 +118,7 @@ export default function VisualNovel({ hide, setHide }) {
 
   // Typewriter Modus
   useEffect(() => {
-    if (!currentStep?.text || showChoices || quickMenu) return;
+    if (!currentStep?.text || currentStep.type === "choice" || currentStep.type === "game" || quickMenu) return;
 
     setDisplayText("");
     setTextFinished(false);
@@ -148,12 +138,12 @@ export default function VisualNovel({ hide, setHide }) {
     }, writeSpeed);
 
     return () => clearInterval(interval);
-  }, [currentStep?.text, showChoices, quickMenu, skip]);
+  }, [currentStep?.text, currentStep.type === "choice" , currentStep.type === "game", quickMenu, skip]);
   // Typewriter Modus
 
   // Schreib-Soundtrack
   useEffect(() => {
-    if (!currentStep?.text || showChoices || skip) return;
+    if (!currentStep?.text || currentStep.type === "choice" || currentStep.type === "game" || skip) return;
 
     if (textFinished || quickMenu) {
       stop();
@@ -162,31 +152,28 @@ export default function VisualNovel({ hide, setHide }) {
     }
 
     return () => stop();
-  }, [currentStep?.text, textFinished, quickMenu, showChoices]);
+  }, [currentStep?.text, textFinished, quickMenu, currentStep.type === "choice" , currentStep.type === "game"]);
   // Schreib-Soundtrack
 
   // Auto-Modus
   useEffect(() => {
-    if (!auto || showChoices || !textFinished || quickMenu || showGame) return;
+    if (!auto || currentStep.type === "choice" || currentStep.type === "game"|| !textFinished || quickMenu) return;
     const interval = setInterval(() => {
       nextStep(
         scene,
         stepIndex,
         setStepIndex,
-        setShowChoices,
         currentChapter,
         navigate,
         setChatHistory,
         currentScene,
         setCurrentChapter,
         setCurrentScene,
-        setShowGame,
-        setGameState
       );
     }, autoTime);
 
     return () => clearInterval(interval);
-  }, [auto, autoTime, showChoices, stepIndex, textFinished, quickMenu]);
+  }, [auto, autoTime, currentStep.type === "choice" , currentStep.type === "game", stepIndex, textFinished, quickMenu]);
   // Auto-Modus
 
   const focusableRef = useRef([]);
@@ -203,12 +190,12 @@ export default function VisualNovel({ hide, setHide }) {
           setFocusedIndex,
           false,
           gamePaused,
-          setGamePaused
+          setGamePaused,currentStep
         );
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, showChoices, quickMenu, gamePaused]);
+  }, [focusedIndex,currentStep.type === "choice" , currentStep.type === "game", quickMenu, gamePaused]);
 
   // Fokus setzen
   useEffect(() => {
@@ -217,7 +204,7 @@ export default function VisualNovel({ hide, setHide }) {
         focusableRef.current[focusedIndex].focus();
       }
     }
-  }, [focusedIndex, showChoices, quickMenu]);
+  }, [focusedIndex, currentStep.type === "choice" , currentStep.type === "game", quickMenu]);
   
 
   return (
@@ -265,7 +252,6 @@ export default function VisualNovel({ hide, setHide }) {
                       setCurrentChapter(choice.next.chapter);
                       setCurrentScene(choice.next.scene);
                       setStepIndex(0);
-                      setShowChoices(false);
                       setFocusedIndex(0);
                     }}
                     className="bg-blue-600 p-2 rounded hover:bg-blue-500"
@@ -278,21 +264,17 @@ export default function VisualNovel({ hide, setHide }) {
 
             {currentStep?.type === "game" ? (
               <Games
-                setShowGame={setShowGame}
-                gameState={gameState}
-                setGameState={setGameState}
                 stepIndex={stepIndex}
                 setStepIndex={setStepIndex}
-                setShowChoices={setShowChoices}
                 currentChapter={currentChapter}
                 setChatHistory={setChatHistory}
                 currentScene={currentScene}
                 setCurrentChapter={setCurrentChapter}
                 setCurrentScene={setCurrentScene}
-                currentStep={currentStep}
                 setFocusedIndex={setFocusedIndex}
                 focusableRef={focusableRef}
                 gamePaused={gamePaused}
+                currentStep={currentStep}
               />
             ) : (
               ""
@@ -302,7 +284,6 @@ export default function VisualNovel({ hide, setHide }) {
               scene={scene}
               stepIndex={stepIndex}
               setStepIndex={setStepIndex}
-              setShowChoices={setShowChoices}
               currentChapter={currentChapter}
               navigate={navigate}
               setChatHistory={setChatHistory}
@@ -310,7 +291,6 @@ export default function VisualNovel({ hide, setHide }) {
               setCurrentChapter={setCurrentChapter}
               setCurrentScene={setCurrentScene}
               setAuto={setAuto}
-              showChoices={showChoices}
               setQuickMenu={setQuickMenu}
               auto={auto}
               chatHistory={chatHistory}
@@ -322,10 +302,6 @@ export default function VisualNovel({ hide, setHide }) {
               focusableRef={focusableRef}
               startIndex={startIndex}
               setFocusedIndex={setFocusedIndex}
-              showGame={showGame}
-              setShowGame={setShowGame}
-              gameState={gameState}
-              setGameState={setGameState}
               currentStep={currentStep}
               setGamePaused={setGamePaused}
               gamePaused={gamePaused}
@@ -349,9 +325,8 @@ export default function VisualNovel({ hide, setHide }) {
           isPaused={isPaused}
           setIsPaused={setIsPaused}
           setDisplayText={setDisplayText}
-          setPausedText={setPausedText}
-          showChoices={showChoices}
-          setShowChoices={setShowChoices}
+          setPausedText={setPausedText} 
+          currentStep={currentStep}
         />
       )}
     </div>

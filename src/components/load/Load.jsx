@@ -43,7 +43,6 @@ const [saves, setSaves] = useState(() => {
       stepIndex: existing.stepIndex,
       chatHistory: existing.chatHistory,
       playTime: existing.playTime,
-      choice: existing.showChoices
     }) 
     setSounds((prev) => ({...prev, url: game_music}))
     navigate("/start")

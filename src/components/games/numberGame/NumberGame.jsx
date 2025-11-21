@@ -1,18 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
 const NumberGame = ({
-  setShowGame,
-  gameState,
-  setGameState,
   stepIndex,
   setStepIndex,
-  setShowChoices,
   currentChapter,
   setChatHistory,
   currentScene,
   setCurrentChapter,
   setCurrentScene,
-  currentStep,
   setFocusedIndex,
   focusableRef
 }) => {
@@ -35,8 +30,6 @@ const NumberGame = ({
       setGuess(0)
       return;
     }
-    setShowGame(false);
-    setGameState("");
 
     setChatHistory((prev) => [
       ...prev,
@@ -53,14 +46,11 @@ const NumberGame = ({
     setCurrentChapter("chapterOne");
     setCurrentScene(number !== Number(guess) ? "wrong_answer" : "right_answer");
     setStepIndex(0);
-    setShowChoices(false);
     setFocusedIndex(0);
   }
 
   useEffect(() => {
     if (tries < 0 && number !== Number(guess)) {
-      setShowGame(false);
-      setGameState("");
 
       setChatHistory((prev) => [
         ...prev,
@@ -79,7 +69,6 @@ const NumberGame = ({
         number !== Number(guess) ? "wrong_answer" : "right_answer"
       );
       setStepIndex(0);
-      setShowChoices(false);
       setFocusedIndex(0);
     }
   }, [tries < 0 && number !== Number(guess)]);

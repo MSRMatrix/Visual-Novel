@@ -3,7 +3,7 @@ import { story } from "../../text/data/story";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 import { buildBacklog } from "../../functions/buildBacklog";
 
-function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setAction, showChoices, quickMenu, action}) {
+function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setAction, quickMenu, action, currentStep}) {
 
   const steps = buildBacklog(chatHistory, story, currentChapter, currentScene, stepIndex);
 
@@ -17,7 +17,7 @@ function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setActi
   window.addEventListener("keydown", listener);
   return () => window.removeEventListener("keydown", listener);
 }
-}, [focusedIndex, showChoices, quickMenu, action]);
+}, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   // Fokus setzen
   useEffect(() => {
@@ -26,7 +26,7 @@ function Backlog({ currentChapter, currentScene, stepIndex, chatHistory, setActi
       focusableRef.current[focusedIndex].focus();
     } 
      }
-  }, [focusedIndex, showChoices, quickMenu, action]);
+  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
 

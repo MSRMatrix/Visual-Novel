@@ -6,7 +6,6 @@ const DialogueAction = ({
   scene,
   stepIndex,
   setStepIndex,
-  setShowChoices,
   currentChapter,
   navigate,
   setChatHistory,
@@ -14,7 +13,6 @@ const DialogueAction = ({
   setCurrentChapter,
   setCurrentScene,
   setAuto,
-  showChoices,
   setQuickMenu,
   auto,
   chatHistory,
@@ -26,10 +24,6 @@ const DialogueAction = ({
   focusableRef,
   startIndex,
   setFocusedIndex,
-  showGame,
-  setShowGame,
-  gameState,
-  setGameState,
   currentStep,
   setGamePaused,
   gamePaused,
@@ -41,7 +35,7 @@ const DialogueAction = ({
 
   useEffect(() => {
     setGamePaused(false);
-  }, [showChoices, showGame]);
+  }, [currentStep.type === "choice" , currentStep.type === "game",]);
 
   const menuButtons = [
     {
@@ -51,15 +45,12 @@ const DialogueAction = ({
           scene,
           stepIndex,
           setStepIndex,
-          setShowChoices,
           currentChapter,
           navigate,
           setChatHistory,
           currentScene,
           setCurrentChapter,
           setCurrentScene,
-          setShowGame,
-          setGameState
         );
         setAuto(false);
         setGamePaused(false);
@@ -102,9 +93,6 @@ const DialogueAction = ({
           setChatHistory,
           chatHistory,
           setFocusedIndex,
-          setGameState,
-          setShowGame,
-          setShowChoices,
           scene
         );
         setAuto(false);
@@ -127,20 +115,17 @@ const DialogueAction = ({
   // Tastaturnavigation
   function test(index) {
     if (gamePaused) {
-      if (showGame || showChoices) {
+      if (currentStep.type === "choice" || currentStep.type === "game") {
         return index;
       }
       
     }
     
-    if(!gamePaused && !showChoices && !showGame){
+    if(!gamePaused && currentStep.type !== "choice" && currentStep.type !== "game"){
       return index + startIndex;
     }
   }
-
-  console.log(gamePaused ? "pause" : "Weiter");
   
-
   return (
     <div>
       {menuButtons.map((btn, index) => (

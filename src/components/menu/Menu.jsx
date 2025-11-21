@@ -27,8 +27,7 @@ function Menu({
   setIsPaused,
   setDisplayText,
   setPausedText,
-  showChoices,
-  setShowChoices,
+  currentStep
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -72,7 +71,6 @@ function Menu({
           setPlayTime,
           setDisplayText,
           setPausedText,
-          setShowChoices
         );
       },
     },
@@ -89,7 +87,7 @@ function Menu({
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, showChoices, quickMenu, action]);
+  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   // Fokus setzen
   useEffect(() => {
@@ -98,7 +96,7 @@ function Menu({
         focusableRef.current[focusedIndex].focus();
       }
     }
-  }, [focusedIndex, showChoices, quickMenu, action]);
+  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   return (
     <>
@@ -149,10 +147,9 @@ function Menu({
           setPlayTime={setPlayTime}
           setDisplayText={setDisplayText}
           setPausedText={setPausedText}
-          showChoices={showChoices}
-          setShowChoices={setShowChoices}
           action={action}
           setAction={setAction}
+          currentStep={currentStep}
         />
       ) : action === "option" ? (
         <Options quickMenu={quickMenu} action={action} setAction={setAction} />
@@ -163,9 +160,9 @@ function Menu({
           stepIndex={stepIndex}
           chatHistory={chatHistory}
           setAction={setAction}
-          showChoices={showChoices}
           quickMenu={quickMenu}
           action={action}
+          currentStep={currentStep}
         />
       ) : (
         ""
