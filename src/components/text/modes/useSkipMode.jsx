@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 
 
-export function useSkipMode({ skip, currentStep, quickMenu, scene, storyState, setStoryState}) {
+export function useSkipMode({ currentStep, scene, storyState, setStoryState, autoState, uiState}) {
   const navigate = useNavigate();
   useEffect(() => {
-    if (!skip || currentStep.type === "choice" || currentStep.type === "game" || quickMenu)
+    if (!autoState.skip || currentStep.type === "choice" || currentStep.type === "game" || uiState.quickMenu)
       return;
 
     const interval = setInterval(() => {
@@ -15,5 +15,5 @@ export function useSkipMode({ skip, currentStep, quickMenu, scene, storyState, s
     }, 80);
 
     return () => clearInterval(interval);
-  }, [skip, currentStep.type, quickMenu, scene, navigate, storyState, setStoryState]);
+  }, [autoState.skip, currentStep.type, uiState.quickMenu, scene, navigate, storyState, setStoryState]);
 }

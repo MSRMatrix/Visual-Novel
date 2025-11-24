@@ -3,32 +3,31 @@ import NumberGame from "./numberGame/NumberGame";
 import PuzzleGame from "./puzzleGame/PuzzleGame";
 
 const Games = ({
-  setFocusedIndex,
   focusableRef,
-  gamePaused,
   currentStep,
   storyState,
-  setStoryState,
+  setStoryState, setUiState,
+  uiState
 }) => {
   return (
     <>
       Games
       {currentStep.mode === "number" ? (
         <NumberGame
-          setFocusedIndex={setFocusedIndex}
           focusableRef={focusableRef}
           storyState={storyState}
           setStoryState={setStoryState}
+              setUiState={setUiState}
         />
       ) : currentStep.mode === "puzzle" ? (
         <PuzzleGame />
       ) : currentStep.mode === "memorie" ? (
         <MemorieGame
-          setFocusedIndex={setFocusedIndex}
           focusableRef={focusableRef}
-          gamePaused={gamePaused}
           storyState={storyState}
           setStoryState={setStoryState}
+              setUiState={setUiState}
+              uiState={uiState}
         />
       ) : (
         ""

@@ -1,45 +1,41 @@
 import { useEffect } from "react";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 
-export function useKeyControl({quickMenu,focusableRef,focusedIndex,setFocusedIndex,gamePaused,setGamePaused,currentStep,}){
-    useEffect(() => {
-    if (!quickMenu) {
+export function useKeyControl({
+  focusableRef,
+  currentStep,
+  uiState,
+  setUiState,
+}) {
+  useEffect(() => {
+    if (!uiState.quickMenu) {
       const listener = (e) =>
-        handleKeyDown(
-          e,
-          focusableRef,
-          focusedIndex,
-          setFocusedIndex,
-          false,
-          gamePaused,
-          setGamePaused,
-          currentStep
-        );
+        handleKeyDown(e, focusableRef, false, currentStep, uiState, setUiState);
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
   }, [
-    focusedIndex,
+    uiState.focusedIndex,
     currentStep.type === "choice",
     currentStep.type === "game",
-    quickMenu,
-    gamePaused,
+    uiState.quickMenu,
+    uiState.gamePaused,
   ]);
 }
- 
-  export function useFocusMode({quickMenu, focusableRef, focusedIndex, currentStep}){
-    useEffect(() => {
-    if (!quickMenu) {
-      if (focusableRef.current[focusedIndex]) {
-        focusableRef.current[focusedIndex].focus();
+
+
+
+export function useFocusMode({ focusableRef, currentStep, uiState }) {
+  useEffect(() => {
+    if (!uiState.quickMenu) {
+      if (focusableRef.current[uiState.focusedIndex]) {
+        focusableRef.current[uiState.focusedIndex].focus();
       }
     }
   }, [
-    focusedIndex,
+    uiState.focusedIndex,
     currentStep.type === "choice",
     currentStep.type === "game",
-    quickMenu,
+    uiState.quickMenu,
   ]);
-  }
-  // Fokus setzen
-  
+}

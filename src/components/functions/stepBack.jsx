@@ -1,9 +1,9 @@
 export function stepBack(
   currentStep,
-  setFocusedIndex,
   scene,
   storyState,
-  setStoryState
+  setStoryState,
+  setUiState
 ) {
   // 1️⃣ Wenn wir im aktuellen Scene-Step zurückgehen können
   if(storyState.history.length <= 0 && scene.id === "intro" && storyState.step === 0){
@@ -33,7 +33,7 @@ export function stepBack(
     // setFocusedIndex(0);
     return;
   }
-    setFocusedIndex(0);
+        setUiState((prev) => ({...prev, focusedIndex: 0}))
   
 
   // 3️⃣ Wenn wir am Anfang der Story sind

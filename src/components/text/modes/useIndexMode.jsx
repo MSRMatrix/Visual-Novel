@@ -1,21 +1,21 @@
 import { useEffect } from "react";
 
-export function useIndexMode({gamePaused, setStartIndex, currentStep}){
+export function useIndexMode({ currentStep, setUiState, uiState}){
     useEffect(() => {
-  if (gamePaused) {
-    setStartIndex(null);
+  if (uiState.gamePaused) {
+    setUiState((prev) => ({...prev, startIndex: null}))
     return;
   }
 
   if (currentStep.type === "choice") {
-    setStartIndex(2);
+    setUiState((prev) => ({...prev, startIndex: 2}))
   } else if (currentStep.mode === "number") {
-    setStartIndex(2);
+    setUiState((prev) => ({...prev, startIndex: 2}))
   } else if (currentStep.mode === "memorie") {
-    setStartIndex(11);
+    setUiState((prev) => ({...prev, startIndex: 11}))
   } else {
-    setStartIndex(0);
+    setUiState((prev) => ({...prev, startIndex: 0}))
   }
-  }, [currentStep.type, currentStep.mode, gamePaused]);
+  }, [currentStep.type, currentStep.mode, uiState.gamePaused]);
 }
 

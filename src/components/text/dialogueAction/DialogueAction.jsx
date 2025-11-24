@@ -5,31 +5,26 @@ import { useNavigate } from "react-router-dom";
 
 const DialogueAction = ({
   scene,
-  setAuto,
-  setQuickMenu,
-  auto,
   hide,
   setHide,
-  skip,
-  setSkip,
-  setIsPaused,
   focusableRef,
-  startIndex,
-  setFocusedIndex,
   currentStep,
-  setGamePaused,
-  gamePaused,
   storyState,
   setStoryState,
+  setTextState,
+  autoState,
+  setAutoState,
+  uiState,
+  setUiState
+
 }) => {
   const navigate = useNavigate();
   function skipText() {
-    setSkip((prevMode) => !prevMode);
-    setAuto(false);
+    setAutoState((prev) => ({...prev, auto: false, skip: !prev.skip}))
   }
 
   useEffect(() => {
-    setGamePaused(false);
+    setUiState((prev) => ({...prev, gamePaused: false}))
   }, [currentStep.type === "choice", currentStep.type === "game"]);
 
   const menuButtons = [
@@ -37,48 +32,48 @@ const DialogueAction = ({
       label: "Weiter ▶",
       onClick: () => {
         nextStep(scene, navigate, storyState, setStoryState);
-        setAuto(false);
-        setGamePaused(false);
+        setAutoState((prev) => ({...prev, auto: false}))
+         setUiState((prev) => ({...prev, gamePaused: false}))
       },
       disabled: currentStep?.type !== "text",
     },
     {
       label: "Menü",
       onClick: () => {
-        setQuickMenu(true);
-        setSkip(false);
-        setAuto(false);
-        setIsPaused(true);
+        setUiState((prev) => ({...prev, quickMenu: true}))
+        setAutoState((prev) => ({...prev, auto: false, skip: false}))
+        setTextState((prev) => ({
+          ...prev,
+          isPaused:true
+        }))
       },
     },
     {
       label: "Auto",
       onClick: () => {
-        setAuto((prev) => !prev);
-        setSkip(false);
+        setAutoState((prev) => ({...prev, auto: !prev.auto, skip: false}))
       },
       // disabled: currentStep?.type !== "text",
-      style: { background: auto ? "blue" : "" },
+      style: { background: autoState.auto ? "blue" : "" },
     },
     {
       label: "Skip",
       // disabled: currentStep?.type !== "text",
       onClick: () => skipText(),
-      style: { background: skip ? "blue" : "" },
+      style: { background: autoState.skip ? "blue" : "" },
     },
     {
       label: "Zurück",
       onClick: () => {
         stepBack(
           currentStep,
-          setFocusedIndex,
           scene,
           storyState,
-          setStoryState
+          setStoryState,
+          setUiState
         );
-        setAuto(false);
-        setSkip(false);
-        setGamePaused(false);
+        setAutoState((prev) => ({...prev, auto: false, skip: false})) 
+        setUiState((prev) => ({...prev, gamePaused: false}))
       },
       disabled:
         storyState.history.length <= 0 &&
@@ -89,26 +84,25 @@ const DialogueAction = ({
       label: "Hide",
       onClick: () => {
         setHide((prev) => !prev);
-        setAuto(false);
-        setSkip(false);
+        setAutoState((prev) => ({...prev, auto: false, skip: false}))
       },
     },
   ];
 
   // Tastaturnavigation
   function test(index) {
-    if (gamePaused) {
+    if (uiState.gamePaused) {
       if (currentStep.type === "choice" || currentStep.type === "game") {
         return index;
       }
     }
 
     if (
-      !gamePaused &&
+      !uiState.gamePaused &&
       currentStep.type !== "choice" &&
       currentStep.type !== "game"
     ) {
-      return index + startIndex;
+      return index + uiState.startIndex;
     }
   }
 

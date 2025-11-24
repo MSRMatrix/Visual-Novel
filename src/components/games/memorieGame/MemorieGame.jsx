@@ -1,89 +1,49 @@
 import { useEffect, useState } from "react";
 import "./memorieGame.css";
 import { cardHandler, createDeck } from "./cardFunctions";
+import { useCardMode } from "./modes/cardModes";
+
 
 const MemorieGame = ({
-  setFocusedIndex,
   focusableRef,
-  gamePaused,
   storyState,
   setStoryState,
+  setUiState,
+  uiState,
 }) => {
-  const [cards, setCards] = useState(() => createDeck());
-  const [findCard, setFindCard] = useState(null);
-  const [cooldown, setCooldown] = useState(false);
-  const [triesleft, setTriesleft] = useState(15);
-  const [gameEnd, setGameEnd] = useState(false);
-  const [escape, setEscape] = useState(false);
 
-  useEffect(() => {
-    if (triesleft <= 0) {
-      setGameEnd(true);
-      setTimeout(() => {
-        setStoryState((prev) => ({
-          ...prev,
-          chapter: "chapterTwo",
-          scene: "lost",
-          step: 0,
-        }));
-        setFocusedIndex(0);
-      }, 1000);
-      const newEntry = {
-        chapter: storyState.chapter,
-        scene: storyState.scene,
-        step: storyState.step,
-        type: "game",
-        mode: "memorie",
-        status: true,
-      };
 
-      setStoryState((prev) => ({
-        ...prev,
-        history: [...prev.history, newEntry],
-      }));
-    }
-  }, [triesleft <= 0]);
+  const [cardState, setCardState] = useState({
+cards: createDeck(),
+findCard: null,
+cooldown: false,
+triesleft: 15,
+gameEnd: false,
+  }) 
 
-  useEffect(() => {
-    if (cards.every((card) => card.solved)) {
-      setTimeout(() => {
-        const newEntry = {
-          chapter: storyState.chapter,
-          scene: storyState.scene,
-          step: storyState.step,
-          type: "game",
-          mode: "memorie",
-          status: true,
-        };
-        setStoryState((prev) => ({
-          ...prev,
-          chapter: "chapterTwo",
-          scene: "win",
-          step: 0,
-          history: [...prev.history, newEntry],
-        }));
-        setFocusedIndex(0);
-      }, 1000);
-    }
-  }, [gameEnd, cards.every((card) => card.solved)]);
+  // Steuert Sieg oder Niederlage
+  useCardMode({cardState, storyState, setStoryState, setUiState, })
+// Steuert Sieg oder Niederlage
 
   return (
     <>
       <h2>Memory Game</h2>
       <h3>
-        {triesleft > 0
-          ? `Vesuche noch übrig: ${triesleft}`
+        {cardState.triesleft > 0
+          ? `Vesuche noch übrig: ${cardState.triesleft}`
           : "Du hast verloren!"}
       </h3>
       <div className="card-container">
-        {cards.map((card, index) => (
+        {cardState.cards.map((card, index) => (
           <button
-            ref={(el) => (focusableRef.current[gamePaused ? null : index] = el)}
-            disabled={card.flipped || card.solved || escape}
+            ref={(el) =>
+              (focusableRef.current[uiState.gamePaused ? null : index] = el)
+            }
+            disabled={card.flipped || card.solved}
             style={{
               background: card.solved
                 ? "green"
-                : gameEnd && !card.solved
+                : cardState.gameEnd && !card.solved
                 ? "red"
                 : "",
             }}
@@ -91,22 +51,14 @@ const MemorieGame = ({
               cardHandler(
                 card.value,
                 card.id,
-                cooldown,
-                gameEnd,
-                cards,
-                triesleft,
-                setGameEnd,
-                setCards,
-                findCard,
-                setFindCard,
-                setTriesleft,
-                setCooldown
+                cardState,
+                setCardState
               )
             }
             className="cards"
             key={card.id}
           >
-            {card.flipped || card.solved || gameEnd ? card.name : "?"}
+            {card.flipped || card.solved || cardState.gameEnd ? card.name : "?"}
           </button>
         ))}
       </div>

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-export function useBreakMode({ isPaused, quickMenu, setStoryState }) {
+export function useBreakMode({ setStoryState, textState, uiState }) {
   useEffect(() => {
-    if (isPaused || quickMenu) return;
+    if (textState.isPaused || uiState.quickMenu) return;
 
     const interval = setInterval(() => {
       setStoryState((prev) => ({
@@ -12,5 +12,5 @@ export function useBreakMode({ isPaused, quickMenu, setStoryState }) {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused, quickMenu]);
+  }, [textState.isPaused, uiState.quickMenu]);
 }

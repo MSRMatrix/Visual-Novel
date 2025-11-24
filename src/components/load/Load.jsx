@@ -6,11 +6,11 @@ import { handleKeyDown } from "../functions/handleKeyDown";
 import { SoundContext } from "../../context/SoundContext";
 
 function Load() {
-  const game_music = import.meta.env.VITE_GAME_MUSIC
+  const game_music = import.meta.env.VITE_GAME_MUSIC;
   const { sounds, setSounds } = useContext(SoundContext);
-    const {load, setLoad} = useContext(LoadContext)
-    const navigate = useNavigate()
-const [saves, setSaves] = useState(() => {
+  const { load, setLoad } = useContext(LoadContext);
+  const navigate = useNavigate();
+  const [saves, setSaves] = useState(() => {
     const stored = JSON.parse(localStorage.getItem("vn_saves")) || [];
     return stored.length
       ? stored
@@ -23,69 +23,74 @@ const [saves, setSaves] = useState(() => {
         ];
   });
 
-  function handleLoad(slotName){
-    
+  function handleLoad(slotName) {
     const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
-  const existing = saves.find((s) => s.name === slotName);
-  
-  
-  if (!existing.timestamp) {
-    console.log("Kein Speicherstand gefunden!");
-    return;
-  } 
-  if(!confirm(`Möchtest du mit Spielstand ${slotName} fortfahren?`)){
-    console.log(`Laden abgebrochen!`);
-    return 
-  }
-  setLoad({
+    const existing = saves.find((s) => s.name === slotName);
+
+    if (!existing.timestamp) {
+      console.log("Kein Speicherstand gefunden!");
+      return;
+    }
+    if (!confirm(`Möchtest du mit Spielstand ${slotName} fortfahren?`)) {
+      console.log(`Laden abgebrochen!`);
+      return;
+    }
+    setLoad({
       chapter: existing.chapter,
       scene: existing.scene,
       step: existing.step,
       history: existing.history,
       playTime: existing.playTime,
-    }) 
-    setSounds((prev) => ({...prev, url: game_music}))
-    navigate("/start")
+    });
+    setSounds((prev) => ({ ...prev, url: game_music }));
+    navigate("/start");
   }
 
-
-    const focusableRef = useRef([]);
+  const focusableRef = useRef([]);
 
   const [focusedIndex, setFocusedIndex] = useState(0);
   // Tastaturnavigation
-useEffect(() => {
-  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-  window.addEventListener("keydown", listener);
-  return () => window.removeEventListener("keydown", listener);
-
-}, [focusedIndex]);
+  useEffect(() => {
+    const listener = (e) =>
+      handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+    window.addEventListener("keydown", listener);
+    return () => window.removeEventListener("keydown", listener);
+  }, [focusedIndex]);
 
   // Fokus setzen
   useEffect(() => {
     if (focusableRef.current[focusedIndex]) {
       focusableRef.current[focusedIndex].focus();
-    } 
-     
+    }
   }, [focusedIndex]);
 
-
-  
-  
   return (
     <>
-     {saves.map((item, index) => (
-        <button disabled={!item.timestamp} ref={(el) => (focusableRef.current[0 + index] = el)} key={item.name} onClick={() => handleLoad(item.name)}>
+      {saves.map((item, index) => (
+        <button
+          disabled={!item.timestamp}
+          ref={(el) => (focusableRef.current[0 + index] = el)}
+          key={item.name}
+          onClick={() => handleLoad(item.name)}
+        >
           <h2>{item.name}</h2>
-       <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
+          <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
           <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
           <p>
             {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
           </p>
           <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>{item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}</p>
+          <p>
+            {item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}
+          </p>
         </button>
       ))}
-     <button ref={(el) => (focusableRef.current[5] = el)}  onClick={() => navigate("/")}>Zurück</button>
+      <button
+        ref={(el) => (focusableRef.current[5] = el)}
+        onClick={() => navigate("/")}
+      >
+        Zurück
+      </button>
     </>
   );
 }

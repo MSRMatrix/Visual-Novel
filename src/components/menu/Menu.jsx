@@ -11,15 +11,13 @@ import Options from "../options/Options";
 import { handleKeyDown } from "../functions/handleKeyDown";
 
 function Menu({
-  setQuickMenu,
-  quickMenu,
-  isPaused,
-  setIsPaused,
-  setDisplayText,
-  setPausedText,
   currentStep,
   storyState,
-setStoryState
+setStoryState,
+textState,
+setTextState,
+uiState,
+setUiState
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -40,9 +38,12 @@ setStoryState
     {
       label: "Zurück zum Spiel",
       onClick: () => {
-        setQuickMenu(false);
+        setUiState((prev) => ({...prev, quickMenu: false}))
         setAction("");
-        setIsPaused(false);
+        setTextState((prev) => ({
+          ...prev,
+          isPaused: false
+        }))
         setSounds((prev) => ({
           ...prev,
           url: game_music,
@@ -55,10 +56,9 @@ setStoryState
       onClick: () => {
         newGame(
           setAction,
-          setQuickMenu,
-          setDisplayText,
-          setPausedText,
-          setStoryState
+          setStoryState,
+          setTextState,
+          setUiState
         );
       },
     },
@@ -69,22 +69,22 @@ setStoryState
   const [focusedIndex, setFocusedIndex] = useState(0);
 
   useEffect(() => {
-    if (quickMenu && !action) {
+    if (uiState.quickMenu && !action) {
       const listener = (e) =>
         handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
+  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   // Fokus setzen
   useEffect(() => {
-    if (quickMenu && !action) {
+    if (uiState.quickMenu && !action) {
       if (focusableRef.current[focusedIndex]) {
         focusableRef.current[focusedIndex].focus();
       }
     }
-  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
+  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
 
   return (
     <>
@@ -121,25 +121,24 @@ setStoryState
         <GameData
           mode={action}
           setMode={setAction}
-          quickMenu={quickMenu}
-          setQuickMenu={setQuickMenu}
-          setDisplayText={setDisplayText}
-          setPausedText={setPausedText}
           action={action}
           setAction={setAction}
           currentStep={currentStep}
                 storyState={storyState}
                 setStoryState={setStoryState}
+                setTextState={setTextState}
+              uiState={uiState}
+              setUiState={setUiState}
         />
       ) : action === "option" ? (
-        <Options quickMenu={quickMenu} action={action} setAction={setAction} />
+        <Options action={action} setAction={setAction} />
       ) : action === "backlog" ? (
         <Backlog
           setAction={setAction}
-          quickMenu={quickMenu}
           action={action}
           currentStep={currentStep}
                 storyState={storyState}
+              uiState={uiState}
         />
       ) : (
         ""

@@ -3,13 +3,12 @@ const game_music = import.meta.env.VITE_GAME_MUSIC
 export function loadData(
   slotName,
   setMode,
-  setQuickMenu,
   navigate,
-  quickMenu,
   setSounds,
-  setDisplayText,
-setPausedText,
-setStoryState
+setStoryState,
+setTextState,
+uiState,
+setUiState
 ) {
   const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
   const existing = saves.find((s) => s.name === slotName);
@@ -35,11 +34,14 @@ setStoryState
           playTime: existing.playTime
         }));
   setSounds((prev) => ({...prev, url: game_music}))
-  setDisplayText("")
-  setPausedText("")
-  if (quickMenu) {
+  setTextState((prev) => ({
+    ...prev,
+    displayText: "",
+    pausedText: "",
+  }))
+  if (uiState.quickMenu) {
     setMode("");
-    setQuickMenu("");
+    setUiState((prev) => ({...prev, quickMenu: false}))
   } else {
     navigate("/start");
   }

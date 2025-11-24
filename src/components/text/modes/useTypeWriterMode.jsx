@@ -1,29 +1,49 @@
 import { useEffect } from "react";
 
-export function useTypeWriterMode({currentStep, quickMenu, setDisplayText, setTextFinished, setPausedText, pausedText, writeSpeed, skip}){
+export function useTypeWriterMode({
+ currentStep,
+    writeSpeed,
+    setTextState,
+    textState,
+    autoState,
+    uiState
+}) {
   useEffect(() => {
     if (
       !currentStep?.text ||
       currentStep.type === "choice" ||
       currentStep.type === "game" ||
-      quickMenu
+      uiState.quickMenu
     )
       return;
 
-    setDisplayText("");
-    setTextFinished(false);
+    setTextState((prev) => ({
+      ...prev,
+      displayText: "",
+      textFinished: false
+    }));
+    
+    let i = textState.pausedText.length;
 
-    let i = pausedText.length;
-
-    setDisplayText(pausedText + currentStep.text.charAt(i));
-    setPausedText("");
+    setTextState((prev) => ({
+      ...prev,
+      displayText: textState.pausedText + currentStep.text.charAt(i),
+      pausedText: ""
+    }));
     const interval = setInterval(() => {
       if (i < currentStep.text.length) {
-        setDisplayText((prev) => prev + currentStep.text.charAt(i));
+        setTextState((prev) => ({
+          ...prev,
+          displayText: prev.displayText + currentStep.text.charAt(i),
+        }));
+
         i++;
       } else {
         clearInterval(interval);
-        setTextFinished(true);
+        setTextState((prev) => ({
+          ...prev,
+          textFinished: true,
+        }));
       }
     }, writeSpeed);
 
@@ -32,7 +52,7 @@ export function useTypeWriterMode({currentStep, quickMenu, setDisplayText, setTe
     currentStep?.text,
     currentStep.type === "choice",
     currentStep.type === "game",
-    quickMenu,
-    skip,
+    uiState.quickMenu,
+    autoState.skip,
   ]);
 }

@@ -1,9 +1,7 @@
 export function newGame(
   setAction,
-  setQuickMenu,
-  setDisplayText,
-setPausedText,
-          setStoryState
+          setStoryState,
+          setTextState, setUiState
 ) {
   if (
     confirm(
@@ -19,9 +17,12 @@ setPausedText,
           playTime: 0,
         }));
     setAction("");
-    setQuickMenu(false);
-    setDisplayText("");
-    setPausedText("");
+    setUiState((prev) => ({...prev, quickMenu: false}))
+    setTextState((prev) => ({
+    ...prev,
+    displayText: "",
+    pausedText: ""
+  }))
     return;
   } else {
     console.log(`Neues Spiel abgebrochen!`);

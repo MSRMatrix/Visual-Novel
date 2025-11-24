@@ -1,93 +1,52 @@
 import { useEffect, useRef, useState } from "react";
+import { useNumberMode } from "./modes/useNumberMode";
+import { answerHandler } from "./numberGameHandler";
 
 const NumberGame = ({
-  setFocusedIndex,
   focusableRef,
   storyState,
   setStoryState,
+  setUiState,
 }) => {
-  // Random Number Function
-  const [number, setNumber] = useState(0);
-  const [guess, setGuess] = useState(0);
-  const [tries, setTries] = useState(3);
-  const [numberArray, setNumberArray] = useState([]);
 
-  useEffect(() => {
-    setNumber(Math.floor(Math.random() * 10));
-  }, []);
+  const [numberGameState, setNumberGameState] = useState({
+    number: Math.floor(Math.random() * 10),
+    guess: 0,
+    tries: 3,
+    numberArray: [],
+  });
 
-  function answerHandler() {
-    if (tries < 0) return;
-
-    if (number !== Number(guess)) {
-      setTries((prev) => prev - 1);
-      setNumberArray((prev) => [...prev, guess]);
-      setGuess(0);
-      return;
-    }
-
-     const newEntry = {
-                chapter: storyState.chapter,
-        scene: storyState.scene,
-        step: storyState.step,
-        answer: Number(number),
-        type: "game",
-        mode: "number",        
-                      };
-    setStoryState((prev) => ({
-      ...prev,
-      chapter: "chapterOne",
-      scene: number !== Number(guess) ? "wrong_answer" : "right_answer",
-      step: 0,
-      history: [...prev.history, newEntry],
-    }));
-    setFocusedIndex(0);
-  }
-
-  useEffect(() => {
-    if (tries < 0 && number !== Number(guess)) {
-      const newEntry = {
-        chapter: storyState.chapter,
-        scene: storyState.scene,
-        step: storyState.step,
-        answer: Number(guess),
-        type: "game",
-        mode: "number",
-                      };
-
-      setStoryState((prev) => ({
-        ...prev,
-        chapter: "chapterOne",
-      scene: number !== Number(guess) ? "wrong_answer" : "right_answer",
-      step: 0,
-      history: [...prev.history, newEntry],
-      }));
-      setFocusedIndex(0);
-    }
-  }, [tries < 0 && number !== Number(guess)]);
+  // Number Effekt
+  useNumberMode({numberGameState,storyState, setStoryState, setUiState})
+  // Number Effekt
 
   return (
     <>
       <p>Eine Zahl von 1 - 10</p>
-      <p>Versuche übrig: {tries}</p>
-      {numberArray.length > 0 ? (
+      <p>Versuche übrig: {numberGameState.tries}</p>
+      {numberGameState.numberArray.length > 0 ? (
         <p>
-          Deine Eingabe{numberArray.length > 1 ? "n" : ""}:{" "}
-          {numberArray.join(", ")}
+          Deine Eingabe{numberGameState.numberArray.length > 1 ? "n" : ""}:{" "}
+          {numberGameState.numberArray.join(", ")}
         </p>
       ) : (
         ""
       )}
       <input
         type="number"
-        defaultValue={guess}
-        onChange={(e) => setGuess(e.target.value)}
+        defaultValue={numberGameState.guess}
+        onChange={(e) =>
+          setNumberGameState((prev) => ({
+            ...prev,
+            guess: parseFloat(e.target.value),
+          }))
+        }
         max={10}
         min={0}
         ref={(el) => (focusableRef.current[0] = el)}
       />
       <button
-        onClick={() => answerHandler()}
+        onClick={() => answerHandler(numberGameState, setNumberGameState)}
         ref={(el) => (focusableRef.current[1] = el)}
       >
         Abschicken

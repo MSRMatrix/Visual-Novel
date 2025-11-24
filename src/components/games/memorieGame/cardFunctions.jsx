@@ -18,68 +18,84 @@ export function createDeck() {
   return doubled.sort(() => Math.random() - 0.5);
 }
 
+export function cardHandler(
+  value,
+  id,
+  cardState,
+  setCardState
+) {
+  if (
+    cardState.cooldown ||
+    cardState.gameEnd ||
+    cardState.cards.find((item) => item.value === value).solved
+  )
+    return;
 
-export function cardHandler(value, id, cooldown, gameEnd, cards, triesleft, setGameEnd, setCards, findCard, setFindCard, setTriesleft, setCooldown) {
-    if (cooldown || gameEnd || cards.find((item) => item.value === value).solved)
-      return;
+  if (cardState.triesleft <= 0 && !cardState.cardState.cards.every((card) => card.flipped)) {
+    setCardState(prev => ({...prev, gameEnd: true}))
+    console.log("Verloren!");
+    return;
+  }
 
-    if(triesleft <= 0 && !cards.every((card) => card.flipped)){
-      setGameEnd(true)
-      console.log("Verloren!");
-      return;
-    }
+  setCardState((prev) => ({
+    ...prev,
+    cards: prev.cards.map((card) =>
+      card.id === id ? { ...card, flipped: true } : card
+    ),
+  }));
 
-    setCards((prev) =>
-      prev.map((card) => (card.id === id ? { ...card, flipped: true } : card))
-    );
+  // Erste Karte?
+  if (!cardState.findCard) {
+    setCardState((prev) => ({ ...prev, findCard: { value, id } }));
+    return;
+  }
 
-    // Erste Karte?
-    if (!findCard) {
-      setFindCard({ value, id });
-      return;
-    }
+  // Derselbe Klick?
+  if (cardState.findCard.id === id) return;
 
-    // Derselbe Klick?
-    if (findCard.id === id) return;
+  // MATCH
+  if (cardState.findCard.value === value) {
+    setCardState((prev) => ({ ...prev, findCard: null }));
 
-    // MATCH
-    if (findCard.value === value) {
-      setFindCard(null);
-
-      setCards((prev) => {
-        const newCards = prev.map((card) =>
-          card.value === value ? { ...card, flipped: true, solved: true } : card
-        );
-
-        if (newCards.every((card) => card.solved)) {
-          setGameEnd(true)
-          setTimeout(() => {
-            console.log("Gewonnen!");
-          }, 400);
-        }
-
-        return newCards;
-      });
-      setTriesleft((prev) => prev - 1);
-      return;
-    }
-
-    setCooldown(true);
-
-    const firstCardId = findCard.id;
-
-    setTimeout(() => {
-      setCards((prev) =>
-        prev.map((card) =>
-          card.id === id || card.id === firstCardId
-            ? { ...card, flipped: false }
-            : card
-        )
+    setCardState((prev) => {
+      const newCards = prev.cards.map((card) =>
+        card.value === value ? { ...card, flipped: true, solved: true } : card
       );
 
-      setFindCard(null);
-      setCooldown(false);
+      // Prüfen, ob alle Karten gelöst sind
+      if (newCards.every((card) => card.solved)) {
+        setTimeout(() => {
+          console.log("Gewonnen!");
+        }, 400);
+      }
 
-      setTriesleft((prev) => prev - 1);
-    }, 800);
+      return {
+        ...prev,
+        cards: newCards,
+      };
+    });
+
+    setCardState((prev) => ({ ...prev, triesleft: prev.triesleft - 1 }));
+
+    return;
   }
+
+  setCardState((prev) => ({ ...prev,  cooldown: false }));
+
+  const firstCardId = cardState.findCard.id;
+
+  setTimeout(() => {
+    setCardState((prev) => ({
+      ...prev,
+      cards: prev.cards.map((card) =>
+        card.id === id || card.id === firstCardId
+          ? { ...card, flipped: false }
+          : card
+      ),
+    }));
+
+    setCardState((prev) => ({ ...prev, findCard: null, cooldown: false }));
+
+setCardState((prev) => ({ ...prev, triesleft: prev.triesleft - 1 }));
+  }, 800);
+}

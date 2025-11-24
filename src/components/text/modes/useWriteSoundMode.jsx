@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 
-export function useWriteSoundMode({currentStep, skip, textFinished, quickMenu, stop, play}){
+export function useWriteSoundMode({currentStep, stop, play, textState, autoState, uiState}){
     useEffect(() => {
     if (
       !currentStep?.text ||
       currentStep.type === "choice" ||
       currentStep.type === "game" ||
-      skip
+      autoState.skip
     )
       return;
 
-    if (textFinished || quickMenu) {
+    if (textState.textFinished || uiState.quickMenu) {
       stop();
     } else {
       play();
@@ -19,8 +19,8 @@ export function useWriteSoundMode({currentStep, skip, textFinished, quickMenu, s
     return () => stop();
   }, [
     currentStep?.text,
-    textFinished,
-    quickMenu,
+    textState.textFinished,
+    uiState.quickMenu,
     currentStep.type === "choice",
     currentStep.type === "game",
   ]);

@@ -1,30 +1,30 @@
 export function handleKeyDown(
   e,
   focusableRef,
-  focusedIndex,
-  setFocusedIndex,
   active,
-  gamePaused,
-  setGamePaused,
-  currentStep
+  currentStep,
+  uiState,
+  setUiState
 ) {
   if (!focusableRef.current.length || active) return;
   let focusables = focusableRef.current.filter(Boolean);
 
   if (
-    (e.key === "Escape" && !gamePaused && currentStep.type === "game") ||
-    (e.key === "Escape" && !gamePaused && currentStep.type === "choice")
+    (e.key === "Escape" &&
+      !uiState.gamePaused &&
+      currentStep.type === "game") ||
+    (e.key === "Escape" && !uiState.gamePaused && currentStep.type === "choice")
   ) {
-    setGamePaused(true);
+    setUiState((prev) => ({ ...prev, gamePaused: true }));
   } else if (
-    (e.key === "Escape" && gamePaused && currentStep.type === "game") ||
-    (e.key === "Escape" && gamePaused && currentStep.type === "choice")
+    (e.key === "Escape" && uiState.gamePaused && currentStep.type === "game") ||
+    (e.key === "Escape" && uiState.gamePaused && currentStep.type === "choice")
   ) {
-    setGamePaused(false);
+    setUiState((prev) => ({ ...prev, gamePaused: false }));
   }
 
-  if (isNaN(focusedIndex)) {
-    setFocusedIndex(0);
+  if (isNaN(uiState.focusedIndex)) {
+    setUiState((prev) => ({ ...prev, focusedIndex: 0 }));
   }
   const activeEl = document.activeElement;
   if (activeEl && activeEl.tagName === "INPUT" && activeEl.type === "range") {
@@ -35,23 +35,24 @@ export function handleKeyDown(
 
   if (e.key === "ArrowDown") {
     e.preventDefault();
-    let nextIndex = (focusedIndex + 1) % focusables.length;
+    let nextIndex = (uiState.focusedIndex + 1) % focusables.length;
     while (focusableRef.current[nextIndex]?.disabled) {
       nextIndex = (nextIndex + 1) % focusables.length;
     }
-    setFocusedIndex(nextIndex);
+
+    setUiState((prev) => ({ ...prev, focusedIndex: nextIndex }));
     focusableRef.current[nextIndex]?.focus();
   }
 
   if (e.key === "ArrowUp") {
     e.preventDefault();
     let previousIndex =
-      (focusedIndex - 1 + focusables.length) % focusables.length;
+      (uiState.focusedIndex - 1 + focusables.length) % focusables.length;
     while (focusableRef.current[previousIndex]?.disabled) {
       previousIndex =
         (previousIndex - 1 + focusables.length) % focusables.length;
     }
-    setFocusedIndex(previousIndex);
+    setUiState((prev) => ({ ...prev, focusedIndex: previousIndex }));
     focusableRef.current[previousIndex]?.focus();
   }
 }

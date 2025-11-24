@@ -15,14 +15,15 @@ import { useWriteSoundMode } from "./modes/useWriteSoundMode";
 import { useAutoMode } from "./modes/useAutoMode";
 import { useFocusMode, useKeyControl } from "./modes/useControl";
 import { useIndexMode } from "./modes/useIndexMode";
+import Choice from "./choice/Choice";
 
 export default function VisualNovel({ hide, setHide }) {
   const focusableRef = useRef([]);
-  const [focusedIndex, setFocusedIndex] = useState(0);
 
   const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
+
   const [play, { stop, sound }] = useSound(sounds.typing, {
     volume: sounds.textVolume,
     loop: true,
@@ -36,62 +37,113 @@ export default function VisualNovel({ hide, setHide }) {
     playTime: load.playTime || 0,
   }));
 
-  const [auto, setAuto] = useState(false);
-  const [autoTime, setAutoTime] = useState(5000);
-  const [quickMenu, setQuickMenu] = useState(false);
-  const [skip, setSkip] = useState(false);
-  const [displayText, setDisplayText] = useState("");
-  const [textFinished, setTextFinished] = useState(false);
-  const [isPaused, setIsPaused] = useState(false);
-  const [pausedText, setPausedText] = useState("");
-  const [gamePaused, setGamePaused] = useState(false);
-  const [startIndex, setStartIndex] = useState(0);
+  const [textState, setTextState] = useState(() => ({
+    displayText: "",
+    textFinished: false,
+    isPaused: false,
+    pausedText: "",
+  }));
+
+  const [autoState, setAutoState] = useState({
+    auto: false,
+    autoTime: 5000,
+    skip: false,
+  });
+
+  const [uiState, setUiState] = useState({
+    focusedIndex: 0,
+    quickMenu: false,
+    gamePaused: false,
+    startIndex: 0,
+  });
 
   const scene = story[storyState.chapter][storyState.scene];
-
   const steps = scene.steps;
   const currentStep = steps[storyState.step];
 
   // Index-Rechner
-  useIndexMode({gamePaused, setStartIndex, currentStep})
+  useIndexMode({ currentStep, setUiState, uiState });
   // Index-Rechner
 
   // Esc
-  useEffect(() => { setGamePaused(false); }, [currentStep.type]);
+  useEffect(() => {
+    setUiState((prev) => ({ ...prev, gamePaused: false }));
+  }, [currentStep.type]);
   // Esc
 
   // 🔹 Skip-Modus
-  useSkipMode({ skip, currentStep, quickMenu, scene, storyState, setStoryState });
+  useSkipMode({
+    currentStep,
+    scene,
+    storyState,
+    setStoryState,
+    autoState,
+    uiState,
+  });
   // 🔹 Skip-Modus
-  
+
   // Pausen Modus
-  useBreakMode({isPaused, quickMenu, setStoryState})
-  useEffect(() => { if (quickMenu) { setPausedText(displayText);} }, [quickMenu]);
+  useBreakMode({ setStoryState, textState, uiState });
+  useEffect(() => {
+    if (uiState.quickMenu) {
+      setTextState((prev) => ({
+        ...prev,
+        pausedText: textState.displayText,
+      }));
+    }
+  }, [uiState.quickMenu]);
   // Pausen Modus
 
   // Typewriter Modus
-  useTypeWriterMode({currentStep, quickMenu, setDisplayText, setTextFinished, setPausedText, pausedText, writeSpeed, skip})
+  useTypeWriterMode({
+    currentStep,
+    writeSpeed,
+    setTextState,
+    textState,
+    autoState,
+    uiState,
+  });
   // Typewriter Modus
 
   // Schreib-Soundtrack
-  useWriteSoundMode({currentStep, skip, textFinished, quickMenu, stop, play})
+  useWriteSoundMode({
+    currentStep,
+    stop,
+    play,
+    textState,
+    autoState,
+    uiState,
+  });
   // Schreib-Soundtrack
 
   // Auto-Modus
-  useAutoMode({auto, currentStep, textFinished, quickMenu, scene, storyState, setStoryState, autoTime})
+  useAutoMode({
+    currentStep,
+    scene,
+    storyState,
+    setStoryState,
+    textState,
+    autoState,
+    uiState,
+  });
   // Auto-Modus
 
   // Tastaturnavigation
-  useKeyControl({quickMenu,focusableRef,focusedIndex,setFocusedIndex,gamePaused,setGamePaused,currentStep,})
+  useKeyControl({
+    focusableRef,
+    currentStep,
+    uiState,
+    setUiState,
+  });
   // Tastaturnavigation
 
   // Fokus setzen
-  useFocusMode({quickMenu, focusableRef, focusedIndex, currentStep})
+  useFocusMode({ focusableRef, currentStep, uiState });
   // Fokus setzen
 
   return (
     <div style={{ display: hide ? "none" : "block" }}>
-      {!quickMenu ? (
+      {!uiState.quickMenu ? (
         <div>
           <div>
             <p>
@@ -105,57 +157,29 @@ export default function VisualNovel({ hide, setHide }) {
               <div>
                 {" "}
                 <p className="font-bold">{currentStep.speaker || ""}</p>{" "}
-                <p className="mt-2">{displayText || ""}</p>{" "}
+                <p className="mt-2">{textState.displayText || ""}</p>{" "}
               </div>
             ) : (
               ""
             )}
 
-            {currentStep?.type === "choice" && (
-              <div className="choices mt-4 flex flex-col gap-2">
-                {currentStep.options.map((choice, idx) => (
-                  <button
-                    ref={
-                      gamePaused
-                        ? null
-                        : (el) => (focusableRef.current[idx] = el)
-                    }
-                    key={idx}
-                    onClick={() => {
-                      // Chat-History speichern
-                      const newEntry = {
-                        chapter: storyState.chapter,
-                        scene: storyState.scene,
-                        step: storyState.step,
-                        choice: choice.text,
-                      };
-
-                      setStoryState((prev) => ({
-                        ...prev,
-                        chapter: choice.next.chapter,
-                        scene: choice.next.scene,
-                        step: 0,
-                        history: [...prev.history, newEntry],
-                      }));
-
-                      setFocusedIndex(0);
-                    }}
-                    className="bg-blue-600 p-2 rounded hover:bg-blue-500"
-                  >
-                    {choice.text}
-                  </button>
-                ))}
-              </div>
-            )}
+            <Choice
+              currentStep={currentStep}
+              focusableRef={focusableRef}
+              storyState={storyState}
+              setStoryState={setStoryState}
+              setUiState={setUiState}
+              uiState={uiState}
+            />
 
             {currentStep?.type === "game" ? (
               <Games
-                setFocusedIndex={setFocusedIndex}
                 focusableRef={focusableRef}
-                gamePaused={gamePaused}
                 currentStep={currentStep}
                 storyState={storyState}
                 setStoryState={setStoryState}
+                setUiState={setUiState}
+                uiState={uiState}
               />
             ) : (
               ""
@@ -163,36 +187,29 @@ export default function VisualNovel({ hide, setHide }) {
 
             <DialogueAction
               scene={scene}
-              setAuto={setAuto}
-              setQuickMenu={setQuickMenu}
-              auto={auto}
               hide={hide}
               setHide={setHide}
-              skip={skip}
-              setSkip={setSkip}
-              setIsPaused={setIsPaused}
               focusableRef={focusableRef}
-              startIndex={startIndex}
-              setFocusedIndex={setFocusedIndex}
               currentStep={currentStep}
-              setGamePaused={setGamePaused}
-              gamePaused={gamePaused}
               storyState={storyState}
               setStoryState={setStoryState}
+              setTextState={setTextState}
+              autoState={autoState}
+              setAutoState={setAutoState}
+              uiState={uiState}
+              setUiState={setUiState}
             />
           </>
         </div>
       ) : (
         <Menu
-          setQuickMenu={setQuickMenu}
-          quickMenu={quickMenu}
-          isPaused={isPaused}
-          setIsPaused={setIsPaused}
-          setDisplayText={setDisplayText}
-          setPausedText={setPausedText}
           currentStep={currentStep}
           storyState={storyState}
           setStoryState={setStoryState}
+          textState={textState}
+          setTextState={setTextState}
+          uiState={uiState}
+          setUiState={setUiState}
         />
       )}
     </div>

@@ -6,7 +6,7 @@ import Rate from "../rate/Rate";
 import { handleKeyDown } from "../functions/handleKeyDown";
 import { WriteContext } from "../../context/WriteContext";
 
-function Options({ quickMenu, action, setAction }) {
+function Options({ action, setAction }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const navigate = useNavigate();

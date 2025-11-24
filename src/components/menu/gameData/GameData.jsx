@@ -11,14 +11,13 @@ import { handleKeyDown } from "../../functions/handleKeyDown";
 function GameData({
   mode,
   setMode,
-  quickMenu,
-  setQuickMenu,
-  setDisplayText,
-  setPausedText,
   action,
   setAction, currentStep,
                 storyState,
                 setStoryState,
+                setTextState,
+uiState,
+setUiState
 }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
@@ -50,13 +49,12 @@ function GameData({
         loadData(
           slotName,
           setMode,
-          setQuickMenu,
           navigate,
-          quickMenu,
           setSounds,
-          setDisplayText,
-          setPausedText,
-          setStoryState
+          setStoryState,
+          setTextState,
+          uiState,
+setUiState
         );
         return;
       default:
@@ -76,7 +74,7 @@ function GameData({
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
+  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
 
   // Fokus setzen
   useEffect(() => {
@@ -85,7 +83,7 @@ function GameData({
         focusableRef.current[focusedIndex].focus();
       }
     }
-  }, [focusedIndex, quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
+  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
 
   return (
     <>
