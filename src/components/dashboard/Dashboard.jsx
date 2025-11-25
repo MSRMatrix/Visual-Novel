@@ -2,7 +2,6 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import "./dashboard.css";
 import { SoundContext } from "../../context/SoundContext";
-import ActionButton from "../text/ActionButton";
 import { handleMenuAction } from "../functions/handleMenuAction";
 
 function Dashboard() {
@@ -42,20 +41,22 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      {menuItems.map((route, index) => (
-        <ActionButton
-          key={route}
-          name={route}
-          label={labels[route] || route}
-          customFunction={() =>
-            handleMenuAction(route, navigate, setSounds, setActiveMenu)
-          }
-          disabled={false}
-          dataNosound={false}
-          buttonRef={(el) => (buttonRefs.current[index] = el)}
-          onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
-        />
-      ))}
+     {menuItems.map((route, index) => (
+  <button
+    key={route}
+    ref={(el) => (buttonRefs.current[index] = el)}
+    onClick={() =>
+      handleMenuAction(route, navigate, setSounds, setActiveMenu)
+    }
+    onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
+    disabled={false}
+    data-nosound="false"
+    className="menu-button"
+  >
+    {labels[route] || route}
+  </button>
+))}
+
     </div>
   );
 }

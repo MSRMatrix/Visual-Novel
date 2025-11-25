@@ -2,31 +2,24 @@ import { useEffect, useRef, useState } from "react";
 import { story } from "../../text/data/story";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 import { buildBacklog } from "../../functions/buildBacklog";
+import { useFocusMode, useKeyControl } from "../../text/modes/useControl";
 
-function Backlog({setAction, action, currentStep, storyState, uiState}) {
+function Backlog({setAction, action, currentStep, storyState, uiState, setUiState}) {
 
   const steps = buildBacklog(story, storyState);
 
   const focusableRef = useRef([]);
+  
+  const effectdeps =[ uiState.focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game" ];
+  const ifDeps = action === "backlog";
 
-  const [focusedIndex, setFocusedIndex] = useState(0);
-
-  useEffect(() => {
-  if(action === "backlog"){
-  const listener = (e) => handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-  window.addEventListener("keydown", listener);
-  return () => window.removeEventListener("keydown", listener);
-}
-}, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
-
-  // Fokus setzen
-  useEffect(() => {
-     if(action === "backlog"){
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
-    } 
-     }
-  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
+    // Tastaturnavigation
+    useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
+    // Tastaturnavigation
+  
+    // Fokus setzen
+    useFocusMode({ focusableRef, currentStep, uiState , effectdeps, ifDeps });
+    // Fokus setzen
 
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
 

@@ -15,9 +15,9 @@ const NumberGame = ({
     tries: 3,
     numberArray: [],
   });
-
+  
   // Number Effekt
-  useNumberMode({numberGameState,storyState, setStoryState, setUiState})
+  useNumberMode({numberGameState, setNumberGameState ,storyState, setStoryState, setUiState})
   // Number Effekt
 
   return (
@@ -46,7 +46,7 @@ const NumberGame = ({
         ref={(el) => (focusableRef.current[0] = el)}
       />
       <button
-        onClick={() => answerHandler(numberGameState, setNumberGameState)}
+        onClick={() => answerHandler(numberGameState, setNumberGameState, storyState, setStoryState, setUiState)}
         ref={(el) => (focusableRef.current[1] = el)}
       >
         Abschicken

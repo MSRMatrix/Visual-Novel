@@ -128,17 +128,15 @@ export default function VisualNovel({ hide, setHide }) {
   });
   // Auto-Modus
 
+  const effectdeps =[ uiState.focusedIndex, currentStep.type === "choice", currentStep.type === "game", uiState.quickMenu, uiState.gamePaused ];
+  const ifDeps = !uiState.quickMenu;
+
   // Tastaturnavigation
-  useKeyControl({
-    focusableRef,
-    currentStep,
-    uiState,
-    setUiState,
-  });
+  useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
   // Tastaturnavigation
 
   // Fokus setzen
-  useFocusMode({ focusableRef, currentStep, uiState });
+  useFocusMode({ focusableRef, currentStep, uiState , effectdeps, ifDeps });
   // Fokus setzen
 
   return (

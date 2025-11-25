@@ -90,7 +90,7 @@ const DialogueAction = ({
   ];
 
   // Tastaturnavigation
-  function test(index) {
+  function pauseFunction(index) {
     if (uiState.gamePaused) {
       if (currentStep.type === "choice" || currentStep.type === "game") {
         return index;
@@ -110,7 +110,7 @@ const DialogueAction = ({
     <div>
       {menuButtons.map((btn, index) => (
         <button
-          ref={(el) => (focusableRef.current[test(index)] = el)}
+          ref={(el) => (focusableRef.current[pauseFunction(index)] = el)}
           key={index}
           className="window-action"
           onClick={btn.onClick}

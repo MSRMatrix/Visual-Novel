@@ -11,9 +11,16 @@ import { handleKeyDown } from "../functions/handleKeyDown";
 function ReactPlayerComponent({ intro, setOptions }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const focusableRef = useRef([]);
-
   const [focusedIndex, setFocusedIndex] = useState(0);
-  // Tastaturnavigation
+
+  const reactplayerItems = [
+    {name: "Music zum testen", component: <MusicData focusableRef={focusableRef} startIndex={1} />, className: "musicData"},
+    {name: "Klickgeräusche", component: <Click focusableRef={focusableRef} startIndex={5} />, className: "click-action"},
+    {name: "Tippgeräusche", component: <Write focusableRef={focusableRef} startIndex={8} />, className: "type-action"},
+    {name: "Sound Lautstärke", component: <AudioManager focusableRef={focusableRef} startIndex={11} />, className: "sound-volume"},
+  ]
+  
+  // Tastaturnavigationz
   useEffect(() => {
     if (!sounds.hidePlayer) {
       const listener = (e) =>
@@ -39,6 +46,9 @@ function ReactPlayerComponent({ intro, setOptions }) {
     }
   }, [intro]);
 
+
+  
+
   return (
     <div className={`react-player ${sounds.hidePlayer ? "hide" : ""}`}>
       <ReactPlayer
@@ -63,25 +73,12 @@ function ReactPlayerComponent({ intro, setOptions }) {
         </div>
 
         <div className="placeholder">
-          <div className="musicData">
-            <h2>Music zum testen</h2>
-            <MusicData focusableRef={focusableRef} startIndex={1} />
-          </div>
-
-          <div className="click-action">
-            <h2>Klickgeräusche</h2>
-            <Click focusableRef={focusableRef} startIndex={5} />
-          </div>
-
-          <div className="type-action">
-            <h2>Tippgeräusche</h2>
-            <Write focusableRef={focusableRef} startIndex={8} />
-          </div>
-
-          <div className="sound-volume">
-            <h2>Sound Lautstärke</h2>
-            <AudioManager focusableRef={focusableRef} startIndex={11} />
-          </div>
+          {reactplayerItems.map((item) => 
+            <div key={item.name} className={item.className}>
+              <h2>{item.name}</h2>
+              {item.component}
+            </div>
+          )}
         </div>
       </div>
       <button

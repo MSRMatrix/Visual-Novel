@@ -9,15 +9,16 @@ import { newGame } from "../functions/newGame";
 import Backlog from "./backlog/Backlog";
 import Options from "../options/Options";
 import { handleKeyDown } from "../functions/handleKeyDown";
+import { useFocusMode, useKeyControl } from "../text/modes/useControl";
 
 function Menu({
   currentStep,
   storyState,
-setStoryState,
-textState,
-setTextState,
-uiState,
-setUiState
+  setStoryState,
+  textState,
+  setTextState,
+  uiState,
+  setUiState,
 }) {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
 
@@ -38,12 +39,12 @@ setUiState
     {
       label: "Zurück zum Spiel",
       onClick: () => {
-        setUiState((prev) => ({...prev, quickMenu: false}))
+        setUiState((prev) => ({ ...prev, quickMenu: false }));
         setAction("");
         setTextState((prev) => ({
           ...prev,
-          isPaused: false
-        }))
+          isPaused: false,
+        }));
         setSounds((prev) => ({
           ...prev,
           url: game_music,
@@ -54,37 +55,23 @@ setUiState
     {
       label: "Neues Spiel",
       onClick: () => {
-        newGame(
-          setAction,
-          setStoryState,
-          setTextState,
-          setUiState
-        );
+        newGame(setAction, setStoryState, setTextState, setUiState);
       },
     },
   ];
 
   const focusableRef = useRef([]);
 
-  const [focusedIndex, setFocusedIndex] = useState(0);
+  const effectdeps = [ uiState.quickMenu, action, currentStep.type === "choice", currentStep.type === "game"];
+  const ifDeps = uiState.quickMenu && !action;
 
-  useEffect(() => {
-    if (uiState.quickMenu && !action) {
-      const listener = (e) =>
-        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-      window.addEventListener("keydown", listener);
-      return () => window.removeEventListener("keydown", listener);
-    }
-  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
+  // Tastaturnavigation
+  useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
+  // Tastaturnavigation
 
   // Fokus setzen
-  useEffect(() => {
-    if (uiState.quickMenu && !action) {
-      if (focusableRef.current[focusedIndex]) {
-        focusableRef.current[focusedIndex].focus();
-      }
-    }
-  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"]);
+  useFocusMode({ focusableRef, currentStep, uiState, effectdeps, ifDeps });
+  // Fokus setzen
 
   return (
     <>
@@ -124,11 +111,11 @@ setUiState
           action={action}
           setAction={setAction}
           currentStep={currentStep}
-                storyState={storyState}
-                setStoryState={setStoryState}
-                setTextState={setTextState}
-              uiState={uiState}
-              setUiState={setUiState}
+          storyState={storyState}
+          setStoryState={setStoryState}
+          setTextState={setTextState}
+          uiState={uiState}
+          setUiState={setUiState}
         />
       ) : action === "option" ? (
         <Options action={action} setAction={setAction} />
@@ -137,8 +124,9 @@ setUiState
           setAction={setAction}
           action={action}
           currentStep={currentStep}
-                storyState={storyState}
-              uiState={uiState}
+          storyState={storyState}
+          uiState={uiState}
+          setUiState={setUiState}
         />
       ) : (
         ""

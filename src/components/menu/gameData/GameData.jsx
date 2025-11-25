@@ -7,6 +7,7 @@ import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
 import { SoundContext } from "../../../context/SoundContext";
 import { handleKeyDown } from "../../functions/handleKeyDown";
+import { useFocusMode, useKeyControl } from "../../text/modes/useControl";
 
 function GameData({
   mode,
@@ -65,25 +66,16 @@ setUiState
 
   const focusableRef = useRef([]);
 
-  const [focusedIndex, setFocusedIndex] = useState(0);
+  const effectdeps =[ uiState.focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"];
+  const ifDeps = action === "save" || action === "load" || action === "delete";
 
-  useEffect(() => {
-    if (action === "save" || action === "load" || action === "delete") {
-      const listener = (e) =>
-        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-      window.addEventListener("keydown", listener);
-      return () => window.removeEventListener("keydown", listener);
-    }
-  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
-
-  // Fokus setzen
-  useEffect(() => {
-    if (action === "save" || action === "load" || action === "delete") {
-      if (focusableRef.current[focusedIndex]) {
-        focusableRef.current[focusedIndex].focus();
-      }
-    }
-  }, [focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game",]);
+    // Tastaturnavigation
+    useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
+    // Tastaturnavigation
+  
+    // Fokus setzen
+    useFocusMode({ focusableRef, currentStep, uiState , effectdeps, ifDeps });
+    // Fokus setzen
 
   return (
     <>

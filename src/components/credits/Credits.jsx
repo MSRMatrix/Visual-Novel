@@ -11,20 +11,34 @@ const Credits = () => {
 
   const focusableRef = useRef([]);
   const navigate = useNavigate();
-  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [focusedIndex, setFocusedIndex] = useState(0); 
+  const buttonRefs = useRef([]);
+  
+  const labels = {
+    restart: "Neustart",
+    menu: "Menü",
+  };
 
-  useEffect(() => {
-    const listener = (e) =>
-      handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-    window.addEventListener("keydown", listener);
-    return () => window.removeEventListener("keydown", listener);
-  }, [focusedIndex]);
+  const menuItems = ["Neustart","Menü"];
 
-  // Fokus setzen
+ useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowDown") {
+        setFocusedIndex((prev) => (prev + 1) % menuItems.length);
+      } else if (e.key === "ArrowUp") {
+        setFocusedIndex((prev) =>
+          prev === 0 ? menuItems.length - 1 : prev - 1
+        );
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Fokussieren
   useEffect(() => {
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
-    }
+    buttonRefs.current[focusedIndex]?.focus();
   }, [focusedIndex]);
 
   return (
@@ -33,23 +47,25 @@ const Credits = () => {
         <h1>Irgendwelche Namen</h1>
         <p>Weiteres</p>
       </div>
-      <button
-        ref={(el) => (focusableRef.current[0] = el)}
-        onClick={() => {
-          setSounds((prev) => ({ ...prev, url: game_music })),
-            navigate("/start");
+
+        {menuItems.map((route, index) => (
+        <button
+          key={route}
+          ref={(el) => (buttonRefs.current[index] = el)}
+          onClick={() => {
+            console.log(route)
+            
+          setSounds((prev) => ({ ...prev, url: route === "Neustart" ? game_music : menu_music })),
+            navigate(`/${route === "Neustart" ? "start" : ""}`);
         }}
-      >
-        Neustart
-      </button>
-      <button
-        ref={(el) => (focusableRef.current[1] = el)}
-        onClick={() => {
-          setSounds((prev) => ({ ...prev, url: menu_music })), navigate("/");
-        }}
-      >
-        Menü
-      </button>
+          onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
+          disabled={false}
+          data-nosound="false"
+          className="menu-button"
+        >
+          {labels[route] || route}
+        </button>
+      ))}
     </>
   );
 };

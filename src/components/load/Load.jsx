@@ -48,21 +48,27 @@ function Load() {
 
   const focusableRef = useRef([]);
 
-  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [uiState, setUiState] = useState({
+    focusedIndex: 0,
+    quickMenu: false,
+    gamePaused: false,
+    startIndex: 0,
+  });
+
   // Tastaturnavigation
   useEffect(() => {
     const listener = (e) =>
-      handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
+      handleKeyDown(e, focusableRef, false, [], uiState, setUiState);
     window.addEventListener("keydown", listener);
     return () => window.removeEventListener("keydown", listener);
-  }, [focusedIndex]);
+  }, [uiState.focusedIndex]);
 
   // Fokus setzen
   useEffect(() => {
-    if (focusableRef.current[focusedIndex]) {
-      focusableRef.current[focusedIndex].focus();
+    if (focusableRef.current[uiState.focusedIndex]) {
+      focusableRef.current[uiState.focusedIndex].focus();
     }
-  }, [focusedIndex]);
+  }, [uiState.focusedIndex]);
 
   return (
     <>

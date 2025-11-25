@@ -1,41 +1,21 @@
 import { useEffect } from "react";
 import { handleKeyDown } from "../../functions/handleKeyDown";
 
-export function useKeyControl({
-  focusableRef,
-  currentStep,
-  uiState,
-  setUiState,
-}) {
+export function useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps }) {
   useEffect(() => {
-    if (!uiState.quickMenu) {
+    if (ifDeps) {
       const listener = (e) =>
         handleKeyDown(e, focusableRef, false, currentStep, uiState, setUiState);
       window.addEventListener("keydown", listener);
       return () => window.removeEventListener("keydown", listener);
     }
-  }, [
-    uiState.focusedIndex,
-    currentStep.type === "choice",
-    currentStep.type === "game",
-    uiState.quickMenu,
-    uiState.gamePaused,
-  ]);
+  }, [...effectdeps]);
 }
 
-
-
-export function useFocusMode({ focusableRef, currentStep, uiState }) {
+export function useFocusMode({ focusableRef, currentStep, uiState, effectdeps, ifDeps }) {
   useEffect(() => {
-    if (!uiState.quickMenu) {
-      if (focusableRef.current[uiState.focusedIndex]) {
-        focusableRef.current[uiState.focusedIndex].focus();
-      }
+    if (ifDeps) {
+      focusableRef.current[uiState.focusedIndex]?.focus();
     }
-  }, [
-    uiState.focusedIndex,
-    currentStep.type === "choice",
-    currentStep.type === "game",
-    uiState.quickMenu,
-  ]);
+  }, [...effectdeps]);
 }
