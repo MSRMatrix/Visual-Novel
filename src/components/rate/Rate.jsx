@@ -1,57 +1,83 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
 import { SoundContext } from "../../context/SoundContext";
+import { useTypeWriteMode } from "./modes/useTypeWriteMode";
 
-function Rate({
-  focusableRef,
-  startIndex,
-  setFocusedIndex,
-  setExampleFinished,
-  active,
-  setActive,
-}) {
+function Rate({ active, setActive }) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const { sounds, setSounds } = useContext(SoundContext);
 
+  const focusableRef = useRef([]);
+  const [focusedIndex, setFocusedIndex] = useState(0);
+  const [displayExample, setDisplayExample] = useState("");
+  // Speed Presets
   const speed = [
     { name: "Schnell", rate: 40 },
     { name: "Normal", rate: 70 },
     { name: "Langsam", rate: 100 },
   ];
 
-  const [example, setExample] = useState({
+  // Beispieltext
+  const [example] = useState({
     text: "Das ist hier ein Beispieltext",
-    rate: writeSpeed,
   });
 
-  const [displayExample, setDisplayExample] = useState("");
+  const [keyCatcher, setKeyCatcher] = useState("");
+
+  // TYPEWRITER-EFFEKT
+  useTypeWriteMode({
+    active,
+    setDisplayExample,
+    writeSpeed,
+    example,
+    setActive,
+  });
+  // TYPEWRITER-EFFEKT
 
   useEffect(() => {
-    if (!active) return;
-    setTimeout(() => {
-      setDisplayExample("");
-      setExampleFinished(false);
+    if (!sounds.hidePlayer) return;
+    const handleKeyDown = (e) => {
+      setKeyCatcher(e.key);
+     if (e.key === "ArrowDown") {
+  setFocusedIndex((prevIndex) => {
+    let next = (prevIndex + 1) % focusableRef.current.length;
+    while (focusableRef.current[next]?.disabled) {
+      next = (next + 1) % focusableRef.current.length;
+    }
+    return next;
+  });
+}
 
-      let i = -1;
+if (e.key === "ArrowUp") {
+  setFocusedIndex((prevIndex) => {
+    let next = (prevIndex - 1 + focusableRef.current.length) % focusableRef.current.length;
+    while (focusableRef.current[next]?.disabled) {
+      next = (next - 1 + focusableRef.current.length) % focusableRef.current.length;
+    }
+    return next;
+  });
+      }
+    };
 
-      const interval = setInterval(() => {
-        if (i < example.text.length) {
-          setDisplayExample((prev) => prev + example.text.charAt(i));
-          i++;
-        } else {
-          clearInterval(interval);
-          setExampleFinished(true);
-          setActive(false);
-        }
-      }, writeSpeed);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [sounds.hidePlayer]);
 
-      return () => clearInterval(interval);
-    }, 20);
-  }, [active, writeSpeed]);
+  useEffect(() => {
+    focusableRef.current[focusedIndex]?.focus();
+  }, [focusedIndex]);
+
+  useEffect(() => {
+    focusableRef.current = [];
+    setFocusedIndex(0);
+  }, [sounds.options]);
 
   function writeHelper(e) {
-    if (active) return;
+    if (active || keyCatcher === "ArrowUp" || keyCatcher === "ArrowDown") {
+      setKeyCatcher("");
+      return;
+    }
     writespeedHandler(e.target.value, setWriteSpeed);
   }
 
@@ -59,49 +85,52 @@ function Rate({
     <>
       <div>
         <h1>Beispieltext</h1>
+
         <p>{displayExample}</p>
-        <p>Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)} </p>
+        <p>Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)}</p>
+
+        {/* Range Input */}
         <input
           ref={(el) => (focusableRef.current[0] = el)}
           value={writeSpeed}
           type="range"
           max={150}
           min={15}
-          onChange={(e) => writeHelper(e)}
+          onChange={writeHelper}
         />
+
+        {/* Preset Buttons */}
         <div style={{ display: "flex" }}>
           {speed.map((item, i) => (
             <button
-              ref={(el) => (focusableRef.current[startIndex + i + 1] = el)}
+              key={item.name}
+              ref={(el) => (focusableRef.current[i + 1] = el)}
               value={item.rate}
               disabled={item.rate === writeSpeed}
-              key={item.name}
-              onClick={(e) => writeHelper(e)}
+              onClick={writeHelper}
             >
               {item.name}
             </button>
           ))}
 
+          {/* Test Button */}
           <button
             disabled={active}
-            ref={(el) =>
-              (focusableRef.current[startIndex + speed.length + 1] = el)
-            }
+            ref={(el) => (focusableRef.current[speed.length + 1] = el)}
             onClick={() => setActive(true)}
           >
             Test
           </button>
         </div>
+
+        {/* Zurück */}
         <button
-          ref={(el) =>
-            (focusableRef.current[startIndex + speed.length + 2] = el)
-          }
+          ref={(el) => (focusableRef.current[speed.length + 2] = el)}
           onClick={() => {
-            setSounds((prev) => ({ ...prev, options: "" })),
-              setFocusedIndex(0),
-              setDisplayExample(""),
-              setExampleFinished(true),
-              setActive(false);
+            setSounds((prev) => ({ ...prev, options: "" }));
+            setFocusedIndex(0);
+            setDisplayExample("");
+            setActive(false);
           }}
         >
           Zurück
