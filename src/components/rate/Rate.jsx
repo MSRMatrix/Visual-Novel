@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { showSpeedRate, writespeedHandler } from "../functions/writeFunctions";
 import { WriteContext } from "../../context/WriteContext";
 import { SoundContext } from "../../context/SoundContext";
 import { useTypeWriteMode } from "./modes/useTypeWriteMode";
+import { showSpeedRate, writespeedHandler } from "./functions/writeFunctions";
 
 function Rate({ active, setActive }) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
@@ -31,7 +31,7 @@ function Rate({ active, setActive }) {
     setDisplayExample,
     writeSpeed,
     example,
-    setActive,
+    setActive,keyCatcher,setKeyCatcher
   });
   // TYPEWRITER-EFFEKT
 
@@ -74,10 +74,7 @@ if (e.key === "ArrowUp") {
   }, [sounds.options]);
 
   function writeHelper(e) {
-    if (active || keyCatcher === "ArrowUp" || keyCatcher === "ArrowDown") {
-      setKeyCatcher("");
-      return;
-    }
+    if(keyCatcher === "ArrowUp" || keyCatcher === "ArrowDown") {setKeyCatcher("");return}
     writespeedHandler(e.target.value, setWriteSpeed);
   }
 
@@ -106,7 +103,7 @@ if (e.key === "ArrowUp") {
               key={item.name}
               ref={(el) => (focusableRef.current[i + 1] = el)}
               value={item.rate}
-              disabled={item.rate === writeSpeed}
+              disabled={item.rate === writeSpeed || active}
               onClick={writeHelper}
             >
               {item.name}

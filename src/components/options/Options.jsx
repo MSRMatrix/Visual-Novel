@@ -34,7 +34,7 @@ function Options({ action, setAction }) {
 
   // Tastaturnavigation
   useEffect(() => {
-    if (sounds.hidePlayer) {
+    if (!sounds.hidePlayer) return;
       const handleKeyDown = (e) => {
         if (e.key === "ArrowDown") {
           setFocusedIndex((prev) => (prev + 1) % buttonItems.length);
@@ -47,12 +47,17 @@ function Options({ action, setAction }) {
 
       window.addEventListener("keydown", handleKeyDown);
       return () => window.removeEventListener("keydown", handleKeyDown);
-    }
+    
   }, [focusedIndex, sounds.hidePlayer, active]);
 
   useEffect(() => {
     buttonRefs.current[focusedIndex]?.focus();
   }, [focusedIndex]);
+
+    useEffect(() => {
+    buttonRefs.current = [];
+    setFocusedIndex(0);
+  }, [sounds.options]);
 
   function backFunction() {
     if (action) {

@@ -1,4 +1,8 @@
- export function handleVolumeChange(name, value, setSound) {
+ export function handleVolumeChange(name, value, setSound, keyCatcher, setKeyCatcher) {
+   if (keyCatcher === "ArrowUp" || keyCatcher === "ArrowDown") {
+      setKeyCatcher("");
+      return;
+    }
     const volume = value / 100;
     switch (name) {
       case "musicVolume":

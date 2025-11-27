@@ -26,12 +26,6 @@ export function handleKeyDown(
   if (isNaN(uiState.focusedIndex)) {
     setUiState((prev) => ({ ...prev, focusedIndex: 0 }));
   }
-  const activeEl = document.activeElement;
-  if (activeEl && activeEl.tagName === "INPUT" && activeEl.type === "range") {
-    if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-      e.preventDefault();
-    }
-  }
 
   if (e.key === "ArrowDown") {
     e.preventDefault();

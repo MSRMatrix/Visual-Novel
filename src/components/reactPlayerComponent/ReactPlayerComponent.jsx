@@ -6,45 +6,75 @@ import Click from "./click/Click";
 import Write from "./write/Write";
 import MusicData from "./musicData/MusicData";
 import "./reactPlayerComponent.css";
-import { handleKeyDown } from "../functions/handleKeyDown";
 
 function ReactPlayerComponent({ intro, setOptions }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const focusableRef = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [keyCatcher, setKeyCatcher] = useState("");
 
   const reactplayerItems = [
-    {name: "Music zum testen", component: <MusicData focusableRef={focusableRef} startIndex={1} />, className: "musicData"},
-    {name: "Klickgeräusche", component: <Click focusableRef={focusableRef} startIndex={5} />, className: "click-action"},
-    {name: "Tippgeräusche", component: <Write focusableRef={focusableRef} startIndex={8} />, className: "type-action"},
-    {name: "Sound Lautstärke", component: <AudioManager focusableRef={focusableRef} startIndex={11} />, className: "sound-volume"},
-  ]
-  
+    {
+      name: "Music zum testen",
+      component: <MusicData focusableRef={focusableRef} startIndex={1} />,
+      className: "musicData",
+    },
+    {
+      name: "Klickgeräusche",
+      component: <Click focusableRef={focusableRef} startIndex={5} />,
+      className: "click-action",
+    },
+    {
+      name: "Tippgeräusche",
+      component: <Write focusableRef={focusableRef} startIndex={8} />,
+      className: "type-action",
+    },
+    {
+      name: "Sound Lautstärke",
+      component: <AudioManager focusableRef={focusableRef} startIndex={11} keyCatcher={keyCatcher} setKeyCatcher={setKeyCatcher} />,
+      className: "sound-volume",
+    },
+  ];
+
+  const ifDeps = sounds.hidePlayer;
+
   // Tastaturnavigationz
   useEffect(() => {
-    if (!sounds.hidePlayer) {
-      const listener = (e) =>
-        handleKeyDown(e, focusableRef, focusedIndex, setFocusedIndex);
-      window.addEventListener("keydown", listener);
-      return () => window.removeEventListener("keydown", listener);
-    }
-  }, [focusedIndex, sounds.hidePlayer]);
-
-  // Fokus setzen
-  useEffect(() => {
-    if (!sounds.hidePlayer) {
-      if (focusableRef.current[focusedIndex]) {
-        focusableRef.current[focusedIndex].focus();
+    if (sounds.hidePlayer) return;
+    const handleKeyDown = (e) => {
+      setKeyCatcher(e.key);
+      if (e.key === "ArrowDown") {
+        setFocusedIndex((prevIndex) => {
+          let next = (prevIndex + 1) % focusableRef.current.length;
+          while (focusableRef.current[next]?.disabled) {
+            next = (next + 1) % focusableRef.current.length;
+          }
+          return next;
+        });
       }
-    }
+
+      if (e.key === "ArrowUp") {
+        setFocusedIndex((prevIndex) => {
+          let next =
+            (prevIndex - 1 + focusableRef.current.length) %
+            focusableRef.current.length;
+          while (focusableRef.current[next]?.disabled) {
+            next =
+              (next - 1 + focusableRef.current.length) %
+              focusableRef.current.length;
+          }
+          return next;
+        });
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, [focusedIndex, sounds.hidePlayer]);
 
-  // Musik starten, falls noch nicht spielend
   useEffect(() => {
-    if (!sounds.playing) {
-      setSounds((prev) => ({ ...prev, playing: true }));
-    }
-  }, [intro]);
+    focusableRef.current[focusedIndex]?.focus();
+  }, [focusedIndex, focusableRef]);
 
 
   
@@ -63,7 +93,7 @@ function ReactPlayerComponent({ intro, setOptions }) {
       <div className="react-player-action">
         <div className="music-test">
           <button
-            ref={(el) => (focusableRef.current[0] = el)}
+           ref={(el) => (focusableRef.current[0] = el)}
             onClick={() =>
               setSounds((prev) => ({ ...prev, playing: !prev.playing }))
             }
@@ -73,12 +103,12 @@ function ReactPlayerComponent({ intro, setOptions }) {
         </div>
 
         <div className="placeholder">
-          {reactplayerItems.map((item) => 
+          {reactplayerItems.map((item) => (
             <div key={item.name} className={item.className}>
               <h2>{item.name}</h2>
               {item.component}
             </div>
-          )}
+          ))}
         </div>
       </div>
       <button
