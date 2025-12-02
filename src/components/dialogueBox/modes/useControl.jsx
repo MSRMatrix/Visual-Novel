@@ -3,6 +3,11 @@ import { handleKeyDown } from "../../functions/handleKeyDown";
 
 export function useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps }) {
   useEffect(() => {
+    console.log(focusableRef.current);
+    if(!focusableRef.current){
+      console.log(`array leer`);
+      
+    }
     if (ifDeps) {
       const listener = (e) =>
         handleKeyDown(e, focusableRef, false, currentStep, uiState, setUiState);
@@ -12,8 +17,11 @@ export function useKeyControl({ focusableRef, currentStep, uiState, setUiState, 
   }, [...effectdeps]);
 }
 
-export function useFocusMode({ focusableRef, currentStep, uiState, effectdeps, ifDeps }) {
+export function useFocusMode({ focusableRef, uiState, effectdeps, ifDeps }) {
   useEffect(() => {
+    // console.log(focusableRef);
+    // console.log(uiState);
+    
     if (ifDeps) {
       focusableRef.current[uiState.focusedIndex]?.focus();
     }

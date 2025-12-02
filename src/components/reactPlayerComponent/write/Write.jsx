@@ -45,9 +45,7 @@ const Write = ({ focusableRef, startIndex }) => {
           }}
           disabled={sounds.typing === soundFiles[key]}
           data-nosound
-          style={{
-            background: sounds.typing === soundFiles[key] ? "blue" : "",
-          }}
+     
         >
           {key}
         </button>

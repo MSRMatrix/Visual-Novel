@@ -8,8 +8,7 @@ import { mainMenu } from "../functions/mainMenu";
 import { newGame } from "../functions/newGame";
 import Backlog from "./backlog/Backlog";
 import Options from "../options/Options";
-import { handleKeyDown } from "../functions/handleKeyDown";
-import { useFocusMode, useKeyControl } from "../text/modes/useControl";
+import { useFocusMode, useKeyControl } from "../dialogueBox/modes/useControl";
 
 function Menu({
   currentStep,
@@ -70,7 +69,7 @@ function Menu({
   // Tastaturnavigation
 
   // Fokus setzen
-  useFocusMode({ focusableRef, currentStep, uiState, effectdeps, ifDeps });
+  useFocusMode({ focusableRef, uiState, effectdeps, ifDeps });
   // Fokus setzen
 
   return (
@@ -78,7 +77,7 @@ function Menu({
       <h1>Schnellmenü</h1>
       {menuButtons2.map((btn, idx) => (
         <button
-          ref={(el) => (focusableRef.current[0 + idx] = el)}
+          ref={(el) => (focusableRef.current[idx] = el)}
           key={btn.label}
           onClick={btn.onClick}
         >

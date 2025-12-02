@@ -45,7 +45,5 @@ export function buildBacklog(
       }
     });
   }
-  console.log(backlogSteps);
-
   return backlogSteps;
 }

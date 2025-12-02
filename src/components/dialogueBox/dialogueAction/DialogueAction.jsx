@@ -40,7 +40,7 @@ const DialogueAction = ({
     {
       label: "Menü",
       onClick: () => {
-        setUiState((prev) => ({...prev, quickMenu: true}))
+        setUiState((prev) => ({...prev, quickMenu: true, focusedIndex: 0 }))
         setAutoState((prev) => ({...prev, auto: false, skip: false}))
         setTextState((prev) => ({
           ...prev,

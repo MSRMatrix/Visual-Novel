@@ -45,9 +45,6 @@ const Click = ({ focusableRef, startIndex }) => {
           }}
           disabled={sounds.click === soundFiles[key]}
           data-nosound
-          style={{
-            background: sounds.click === soundFiles[key] ? "blue" : "",
-          }}
         >
           {key}
         </button>

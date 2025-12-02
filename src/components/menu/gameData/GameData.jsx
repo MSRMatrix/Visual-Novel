@@ -7,7 +7,7 @@ import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
 import { SoundContext } from "../../../context/SoundContext";
 import { handleKeyDown } from "../../functions/handleKeyDown";
-import { useFocusMode, useKeyControl } from "../../text/modes/useControl";
+import { useFocusMode, useKeyControl } from "../../dialogueBox/modes/useControl";
 
 function GameData({
   mode,

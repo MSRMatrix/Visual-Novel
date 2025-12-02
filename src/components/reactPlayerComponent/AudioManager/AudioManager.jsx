@@ -48,32 +48,34 @@ const AudioManager = ({
               }
             />
 
-            <input
-              ref={(el) => (focusableRef.current[startIndex + i * 2 + 1] = el)}
-              type="checkbox"
-              onChange={(e) =>
-                checkboxHandler(
-                  e.target.name,
-                  setSounds,
-                  keyCatcher,
-                  setKeyCatcher
-                )
-              }
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();  
-                  checkboxHandler(
-                    e.target.name,
-                    setSounds,
-                  );
-                }
-              }}
-              disabled={
-                item.name !== "masterVolume" && sounds.masterVolume <= 0
-              }
-              checked={sounds[item.name] <= 0 ? true : false}
-              name={item.name}
-            />
+            <label className="vn-checkbox">
+  <input
+    ref={(el) => (focusableRef.current[startIndex + i * 2 + 1] = el)}
+    type="checkbox"
+    onChange={(e) =>
+      checkboxHandler(
+        e.target.name,
+        setSounds,
+        keyCatcher,
+        setKeyCatcher
+      )
+    }
+    onKeyDown={(e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        checkboxHandler(e.target.name, setSounds);
+      }
+    }}
+    disabled={
+      item.name !== "masterVolume" && sounds.masterVolume <= 0
+    }
+    checked={sounds[item.name] <= 0}
+    name={item.name}
+  />
+
+  <span className="checkmark"></span>
+</label>
+
           </div>
         </div>
       ))}

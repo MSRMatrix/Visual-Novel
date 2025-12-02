@@ -12,20 +12,18 @@ function Root() {
   });
   const buttonRef = useRef(null);
 
-  // Klick-Sound
+
   function globalClick(e) {
     if (e.target.closest("[data-nosound]")) return;
     playClick();
   }
-  // Klick-Sound
+  
 
-  // Fokus wird sofort gesetzt
   useEffect(() => {
     buttonRef.current?.focus();
   }, []);
-  // Fokus wird sofort gesetzt
 
-  // Schaltet Fokus wieder ein wenn man irgendwo anders rumklickt
+
   const handleBlur = () => {
     if (intro) {
       setTimeout(() => {
@@ -33,8 +31,8 @@ function Root() {
       }, 0);
     }
   };
-  // Schaltet Fokus wieder ein wenn man irgendwo anders rumklickt
 
+  
   return (
     <div onClick={(e) => globalClick(e)} className="root">
       {intro ? (

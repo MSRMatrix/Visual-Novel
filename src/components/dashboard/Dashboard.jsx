@@ -2,7 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 import "./dashboard.css";
 import { SoundContext } from "../../context/SoundContext";
-import { handleMenuAction } from "../functions/handleMenuAction";
+import { handleMenuAction } from "./handleMenuAction";
 
 function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);

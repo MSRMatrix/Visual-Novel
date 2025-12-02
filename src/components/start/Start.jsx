@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import DialogueBox from '../text/DialogueBox'
+import DialogueBox from '../dialogueBox/DialogueBox'
 import './start.css'
 
 function Start() {

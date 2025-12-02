@@ -74,6 +74,8 @@ function ReactPlayerComponent({ intro, setOptions }) {
 
   useEffect(() => {
     focusableRef.current[focusedIndex]?.focus();
+    console.log(focusableRef.current[focusedIndex]);
+    
   }, [focusedIndex, focusableRef]);
 
 
@@ -87,7 +89,7 @@ function ReactPlayerComponent({ intro, setOptions }) {
         volume={sounds.musicVolume}
         loop
         onError={(e) => console.log("Player-Error:", e)}
-        // style={{display: "none"}}
+        style={{display: "none"}}
       />
 
       <div className="react-player-action">

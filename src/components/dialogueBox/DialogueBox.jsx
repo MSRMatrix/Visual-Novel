@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { story } from "./data/story";
+import { story } from "../text/data/story";
 import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import DialogueAction from "./dialogueAction/DialogueAction";
@@ -128,19 +128,32 @@ export default function VisualNovel({ hide, setHide }) {
   });
   // Auto-Modus
 
-  const effectdeps =[ uiState.focusedIndex, currentStep.type === "choice", currentStep.type === "game", uiState.quickMenu, uiState.gamePaused ];
+  const effectdeps = [
+    uiState.focusedIndex,
+    currentStep.type === "choice",
+    currentStep.type === "game",
+    uiState.quickMenu,
+    uiState.gamePaused,
+  ];
   const ifDeps = !uiState.quickMenu;
 
   // Tastaturnavigation
-  useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
+  useKeyControl({
+    focusableRef,
+    currentStep,
+    uiState,
+    setUiState,
+    effectdeps,
+    ifDeps,
+  });
   // Tastaturnavigation
 
   // Fokus setzen
-  useFocusMode({ focusableRef, currentStep, uiState , effectdeps, ifDeps });
+  useFocusMode({ focusableRef, uiState, effectdeps, ifDeps });
   // Fokus setzen
 
   return (
-    <div style={{ display: hide ? "none" : "block" }}>
+    <div className="vn-container" style={{ display: hide ? "none" : "block" }}>
       {!uiState.quickMenu ? (
         <div>
           <div>
