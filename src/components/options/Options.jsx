@@ -3,6 +3,7 @@ import "./options.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
 import Rate from "../rate/Rate";
+import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
 
 function Options({ action, setAction }) {
   const { sounds, setSounds } = useContext(SoundContext);
@@ -32,32 +33,19 @@ function Options({ action, setAction }) {
     { name: "Zurück", onClick: () => backFunction(), disabled: false },
   ];
 
-  // Tastaturnavigation
-  useEffect(() => {
-    if (!sounds.hidePlayer) return;
-      const handleKeyDown = (e) => {
-        if (e.key === "ArrowDown") {
-          setFocusedIndex((prev) => (prev + 1) % buttonItems.length);
-        } else if (e.key === "ArrowUp") {
-          setFocusedIndex((prev) =>
-            prev === 0 ? buttonItems.length - 1 : prev - 1
-          );
-        }
-      };
 
-      window.addEventListener("keydown", handleKeyDown);
-      return () => window.removeEventListener("keydown", handleKeyDown);
-    
-  }, [focusedIndex, sounds.hidePlayer, active]);
+const ifDeps = !sounds.hidePlayer;
+const effectDeps = [focusedIndex, sounds.hidePlayer, active];
 
-  useEffect(() => {
-    buttonRefs.current[focusedIndex]?.focus();
-  }, [focusedIndex]);
+useSimpleFocusMode({
+  ifDeps,
+  effectDeps,
+  arrayItem: buttonItems,
+  focusedIndex,
+  setFocusedIndex,
+  arrayFocus: buttonRefs
+});
 
-    useEffect(() => {
-    buttonRefs.current = [];
-    setFocusedIndex(0);
-  }, [sounds.options]);
 
   function backFunction() {
     if (action) {

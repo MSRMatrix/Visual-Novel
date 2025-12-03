@@ -3,7 +3,6 @@ import { handleKeyDown } from "../../functions/handleKeyDown";
 
 export function useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps }) {
   useEffect(() => {
-    console.log(focusableRef.current);
     if(!focusableRef.current){
       console.log(`array leer`);
       

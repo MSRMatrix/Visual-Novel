@@ -1,15 +1,13 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./credits.css";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
-import { handleKeyDown } from "../functions/handleKeyDown";
+import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
 
 const Credits = () => {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
   const menu_music = import.meta.env.VITE_MENU_MUSIC;
   const { sounds, setSounds } = useContext(SoundContext);
-
-  const focusableRef = useRef([]);
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0); 
   const buttonRefs = useRef([]);
@@ -21,25 +19,19 @@ const Credits = () => {
 
   const menuItems = ["Neustart","Menü"];
 
- useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowDown") {
-        setFocusedIndex((prev) => (prev + 1) % menuItems.length);
-      } else if (e.key === "ArrowUp") {
-        setFocusedIndex((prev) =>
-          prev === 0 ? menuItems.length - 1 : prev - 1
-        );
-      }
-    };
+const ifDeps = false;
+const effectDeps = [focusedIndex, sounds.hidePlayer];
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+useSimpleFocusMode({
+  ifDeps,
+  effectDeps,
+  arrayItem: menuItems,
+  focusedIndex,
+  setFocusedIndex,
+  arrayFocus: buttonRefs
+});
 
-  // Fokussieren
-  useEffect(() => {
-    buttonRefs.current[focusedIndex]?.focus();
-  }, [focusedIndex]);
+
 
   return (
     <>

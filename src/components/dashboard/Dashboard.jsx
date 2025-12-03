@@ -3,6 +3,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import "./dashboard.css";
 import { SoundContext } from "../../context/SoundContext";
 import { handleMenuAction } from "./handleMenuAction";
+import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
 
 function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);
@@ -18,26 +19,19 @@ function Dashboard() {
   };
 
   const menuItems = ["start", "load", "options"];
+  
+const ifDeps = false;
+const effectDeps = [focusedIndex, sounds.hidePlayer];
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowDown") {
-        setFocusedIndex((prev) => (prev + 1) % menuItems.length);
-      } else if (e.key === "ArrowUp") {
-        setFocusedIndex((prev) =>
-          prev === 0 ? menuItems.length - 1 : prev - 1
-        );
-      }
-    };
+useSimpleFocusMode({
+  ifDeps,
+  effectDeps,
+  arrayItem: menuItems,
+  focusedIndex,
+  setFocusedIndex,
+  arrayFocus: buttonRefs
+});
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  // Fokussieren
-  useEffect(() => {
-    buttonRefs.current[focusedIndex]?.focus();
-  }, [focusedIndex]);
 
   return (
     <div className="dashboard">
