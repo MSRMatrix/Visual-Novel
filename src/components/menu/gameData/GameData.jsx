@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "./gameData.css";
 import { useNavigate } from "react-router-dom";
 import { saveData } from "../../functions/saveData";
@@ -6,19 +6,22 @@ import { loadData } from "../../functions/loadData";
 import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
 import { SoundContext } from "../../../context/SoundContext";
-import { handleKeyDown } from "../../functions/handleKeyDown";
-import { useFocusMode, useKeyControl } from "../../dialogueBox/modes/useControl";
+import {
+  useFocusMode,
+  useKeyControl,
+} from "../../dialogueBox/modes/useControl";
 
 function GameData({
   mode,
   setMode,
   action,
-  setAction, currentStep,
-                storyState,
-                setStoryState,
-                setTextState,
-uiState,
-setUiState
+  setAction,
+  currentStep,
+  storyState,
+  setStoryState,
+  setTextState,
+  uiState,
+  setUiState,
 }) {
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
@@ -38,12 +41,7 @@ setUiState
   function actionFunction(slotName) {
     switch (mode) {
       case "save":
-        return saveData(
-          slotName,
-          saves,
-          setSaves,
-          storyState
-        );
+        return saveData(slotName, saves, setSaves, storyState);
       case "delete":
         return deleteData(slotName, saves, setSaves);
       case "load":
@@ -55,7 +53,7 @@ setUiState
           setStoryState,
           setTextState,
           uiState,
-setUiState
+          setUiState
         );
         return;
       default:
@@ -66,16 +64,29 @@ setUiState
 
   const focusableRef = useRef([]);
 
-  const effectdeps =[ uiState.focusedIndex, uiState.quickMenu, action, currentStep.type === "choice" , currentStep.type === "game"];
+  const effectdeps = [
+    uiState.focusedIndex,
+    uiState.quickMenu,
+    action,
+    currentStep.type === "choice",
+    currentStep.type === "game",
+  ];
   const ifDeps = action === "save" || action === "load" || action === "delete";
 
-    // Tastaturnavigation
-    useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps });
-    // Tastaturnavigation
-  
-    // Fokus setzen
-    useFocusMode({ focusableRef, currentStep, uiState , effectdeps, ifDeps });
-    // Fokus setzen
+  // Tastaturnavigation
+  useKeyControl({
+    focusableRef,
+    currentStep,
+    uiState,
+    setUiState,
+    effectdeps,
+    ifDeps,
+  });
+  // Tastaturnavigation
+
+  // Fokus setzen
+  useFocusMode({ focusableRef, currentStep, uiState, effectdeps, ifDeps });
+  // Fokus setzen
 
   return (
     <>
@@ -88,17 +99,17 @@ setUiState
           key={item.name}
           onClick={() => actionFunction(item.name)}
         >
-          <h2>{item.name}</h2>
+          <h2
+            style={{
+              color: !item.timestamp && action !== "save" ? "transparent" : "",
+            }}
+          >
+            {item.name}
+          </h2>
           <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
           <p>{item.chapter ? `Kapitel: ${item.chapter}` : ""}</p>
-          <p>
-            {item.scene ? `Szene im Kapitel: ${item.scene}` : ""}
-          </p>
-          <p>
-            {item.step >= 0
-              ? `Punkt in der Szene: ${item.step + 1}`
-              : ""}
-          </p>
+          <p>{item.scene ? `Szene im Kapitel: ${item.scene}` : ""}</p>
+          <p>{item.step >= 0 ? `Punkt in der Szene: ${item.step + 1}` : ""}</p>
           <p>
             {isNaN(item.playTime)
               ? ""

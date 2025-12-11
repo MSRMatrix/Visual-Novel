@@ -74,8 +74,6 @@ function ReactPlayerComponent({ intro, setOptions }) {
 
   useEffect(() => {
     focusableRef.current[focusedIndex]?.focus();
-    console.log(focusableRef.current[focusedIndex]);
-    
   }, [focusedIndex, focusableRef]);
 
 

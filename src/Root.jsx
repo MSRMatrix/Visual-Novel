@@ -32,6 +32,14 @@ function Root() {
     }
   };
 
+  const text = [
+    {name: "System Initializing..."},
+    {name: "Loading World Data..."},
+    {name: "Establishing Connection..."},
+  ]
+
+  // Eine Typewriter Intro wo jedes einzelne Wort eingeblendet wird. Am Ende erscheint der Button wo dann weiter oder so steht. Ungefähr 10 Sekunden oder so
+  // Eine Typewriter Intro wo jedes einzelne Wort eingeblendet wird. Am Ende erscheint der Button wo dann weiter oder so steht. Ungefähr 10 Sekunden oder so
   
   return (
     <div onClick={(e) => globalClick(e)} className="root">
@@ -41,7 +49,7 @@ function Root() {
           onClick={() => setIntro(false)}
           onBlur={handleBlur}
         >
-          klick mich
+          Weiter
         </button>
       ) : (
         <div>

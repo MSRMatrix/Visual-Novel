@@ -1,6 +1,6 @@
+import "./dialogueBox.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { story } from "../text/data/story";
-import "./dialogueBox.css";
 import Menu from "../menu/Menu";
 import DialogueAction from "./dialogueAction/DialogueAction";
 import { LoadContext } from "../../context/LoadContext";
@@ -153,7 +153,7 @@ export default function VisualNovel({ hide, setHide }) {
   // Fokus setzen
 
   return (
-    <div className="vn-container" style={{ display: hide ? "none" : "block" }}>
+    <div className="dialog-box" style={{ display: hide ? "none" : "block" }}>
       {!uiState.quickMenu ? (
         <div>
           <div>

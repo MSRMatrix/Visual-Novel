@@ -74,12 +74,13 @@ function Load() {
     <>
       {saves.map((item, index) => (
         <button
+        
           disabled={!item.timestamp}
           ref={(el) => (focusableRef.current[0 + index] = el)}
           key={item.name}
           onClick={() => handleLoad(item.name)}
         >
-          <h2>{item.name}</h2>
+          <h2 style={{color: !item.timestamp ? "transparent" : ""}}>{item.name}</h2>
           <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
           <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
           <p>
