@@ -7,7 +7,7 @@ import Write from "./write/Write";
 import MusicData from "./musicData/MusicData";
 import "./reactPlayerComponent.css";
 
-function ReactPlayerComponent({ intro, setOptions }) {
+function ReactPlayerComponent() {
   const { sounds, setSounds } = useContext(SoundContext);
   const focusableRef = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);

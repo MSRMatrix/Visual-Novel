@@ -1,4 +1,4 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./options.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
@@ -58,7 +58,7 @@ useSimpleFocusMode({
   }
 
   return (
-    <>
+    <div className="options">
       {sounds.options ? (
         ""
       ) : (
@@ -84,7 +84,7 @@ useSimpleFocusMode({
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 }
 

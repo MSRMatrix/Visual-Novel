@@ -19,38 +19,36 @@ function Dashboard() {
   };
 
   const menuItems = ["start", "load", "options"];
-  
-const ifDeps = false;
-const effectDeps = [focusedIndex, sounds.hidePlayer];
 
-useSimpleFocusMode({
-  ifDeps,
-  effectDeps,
-  arrayItem: menuItems,
-  focusedIndex,
-  setFocusedIndex,
-  arrayFocus: buttonRefs
-});
+  const ifDeps = false;
+  const effectDeps = [focusedIndex, sounds.hidePlayer];
 
+  useSimpleFocusMode({
+    ifDeps,
+    effectDeps,
+    arrayItem: menuItems,
+    focusedIndex,
+    setFocusedIndex,
+    arrayFocus: buttonRefs,
+  });
 
   return (
     <div className="dashboard">
-     {menuItems.map((route, index) => (
-  <button
-    key={route}
-    ref={(el) => (buttonRefs.current[index] = el)}
-    onClick={() =>
-      handleMenuAction(route, navigate, setSounds, setActiveMenu)
-    }
-    onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
-    disabled={false}
-    data-nosound="false"
-    className="menu-button"
-  >
-    {labels[route] || route}
-  </button>
-))}
-
+      {menuItems.map((route, index) => (
+        <button
+          key={route}
+          ref={(el) => (buttonRefs.current[index] = el)}
+          onClick={() =>
+            handleMenuAction(route, navigate, setSounds, setActiveMenu)
+          }
+          onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
+          disabled={false}
+          data-nosound="false"
+          className="menu-button"
+        >
+          {labels[route] || route}
+        </button>
+      ))}
     </div>
   );
 }
