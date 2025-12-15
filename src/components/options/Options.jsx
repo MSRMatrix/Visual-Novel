@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./options.css";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
 import Rate from "../rate/Rate";
 import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";

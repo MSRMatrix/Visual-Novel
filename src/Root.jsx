@@ -31,30 +31,56 @@ function Root() {
     "System Initializing...",
     "Loading World Data...",
     "Establishing Connection...",
+    "",
   ];
-
   const [index, setIndex] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
+  const [displayed, setDisplayed] = useState("");
 
-  // initialer Text
-  let text = exampleText[index];
+
+  const text = exampleText[index];
 
   useEffect(() => {
-    if (index === exampleText.length - 1) return; // aufhören beim letzten
+  if (!intro) return;
 
-    const interval = setInterval(() => {
-      setIndex((prev) => prev + 1);
-    }, 3000);
+  const fullText = exampleText[index];
+  let charIndex = 0;
 
-    return () => clearInterval(interval);
-  }, [index]);
+  setDisplayed(""); // Reset bei neuem Text
 
-  // Eine Typewriter Intro wo jedes einzelne Wort eingeblendet wird. Am Ende erscheint der Button wo dann weiter oder so steht. Ungefähr 10 Sekunden oder so
-  // Eine Typewriter Intro wo jedes einzelne Wort eingeblendet wird. Am Ende erscheint der Button wo dann weiter oder so steht. Ungefähr 10 Sekunden oder so
+  const interval = setInterval(() => {
+    charIndex++;
+    setDisplayed(fullText.substring(0, charIndex));
+
+    if (charIndex >= fullText.length) {
+      clearInterval(interval);
+    }
+  }, 50); // Schreibgeschwindigkeit
+
+  return () => clearInterval(interval);
+}, [index, intro]);
+
+
+useEffect(() => {
+  if (!intro) return;
+
+  if (index === exampleText.length - 1) {
+    setIsFinished(true);
+    return;
+  }
+
+  const timeout = setTimeout(() => {
+    setIndex((prev) => prev + 1);
+  }, 3000);
+
+  return () => clearTimeout(timeout);
+}, [index, intro]);
 
   return (
-    <div onClick={(e) => globalClick(e)} className="root">
-      {intro ? text : ""}
-      {intro ? (
+    <div className="root" onClick={globalClick}>
+      {intro && <p>{displayed}</p>}
+
+      {intro && isFinished && (
         <button
           ref={buttonRef}
           onClick={() => setIntro(false)}
@@ -62,11 +88,13 @@ function Root() {
         >
           Weiter
         </button>
-      ) : (
-        <div>
+      )}
+
+      {!intro && (
+        <>
           <Outlet />
           <ReactPlayerComponent />
-        </div>
+        </>
       )}
     </div>
   );
