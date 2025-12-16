@@ -1,5 +1,5 @@
-import { useContext, useRef, useState } from "react";
 import "./gameData.css";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { saveData } from "../../functions/saveData";
 import { loadData } from "../../functions/loadData";
@@ -10,6 +10,15 @@ import {
   useFocusMode,
   useKeyControl,
 } from "../../dialogueBox/modes/useControl";
+
+import { library } from "@fortawesome/fontawesome-svg-core";
+import {
+  faFloppyDisk,
+  faTrashCan,
+  faCloud,
+  faFaceMeh
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function GameData({
   mode,
@@ -23,6 +32,10 @@ function GameData({
   uiState,
   setUiState,
 }) {
+  console.log(mode);
+
+  library.add(faFloppyDisk, faTrashCan, faCloud);
+
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();
   const [saves, setSaves] = useState(() => {
@@ -89,33 +102,53 @@ function GameData({
   // Fokus setzen
 
   return (
-    <>
+    <div className="game-data">
       {saves.map((item, idx) => (
-        <button
+          <button 
           disabled={action !== "save" && !item.timestamp}
           className="gameData"
           tabIndex={0}
           ref={(el) => (focusableRef.current[0 + idx] = el)}
-          key={item.name}
           onClick={() => actionFunction(item.name)}
-        >
-          <h2
-            style={{
-              color: !item.timestamp && action !== "save" ? "transparent" : "",
-            }}
+          key={item.name}
           >
-            {item.name}
-          </h2>
-          <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
-          <p>{item.chapter ? `Kapitel: ${item.chapter}` : ""}</p>
-          <p>{item.scene ? `Szene im Kapitel: ${item.scene}` : ""}</p>
-          <p>{item.step >= 0 ? `Punkt in der Szene: ${item.step + 1}` : ""}</p>
-          <p>
-            {isNaN(item.playTime)
-              ? ""
-              : `Spielzeit: ${formatTime(item.playTime)}`}
-          </p>
-        </button>
+            <h2
+              style={{
+                color:
+                  !item.timestamp && action !== "save" ? "transparent" : "",
+              }}
+            >
+              {item.name}
+            </h2>
+            <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
+            <p>{item.chapter ? `Kapitel: ${item.chapter}` : ""}</p>
+            <p>{item.scene ? `Szene im Kapitel: ${item.scene}` : ""}</p>
+            <p>
+              {item.step >= 0 ? `Punkt in der Szene: ${item.step + 1}` : ""}
+            </p>
+            <p>
+              {isNaN(item.playTime)
+                ? ""
+                : `Spielzeit: ${formatTime(item.playTime)}`}
+            </p>
+            <FontAwesomeIcon
+            
+            style={{
+                display:
+                  !item.timestamp && action !== "block" ? "none" : "",
+              }}
+              icon={
+                mode === "save"
+                  ? "floppy-disk"
+                  : mode === "delete"
+                  ? "trash-can"
+                  : mode === "load"
+                  ? "cloud"
+                  : "face-meh"
+              }
+            />
+          </button>
+            
       ))}
       <button
         ref={(el) => (focusableRef.current[5] = el)}
@@ -123,7 +156,7 @@ function GameData({
       >
         Zurück
       </button>
-    </>
+    </div>
   );
 }
 

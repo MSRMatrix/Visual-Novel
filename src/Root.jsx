@@ -1,8 +1,12 @@
+import "./root.css"
 import { Outlet } from "react-router-dom";
 import ReactPlayerComponent from "./components/reactPlayerComponent/ReactPlayerComponent";
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
 import { SoundContext } from "./context/SoundContext";
+
+
+
 
 function Root() {
   const [intro, setIntro] = useState(true);
@@ -36,9 +40,6 @@ function Root() {
   const [index, setIndex] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
   const [displayed, setDisplayed] = useState("");
-
-
-  const text = exampleText[index];
 
   useEffect(() => {
   if (!intro) return;

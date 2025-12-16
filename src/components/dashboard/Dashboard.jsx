@@ -1,13 +1,12 @@
-import { NavLink, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
 import "./dashboard.css";
+import { useNavigate } from "react-router-dom";
+import { useContext, useRef, useState } from "react";
 import { SoundContext } from "../../context/SoundContext";
 import { handleMenuAction } from "./handleMenuAction";
 import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
 
 function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);
-  const [activeMenu, setActiveMenu] = useState(true);
   const navigate = useNavigate("");
   const buttonRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -39,7 +38,7 @@ function Dashboard() {
           key={route}
           ref={(el) => (buttonRefs.current[index] = el)}
           onClick={() =>
-            handleMenuAction(route, navigate, setSounds, setActiveMenu)
+            handleMenuAction(route, navigate, setSounds)
           }
           onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
           disabled={false}

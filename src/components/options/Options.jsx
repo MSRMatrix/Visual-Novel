@@ -58,7 +58,7 @@ useSimpleFocusMode({
   }
 
   return (
-    <div className="options">
+    <div className={sounds.hidePlayer ? "options" : ""}>
       {sounds.options ? (
         ""
       ) : (
