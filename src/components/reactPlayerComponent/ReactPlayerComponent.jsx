@@ -77,6 +77,8 @@ function ReactPlayerComponent() {
   }, [focusedIndex, focusableRef]);
 
 
+  // Der Player wird nicht manchmal richtig ausgeblendet
+  // Der Player wird nicht manchmal richtig ausgeblendet
   
 
   return (

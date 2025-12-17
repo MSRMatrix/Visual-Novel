@@ -152,8 +152,12 @@ export default function VisualNovel({ hide, setHide }) {
   useFocusMode({ focusableRef, uiState, effectdeps, ifDeps });
   // Fokus setzen
 
+
+  // Height muss sich dem Reactplayer anpassen
+  // Height muss sich dem Reactplayer anpassen
+
   return (
-    <div className="dialog-box" style={{ display: hide ? "none" : "block" }}>
+    <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
       {!uiState.quickMenu ? (
         <div>
           <div>
