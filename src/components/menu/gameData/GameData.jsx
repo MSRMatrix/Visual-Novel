@@ -32,9 +32,8 @@ function GameData({
   uiState,
   setUiState,
 }) {
-  console.log(mode);
-
-  library.add(faFloppyDisk, faTrashCan, faCloud);
+  
+  library.add(faFloppyDisk, faTrashCan, faCloud, faFaceMeh);
 
   const { sounds, setSounds } = useContext(SoundContext);
   const navigate = useNavigate();

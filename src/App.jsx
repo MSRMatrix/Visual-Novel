@@ -12,6 +12,7 @@ import { SoundContext } from "./context/SoundContext";
 import click from "./sound/normalClick.wav"
 import typing from "./sound/typing-1.wav"
 import { WriteContext } from "./context/WriteContext";
+import OptionsPanel from "./components/optionsPanel/OptionsPanel";
 
 function App() {
   const menu_music = import.meta.env.VITE_MENU_MUSIC
@@ -28,6 +29,7 @@ function App() {
         { element: <Start />, path: "/start" },
         { element: <Credits />, path: "/credits" },
         { element: <Load />, path: "/load" },
+        { element: <OptionsPanel />, path: "/options-panel" },
       ],
     },
   ]);

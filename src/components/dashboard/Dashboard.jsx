@@ -11,13 +11,15 @@ function Dashboard() {
   const buttonRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
-  const labels = {
-    start: "Start",
-    load: "Spiel laden",
-    options: "Optionen",
-  };
+const menuItems = ["start", "load", "options", "options-panel"];
 
-  const menuItems = ["start", "load", "options"];
+const labels = {
+  start: "Start",
+  load: "Spiel laden",
+  options: "Optionen",
+  "options-panel": "Optionen Panel",
+};
+
 
   const ifDeps = false;
   const effectDeps = [focusedIndex, sounds.hidePlayer];
