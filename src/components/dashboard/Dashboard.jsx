@@ -11,13 +11,13 @@ function Dashboard() {
   const buttonRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
 
-const menuItems = ["start", "load", "options", "options-panel"];
+const menuItems = ["start", "load", "options", "data-options"];
 
 const labels = {
   start: "Start",
   load: "Spiel laden",
   options: "Optionen",
-  "options-panel": "Optionen Panel",
+  "data-options": "Daten Verwaltung",
 };
 
 
