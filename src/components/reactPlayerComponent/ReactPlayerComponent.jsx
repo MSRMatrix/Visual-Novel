@@ -76,11 +76,6 @@ function ReactPlayerComponent() {
     focusableRef.current[focusedIndex]?.focus();
   }, [focusedIndex, focusableRef]);
 
-
-  // Der Player wird nicht manchmal richtig ausgeblendet
-  // Der Player wird nicht manchmal richtig ausgeblendet
-  
-
   return (
     <div className={`react-player ${sounds.hidePlayer ? "hide" : ""}`}>
       <ReactPlayer

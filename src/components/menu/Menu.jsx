@@ -57,7 +57,7 @@ const menuButtons = [
     },
   }, { 
     label: "Ins Hauptmenü",
-    onClick: () => mainMenu(setAction, setLoad, setSounds, navigate, setStoryState)
+    onClick: () => {mainMenu(setAction, setLoad, setSounds, navigate, setStoryState), setSounds((prev) => ({ ...prev, hidePlayer: true,}))}
   }
 ];
 
