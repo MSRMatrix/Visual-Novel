@@ -5,7 +5,7 @@ import Start from "./components/start/Start";
 import Options from "./components/options/Options";
 import Credits from "./components/credits/Credits";
 import Load from "./components/load/Load";
-import { LoadContext } from "./context/LoadContext";
+import { LoadContext, LoadingOverlay } from "./context/LoadContext";
 import { useState } from "react";
 import Root from "./Root";
 import { SoundContext } from "./context/SoundContext";
@@ -57,10 +57,14 @@ function App() {
   })
 
   const [writeSpeed, setWriteSpeed] = useState(30)
-
+  const [loadingOverlay, setLoadingOverlay] = useState({
+    loader: true,
+    title: ""
+  })
 
   return (
     <>
+    <LoadingOverlay.Provider value={{loadingOverlay, setLoadingOverlay}}>
     <WriteContext.Provider value={{writeSpeed, setWriteSpeed}}>
       <LoadContext.Provider value={{ load, setLoad }}>
         <SoundContext.Provider value={{sounds, setSounds}}>
@@ -68,6 +72,7 @@ function App() {
         </SoundContext.Provider>
       </LoadContext.Provider>
       </WriteContext.Provider>
+      </LoadingOverlay.Provider>
     </>
   );
 }

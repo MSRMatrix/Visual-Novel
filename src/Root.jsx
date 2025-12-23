@@ -1,15 +1,15 @@
-import "./root.css"
+import "./root.css";
 import { Outlet } from "react-router-dom";
 import ReactPlayerComponent from "./components/reactPlayerComponent/ReactPlayerComponent";
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
 import { SoundContext } from "./context/SoundContext";
-
-
-
+import Loader from "./components/loader/Loader";
+import { LoadingOverlay } from "./context/LoadContext";
 
 function Root() {
   const [intro, setIntro] = useState(true);
+  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
   const { sounds, setSounds } = useContext(SoundContext);
   const [playClick] = useSound(sounds.click, { volume: sounds.clickVolume });
   const buttonRef = useRef(null);
@@ -42,62 +42,69 @@ function Root() {
   const [displayed, setDisplayed] = useState("");
 
   useEffect(() => {
-  if (!intro) return;
+    if (!intro || loadingOverlay.loader) return;
 
-  const fullText = exampleText[index];
-  let charIndex = 0;
+    const fullText = exampleText[index];
+    let charIndex = 0;
 
-  setDisplayed(""); // Reset bei neuem Text
+    setDisplayed(""); // Reset bei neuem Text
 
-  const interval = setInterval(() => {
-    charIndex++;
-    setDisplayed(fullText.substring(0, charIndex));
+    const interval = setInterval(() => {
+      charIndex++;
+      setDisplayed(fullText.substring(0, charIndex));
 
-    if (charIndex >= fullText.length) {
-      clearInterval(interval);
+      if (charIndex >= fullText.length) {
+        clearInterval(interval);
+      }
+    }, 50); // Schreibgeschwindigkeit
+
+    return () => clearInterval(interval);
+  }, [index, intro, loadingOverlay.loader]);
+
+  useEffect(() => {
+    if (!intro || loadingOverlay.loader) return;
+
+    if (index === exampleText.length - 1) {
+      setIsFinished(true);
+      return;
     }
-  }, 50); // Schreibgeschwindigkeit
 
-  return () => clearInterval(interval);
-}, [index, intro]);
+    const timeout = setTimeout(() => {
+      setIndex((prev) => prev + 1);
+    }, 3000);
 
-
-useEffect(() => {
-  if (!intro) return;
-
-  if (index === exampleText.length - 1) {
-    setIsFinished(true);
-    return;
-  }
-
-  const timeout = setTimeout(() => {
-    setIndex((prev) => prev + 1);
-  }, 3000);
-
-  return () => clearTimeout(timeout);
-}, [index, intro]);
+    return () => clearTimeout(timeout);
+  }, [index, intro, loadingOverlay.loader]);
 
   return (
-    <div className="root" onClick={globalClick}>
-      {intro && <p>{displayed}</p>}
+    <>
+      {loadingOverlay.loader ? (
+        <Loader />
+      ) : (
+        <div className="root" onClick={globalClick}>
+          {intro && <p>{displayed}</p>}
 
-      {intro && isFinished && (
-        <button
-          ref={buttonRef}
-          onClick={() => setIntro(false)}
-          onBlur={handleBlur}
-        >
-          Weiter
-        </button>
-      )}
+          {intro && isFinished && (
+            <button
+              ref={buttonRef}
+              onClick={() => setIntro(false)}
+              onBlur={handleBlur}
+            >
+              Weiter
+            </button>
+          )}
 
-      {!intro && (
-        <>
-          <Outlet />
-          <ReactPlayerComponent />
-        </>
+          {!intro && (
+            <>
+              <div>
+                <Outlet />
+                <ReactPlayerComponent />
+              </div>
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

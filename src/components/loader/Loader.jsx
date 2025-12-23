@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./loader.css"
+import { LoadingOverlay } from "../../context/LoadContext";
 
-const Loader = () => {
+const Loader = ({title}) => {
 const [percent, setPercent] = useState(0)
+const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 // Es gibt einen Ladebalken als visuelles Ladesymbol
 // Der Ladebalken füllt sich gleichmäßig von 0 % bis ca. 90 %
 // Ab 90 % stoppt der Ladebalken bewusst
@@ -14,8 +16,15 @@ const [percent, setPercent] = useState(0)
 // kurze visuelle Bestätigung (z. B. kurzes Aufleuchten / Fade)
 // Übergang zur eigentlichen Ansicht (z. B. Menü oder Spiel)
 
+useEffect(() => {
+    setTimeout(() => {
+        setLoadingOverlay({loader: false, title:""})
+    }, 6000);
+},[])
+
     return(
         <div className="loader">
+            <h1>{title}</h1>
         <div></div>
         <p>{percent}%</p>
         </div>
