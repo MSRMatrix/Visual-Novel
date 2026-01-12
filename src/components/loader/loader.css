@@ -1,0 +1,16 @@
+.loading-bar{
+    width: 150px;
+    height: 20px;
+    border: 3px white solid;
+   background: linear-gradient(
+  to left,
+  blue 0%,
+  blue 0%,
+  transparent 0%,
+  transparent 100%
+);
+
+}
+
+
+/* Der Balken muss verändert werden */

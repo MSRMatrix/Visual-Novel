@@ -25,8 +25,8 @@ useEffect(() => {
     return(
         <div className="loader">
             <h1>{title}</h1>
-        <div></div>
-        <p>{percent}%</p>
+        <div className="loading-bar"></div>
+        <p className="percent">{percent}%</p>
         </div>
     )
 }
