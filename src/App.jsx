@@ -59,7 +59,10 @@ function App() {
   const [writeSpeed, setWriteSpeed] = useState(30)
   const [loadingOverlay, setLoadingOverlay] = useState({
     loader: true,
-    title: ""
+    title: "",
+    percentBar: false,
+    ready: false,
+    percent: 0
   })
 
   return (

@@ -78,8 +78,8 @@ function Root() {
 
   return (
     <>
-      {loadingOverlay.loader ? (
-        <Loader />
+       {loadingOverlay.loader ? (
+        <Loader title={"Intro"} isReady={intro && exampleText ? true : false}/>
       ) : (
         <div className="root" onClick={globalClick}>
           {intro && <p>{displayed}</p>}
@@ -103,7 +103,7 @@ function Root() {
             </>
           )}
         </div>
-      )}
+      )}  
     </>
   );
 }
