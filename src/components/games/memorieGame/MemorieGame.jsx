@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./memorieGame.css";
 import { cardHandler, createDeck } from "./cardFunctions";
 import { useCardMode } from "./modes/cardModes";

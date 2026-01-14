@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import "./loader.css";
-import { LoadingOverlay } from "../../context/LoadContext";
+import { LoadingOverlay } from "../../context/AppProviders";
 
 const Loader = ({ title, isReady }) => {
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);

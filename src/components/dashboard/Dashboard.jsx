@@ -1,9 +1,11 @@
 import "./dashboard.css";
+
 import { useNavigate } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
-import { SoundContext } from "../../context/SoundContext";
+
+import { SoundContext } from "../../context/AppProviders";
 import { handleMenuAction } from "./handleMenuAction";
-import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
+import { useSimpleFocusMode } from "../modes/useMode";
 
 function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);

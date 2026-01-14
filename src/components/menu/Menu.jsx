@@ -2,13 +2,12 @@ import { useNavigate } from "react-router-dom";
 import "./menu.css";
 import { useContext, useRef, useState } from "react";
 import GameData from "./gameData/GameData";
-import { LoadContext } from "../../context/LoadContext";
-import { SoundContext } from "../../context/SoundContext";
 import { mainMenu } from "../functions/mainMenu";
 import { newGame } from "../functions/newGame";
 import Backlog from "./backlog/Backlog";
 import Options from "../options/Options";
-import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
+import { useSimpleFocusMode } from "../modes/hooks/useSimpleFocusMode";
+import { LoadContext, SoundContext } from "../../context/AppProviders";
 
 function Menu({
   currentStep,

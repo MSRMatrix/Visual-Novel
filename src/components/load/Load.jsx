@@ -1,9 +1,8 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { LoadContext } from "../../context/LoadContext";
+import { useNavigate } from "react-router-dom";
 import { formatTime } from "../functions/formatTime";
 import { handleKeyDown } from "../functions/handleKeyDown";
-import { SoundContext } from "../../context/SoundContext";
+import { LoadContext, SoundContext } from "../../context/AppProviders";
 
 function Load() {
   const game_music = import.meta.env.VITE_GAME_MUSIC;

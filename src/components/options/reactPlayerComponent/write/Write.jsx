@@ -1,10 +1,8 @@
 import { useContext, useEffect } from "react";
-import { SoundContext } from "../../../context/SoundContext";
-import { handleSound } from "../../functions/handleSound";
 import useSound from "use-sound";
-import typing1 from "../../../sound/typing-1.wav";
-import typing2 from "../../../sound/typing-2.mp3";
-import typing3 from "../../../sound/typing-3.mp3";
+import { typing1, typing2, typing3 } from "../soundEffects";
+import { SoundContext } from "../../../../context/AppProviders";
+import { handleSound } from "../../../functions/handleSound";
 
 const Write = ({ focusableRef, startIndex }) => {
   const { sounds, setSounds } = useContext(SoundContext);

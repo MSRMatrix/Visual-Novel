@@ -1,7 +1,8 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { nextStep } from "../../functions/nextStep";
 import { stepBack } from "../../functions/stepBack";
-import { useNavigate } from "react-router-dom";
 
 const DialogueAction = ({
   scene,

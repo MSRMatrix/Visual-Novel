@@ -1,15 +1,7 @@
 import "./gameData.css";
+
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveData } from "../../functions/saveData";
-import { loadData } from "../../functions/loadData";
-import { deleteData } from "../../functions/deleteData";
-import { formatTime } from "../../functions/formatTime";
-import { SoundContext } from "../../../context/SoundContext";
-import {
-  useFocusMode,
-  useKeyControl,
-} from "../../dialogueBox/modes/useControl";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -19,6 +11,14 @@ import {
   faFaceMeh
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { saveData } from "../../functions/saveData";
+import { loadData } from "../../functions/loadData";
+import { deleteData } from "../../functions/deleteData";
+import { formatTime } from "../../functions/formatTime";
+
+import { SoundContext } from "../../../context/AppProviders";
+import { useFocusMode, useKeyControl } from "../../modes/useMode";
 
 function GameData({
   mode,

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from "react";
-import { SoundContext } from "../../../context/SoundContext";
-import { handleVolumeChange } from "../../functions/handleVolumeChange";
-import { checkboxHandler } from "../../functions/checkboxHandler";
+import { checkboxHandler } from "../../../functions/checkboxHandler";
+import { handleVolumeChange } from "../../../functions/handleVolumeChange";
+import { SoundContext } from "../../../../context/AppProviders";
 
 const AudioManager = ({
   focusableRef,

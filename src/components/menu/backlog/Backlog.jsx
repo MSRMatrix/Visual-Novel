@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
+
 import { story } from "../../text/data/story";
-import { handleKeyDown } from "../../functions/handleKeyDown";
 import { buildBacklog } from "./buildBacklog";
-import { useFocusMode, useKeyControl } from "../../dialogueBox/modes/useControl";
+import { useFocusMode, useKeyControl } from "../../modes/useMode";
 
 function Backlog({setAction, action, currentStep, storyState, uiState, setUiState}) {
 

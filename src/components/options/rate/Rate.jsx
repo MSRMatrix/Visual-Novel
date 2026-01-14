@@ -1,8 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { WriteContext } from "../../context/WriteContext";
-import { SoundContext } from "../../context/SoundContext";
 import { useTypeWriteMode } from "./modes/useTypeWriteMode";
 import { showSpeedRate, writespeedHandler } from "./functions/writeFunctions";
+import { SoundContext, WriteContext } from "../../../context/AppProviders";
 
 function Rate({ active, setActive }) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);

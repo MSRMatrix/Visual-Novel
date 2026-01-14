@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import DialogueBox from '../dialogueBox/DialogueBox'
 import './start.css'
+import { LoadingOverlay } from '../../context/AppProviders';
 
 function Start() {
-  
+   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
   const [hide, setHide] = useState(false)
 
   function displayDialogueBox(){

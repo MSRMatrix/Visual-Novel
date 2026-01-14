@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { handleFileChange } from "./handleFileChange";
 import { dataHandler } from "./dataHandler";
-import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faDownload,
@@ -11,6 +10,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSimpleFocusMode } from "../modes/useMode";
 
 const DataOptions = () => {
   library.add(faDownload, faUpload);

@@ -1,17 +1,14 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useState } from "react";
+import { LoadContext, LoadingOverlay, SoundContext, WriteContext } from "./context/AppProviders";
+import { click1, typing1 } from "./components/options/reactPlayerComponent/soundEffects";
+import Root from "./Root";
 import Dashboard from "./components/dashboard/Dashboard";
 import Start from "./components/start/Start";
 import Options from "./components/options/Options";
 import Credits from "./components/credits/Credits";
 import Load from "./components/load/Load";
-import { LoadContext, LoadingOverlay } from "./context/LoadContext";
-import { useState } from "react";
-import Root from "./Root";
-import { SoundContext } from "./context/SoundContext";
-import click from "./sound/normalClick.wav"
-import typing from "./sound/typing-1.wav"
-import { WriteContext } from "./context/WriteContext";
 import DataOptions from "./components/dataOptions/DataOptions";
 
 function App() {
@@ -51,8 +48,8 @@ function App() {
     textVolume: 0.5,
     clickVolume: 0.5,
     musicVolume: 0.5,
-    click: click,
-    typing: typing,
+    click: click1,
+    typing: typing1,
     options: ""
   })
 

@@ -1,8 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import "./credits.css";
+
+import { useNavigate } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
-import { SoundContext } from "../../context/SoundContext";
-import { useSimpleFocusMode } from "../modes/useSimpleFocusMode";
+
+import { SoundContext } from "../../context/AppProviders";
+import { useSimpleFocusMode } from "../modes/useMode";
 
 const Credits = () => {
   const game_music = import.meta.env.VITE_GAME_MUSIC;

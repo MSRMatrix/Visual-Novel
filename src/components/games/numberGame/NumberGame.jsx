@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { useNumberMode } from "./modes/useNumberMode";
 import { answerHandler } from "./numberGameHandler";
 
