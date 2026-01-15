@@ -2,14 +2,13 @@ import { useContext, useEffect, useState } from "react";
 import "./loader.css";
 import { LoadingOverlay } from "../../context/AppProviders";
 
-const Loader = ({ title, isReady }) => {
+const Loader = () => {
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 
   useEffect(() => {
     if (!loadingOverlay.loader) return;
     if (loadingOverlay.percent >= 100) return;
-
-    if (loadingOverlay.percent >= 90 && !isReady) return;
+    if (loadingOverlay.percent >= 90 && !loadingOverlay.ready) return;
 
     const timeout = setTimeout(() => {
       setLoadingOverlay((prev) => ({
@@ -19,7 +18,7 @@ const Loader = ({ title, isReady }) => {
     }, 20);
 
     return () => clearTimeout(timeout);
-  }, [loadingOverlay.loader, loadingOverlay.percent, isReady]);
+  }, [loadingOverlay.loader, loadingOverlay.percent, loadingOverlay.ready]);
 
   // Effekt: Loader ausblenden, wenn fertig
   useEffect(() => {
@@ -38,15 +37,9 @@ const Loader = ({ title, isReady }) => {
     return () => clearTimeout(timeout);
   }, [loadingOverlay.percent]);
 
-  useEffect(() => {
-    if (isReady && !loadingOverlay.ready) {
-      setLoadingOverlay((prev) => ({ ...prev, ready: true }));
-    }
-  }, [isReady, !loadingOverlay.ready]);
-
   return (
-    <div className="loader">
-      <h1>{title}</h1>
+    <div className="loader" style={{display: loadingOverlay.loader ? "block" : "none"}}>
+      <h1>{loadingOverlay.title}</h1>
       <div
         className="loading-bar"
         style={{

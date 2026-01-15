@@ -3,12 +3,13 @@ import "./dashboard.css";
 import { useNavigate } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 
-import { SoundContext } from "../../context/AppProviders";
+import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
 import { handleMenuAction } from "./handleMenuAction";
 import { useSimpleFocusMode } from "../modes/useMode";
 
 function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);
+    const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
   const navigate = useNavigate("");
   const buttonRefs = useRef([]);
   const [focusedIndex, setFocusedIndex] = useState(0);
@@ -42,8 +43,7 @@ const labels = {
           key={route}
           ref={(el) => (buttonRefs.current[index] = el)}
           onClick={() =>
-            handleMenuAction(route, navigate, setSounds)
-          }
+            handleMenuAction(route, navigate, setSounds, setLoadingOverlay)}
           onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
           disabled={false}
           data-nosound="false"

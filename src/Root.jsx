@@ -5,6 +5,7 @@ import useSound from "use-sound";
 import Loader from "./components/loader/Loader";
 import { LoadingOverlay, SoundContext } from "./context/AppProviders";
 import ReactPlayerComponent from "./components/options/reactPlayerComponent/ReactPlayerComponent";
+import { useLoad } from "./components/modes/useMode";
 
 function Root() {
   const [intro, setIntro] = useState(true);
@@ -46,7 +47,7 @@ function Root() {
     const fullText = exampleText[index];
     let charIndex = 0;
 
-    setDisplayed(""); // Reset bei neuem Text
+    setDisplayed("");
 
     const interval = setInterval(() => {
       charIndex++;
@@ -75,34 +76,41 @@ function Root() {
     return () => clearTimeout(timeout);
   }, [index, intro, loadingOverlay.loader]);
 
+  const isReady = intro && exampleText ? true : false;
+  const title = "Intro";
+
+  // isReady muss anpassbar sein
+  // Intro darf nicht hardgecoded sein
+  // Display block und none richtig setzen
+
+  useLoad({isReady, loadingOverlay, setLoadingOverlay, title})
+
   return (
     <>
-       {loadingOverlay.loader ? (
-        <Loader title={"Intro"} isReady={intro && exampleText ? true : false}/>
-      ) : (
-        <div className="root" onClick={globalClick}>
-          {intro && <p>{displayed}</p>}
+      <Loader />
 
-          {intro && isFinished && (
-            <button
-              ref={buttonRef}
-              onClick={() => setIntro(false)}
-              onBlur={handleBlur}
-            >
-              Weiter
-            </button>
-          )}
+      <div className="root" onClick={globalClick}>
+        {intro && <p>{displayed}</p>}
 
-          {!intro && (
-            <>
-              <div>
-                <Outlet />
-                <ReactPlayerComponent />
-              </div>
-            </>
-          )}
-        </div>
-      )}  
+        {intro && isFinished && (
+          <button
+            ref={buttonRef}
+            onClick={() => setIntro(false)}
+            onBlur={handleBlur}
+          >
+            Weiter
+          </button>
+        )}
+
+        {!intro && (
+          <>
+            <div>
+              <Outlet />
+              <ReactPlayerComponent />
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }

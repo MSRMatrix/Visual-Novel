@@ -6,5 +6,6 @@ export { useWriteSoundMode } from "./hooks/useWriteSoundMode";
 export { useAutoMode } from "./hooks/useAutoMode";
 export { useFocusMode, useKeyControl } from "./hooks/useControl";
 export { useSimpleFocusMode } from "./hooks/useSimpleFocusMode"
+export { useLoad } from "./hooks/useLoad"
 
 
