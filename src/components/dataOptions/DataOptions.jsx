@@ -1,8 +1,7 @@
 import "./dataOptions.css";
-import { useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { handleFileChange } from "./handleFileChange";
-import { dataHandler } from "./dataHandler";
+
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faDownload,
@@ -10,10 +9,18 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { handleFileChange } from "./handleFileChange";
+import { dataHandler } from "./dataHandler";
+
 import { useSimpleFocusMode } from "../modes/useMode";
+import { LoadingOverlay } from "../../context/AppProviders";
 
 const DataOptions = () => {
   library.add(faDownload, faUpload);
+  
+  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+
   const fileInputRef = useRef(null);
   const iconRefs = useRef([]);
   const navigate = useNavigate();
@@ -50,6 +57,14 @@ const DataOptions = () => {
     setFocusedIndex,
     arrayFocus: iconRefs,
   });
+
+
+  // Muss aktiviert werden wenn einer der drei Dinge im Vorgang sind
+
+//  useEffect(() => {
+//       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
+//     },[loadingOverlay.loader && !loadingOverlay.ready])
+
 
   return (
     <div className="data-options">

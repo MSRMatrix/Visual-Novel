@@ -76,14 +76,14 @@ function Root() {
     return () => clearTimeout(timeout);
   }, [index, intro, loadingOverlay.loader]);
 
-  const isReady = intro && exampleText ? true : false;
-  const title = "Intro";
+  useEffect(() => {
+    setLoadingOverlay((prev) => ({...prev, title: "Seite wird geladen", ready: intro && exampleText ? true : false}))
+  },[])
 
   // isReady muss anpassbar sein
   // Intro darf nicht hardgecoded sein
   // Display block und none richtig setzen
-
-  useLoad({isReady, loadingOverlay, setLoadingOverlay, title})
+  
 
   return (
     <>

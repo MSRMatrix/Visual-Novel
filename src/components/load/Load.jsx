@@ -1,13 +1,16 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { formatTime } from "../functions/formatTime";
 import { handleKeyDown } from "../functions/handleKeyDown";
-import { LoadContext, SoundContext } from "../../context/AppProviders";
+import { LoadContext, LoadingOverlay, SoundContext } from "../../context/AppProviders";
 
 function Load() {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
   const { sounds, setSounds } = useContext(SoundContext);
   const { load, setLoad } = useContext(LoadContext);
+   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+
   const navigate = useNavigate();
   const [saves, setSaves] = useState(() => {
     const stored = JSON.parse(localStorage.getItem("vn_saves")) || [];
@@ -43,6 +46,7 @@ function Load() {
     });
     setSounds((prev) => ({ ...prev, url: game_music }));
     navigate("/start");
+    setLoadingOverlay((prev) => ({...prev, loader: true}))
   }
 
   const focusableRef = useRef([]);

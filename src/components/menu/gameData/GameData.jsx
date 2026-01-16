@@ -17,7 +17,7 @@ import { loadData } from "../../functions/loadData";
 import { deleteData } from "../../functions/deleteData";
 import { formatTime } from "../../functions/formatTime";
 
-import { SoundContext } from "../../../context/AppProviders";
+import { LoadingOverlay, SoundContext } from "../../../context/AppProviders";
 import { useFocusMode, useKeyControl } from "../../modes/useMode";
 
 function GameData({
@@ -36,6 +36,8 @@ function GameData({
   library.add(faFloppyDisk, faTrashCan, faCloud, faFaceMeh);
 
   const { sounds, setSounds } = useContext(SoundContext);
+   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+
   const navigate = useNavigate();
   const [saves, setSaves] = useState(() => {
     const stored = JSON.parse(localStorage.getItem("vn_saves")) || [];
@@ -67,6 +69,7 @@ function GameData({
           uiState,
           setUiState
         );
+        setLoadingOverlay((prev) => ({...prev, loader: true}))
         return;
       default:
         console.warn(`Unbekannter Modus: ${mode}`);

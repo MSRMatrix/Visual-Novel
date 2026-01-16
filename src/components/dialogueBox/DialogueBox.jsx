@@ -2,7 +2,7 @@ import "./dialogueBox.css";
 
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
-import { LoadContext, SoundContext, WriteContext } from "../../context/AppProviders";
+import { LoadingOverlay, SoundContext, WriteContext } from "../../context/AppProviders";
 
 import { useAutoMode, useBreakMode, useFocusMode, useIndexMode, useKeyControl, useSkipMode, useTypeWriterMode, useWriteSoundMode } from "../modes/useMode";
 import { story } from "../text/data/story";
@@ -11,25 +11,17 @@ import DialogueAction from "./dialogueAction/DialogueAction";
 import Games from "../games/Games";
 import Choice from "./choice/Choice";
 
-export default function VisualNovel({ hide, setHide }) {
+export default function VisualNovel({ hide, setHide, storyState, setStoryState }) {
   const focusableRef = useRef([]);
 
-  const { load, setLoad } = useContext(LoadContext);
   const { sounds, setSounds } = useContext(SoundContext);
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
+  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 
   const [play, { stop, sound }] = useSound(sounds.typing, {
     volume: sounds.textVolume,
     loop: true,
   });
-
-  const [storyState, setStoryState] = useState(() => ({
-    chapter: load.chapter || "prolog",
-    scene: load.scene || "intro",
-    step: load.step ?? 0,
-    history: load.history || [],
-    playTime: load.playTime || 0,
-  }));
 
   const [textState, setTextState] = useState(() => ({
     displayText: "",
@@ -151,7 +143,8 @@ export default function VisualNovel({ hide, setHide }) {
   // Height muss sich dem Reactplayer anpassen
 
   return (
-    <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
+    <>
+    {loadingOverlay.loader ? "" : <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
       {!uiState.quickMenu ? (
         <div>
           <div>
@@ -221,6 +214,8 @@ export default function VisualNovel({ hide, setHide }) {
           setUiState={setUiState}
         />
       )}
-    </div>
+    </div>}
+    </>
+    
   );
 }
