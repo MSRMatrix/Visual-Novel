@@ -1,18 +1,23 @@
 import "./dashboard.css";
 
 import { useNavigate } from "react-router-dom";
-import { useContext, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 
 import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
 import { handleMenuAction } from "./handleMenuAction";
 import { useSimpleFocusMode } from "../modes/useMode";
 
 function Dashboard() {
-  const { sounds, setSounds } = useContext(SoundContext);
-    const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+  
   const navigate = useNavigate("");
+
+  const { sounds, setSounds } = useContext(SoundContext);
+  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+
   const buttonRefs = useRef([]);
+
   const [focusedIndex, setFocusedIndex] = useState(0);
+  
 
 const menuItems = ["start", "load", "options", "data-options"];
 
@@ -35,9 +40,15 @@ const labels = {
     setFocusedIndex,
     arrayFocus: buttonRefs,
   });
+
+    useEffect(() => {
+      setLoadingOverlay((prev) => ({...prev, title: "Menü wird geladen", ready: true }))
+    },[loadingOverlay.loader && !loadingOverlay.ready])
+
   
   return (
-    <div className="dashboard">
+    <>
+    {loadingOverlay.loader ? "" : <div className="dashboard">
       {menuItems.map((route, index) => (
         <button
           key={route}
@@ -52,7 +63,10 @@ const labels = {
           {labels[route] || route}
         </button>
       ))}
-    </div>
+    </div>}
+    
+    </>
+    
   );
 }
 
