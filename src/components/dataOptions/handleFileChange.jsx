@@ -1,4 +1,5 @@
- export function handleFileChange(e){
+ export function handleFileChange(e, setSaveData){
+  console.log(`test`);
     const file = e.target.files[0];
     if (!file) return;
 
@@ -12,10 +13,12 @@
           }
         });
         alert("Import erfolgreich!");
+        setSaveData(localStorage.getItem("vn_saves"))
       } catch (err) {
         console.error(err);
         alert("Fehler beim Importieren der Datei.");
       }
     };
     reader.readAsText(file);
+    
   };

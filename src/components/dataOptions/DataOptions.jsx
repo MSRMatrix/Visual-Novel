@@ -25,6 +25,7 @@ const DataOptions = () => {
   const iconRefs = useRef([]);
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves"))
   const itemNames = [
     { name: "Importieren", icon: faUpload },
     { name: "Exportieren", icon: faDownload },
@@ -40,6 +41,7 @@ const DataOptions = () => {
     const question = confirm("Möchtest du alle Daten unwiderruflich löschen?");
     if (question) {
       localStorage.removeItem("vn_saves");
+      setSaveData(localStorage.getItem("vn_saves"))
       console.log(`Daten erfolgreich gelöscht! :)`);
     } else {
       console.log(`Löschvorgang abgebrochen!`);
@@ -57,14 +59,13 @@ const DataOptions = () => {
     setFocusedIndex,
     arrayFocus: iconRefs,
   });
-
+  
 
   // Muss aktiviert werden wenn einer der drei Dinge im Vorgang sind
 
 //  useEffect(() => {
 //       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
 //     },[loadingOverlay.loader && !loadingOverlay.ready])
-
 
   return (
     <div className="data-options">
@@ -90,12 +91,12 @@ const DataOptions = () => {
           </button>
         </div>
       ))}
-
+      {saveData ? "Daten vorhanden" : "Keine Daten vorhanden"}
       <input
         type="file"
         ref={fileInputRef}
         style={{ display: "none" }}
-        onChange={handleFileChange}
+        onChange={(e) => handleFileChange(e, setSaveData)}
       />
     </div>
   );
