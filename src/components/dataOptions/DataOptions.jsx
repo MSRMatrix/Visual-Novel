@@ -62,6 +62,7 @@ const DataOptions = () => {
   
 
   // Muss aktiviert werden wenn einer der drei Dinge im Vorgang sind
+  // Es wird so programmiert dass wenn erst der loafingOverlay.loader fertig ist, erst die Alerts kommen
 
 //  useEffect(() => {
 //       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
@@ -95,7 +96,6 @@ const DataOptions = () => {
       <input
         type="file"
         ref={fileInputRef}
-        style={{ display: "none" }}
         onChange={(e) => handleFileChange(e, setSaveData)}
       />
     </div>

@@ -1,24 +1,28 @@
- export function handleFileChange(e, setSaveData){
-  console.log(`test`);
-    const file = e.target.files[0];
-    if (!file) return;
+export function handleFileChange(e, setSaveData) {
+  const file = e.target.files[0];
+  if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      try {
-        const data = JSON.parse(event.target.result);
-        Object.keys(data).forEach((key) => {
-          if (key.startsWith("vn_saves")) {
-            localStorage.setItem(key, JSON.stringify(data[key]));
-          }
-        });
-        alert("Import erfolgreich!");
-        setSaveData(localStorage.getItem("vn_saves"))
-      } catch (err) {
-        console.error(err);
-        alert("Fehler beim Importieren der Datei.");
+  const reader = new FileReader();
+
+  reader.onload = (event) => {
+    try {
+      const data = JSON.parse(event.target.result);
+
+            if (!Object.hasOwn(data, "vn_saves")) {
+        throw new Error("Ungültige Datei! Hauptkey 'vn_saves' fehlt.");
       }
-    };
-    reader.readAsText(file);
-    
+
+      // Hauptkey speichern
+      localStorage.setItem("vn_saves", JSON.stringify(data["vn_saves"]));
+
+      alert("Import erfolgreich!");
+      setSaveData(localStorage.getItem("vn_saves"));
+    } catch (err) {
+      console.error(err);
+      alert(err.message || "Fehler beim Importieren der Datei.");
+    }
   };
+
+  reader.readAsText(file);
+  e.target.value = null;
+}
