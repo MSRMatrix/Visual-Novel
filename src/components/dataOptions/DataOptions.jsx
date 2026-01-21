@@ -10,22 +10,20 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { handleFileChange } from "./handleFileChange";
-import { dataHandler } from "./dataHandler";
-
+import { dataHandler, deleteData, handleFileChange } from "./dataFunctions";
 import { useSimpleFocusMode } from "../modes/useMode";
 import { LoadingOverlay } from "../../context/AppProviders";
 
 const DataOptions = () => {
-  library.add(faDownload, faUpload);
-  
-  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+  library.add(faDownload, faUpload, faTrash);
+
+ const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 
   const fileInputRef = useRef(null);
   const iconRefs = useRef([]);
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
-  const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves"))
+  const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves"));
   const itemNames = [
     { name: "Importieren", icon: faUpload },
     { name: "Exportieren", icon: faDownload },
@@ -37,36 +35,54 @@ const DataOptions = () => {
     fileInputRef.current.click();
   };
 
-  function deleteData() {
-    const question = confirm("Möchtest du alle Daten unwiderruflich löschen?");
-    if (question) {
-      localStorage.removeItem("vn_saves");
-      setSaveData(localStorage.getItem("vn_saves"))
-      console.log(`Daten erfolgreich gelöscht! :)`);
-    } else {
-      console.log(`Löschvorgang abgebrochen!`);
-    }
-  }
-
-  const ifDeps = false;
-  const effectDeps = [faDownload, faUpload];
-
   useSimpleFocusMode({
-    ifDeps,
-    effectDeps,
+    ifDeps: false,
+    effectDeps: [faDownload, faUpload],
     arrayItem: itemNames,
     focusedIndex,
     setFocusedIndex,
     arrayFocus: iconRefs,
   });
-  
+
+async function test(item, faDownload, faUpload) {
+  const name = item.icon?.iconName === "trash" ? "Daten gelöscht!" : item.icon?.iconName === "download" ? "Export erfolgreich" : item.icon?.iconName === "upload" ? "Import erfolgreich" : "Kein Befehl ausgeführt!"
+  try {
+    if (!item.icon && typeof item.function === "function") {
+      item.function(); 
+      return;
+    }
+
+    if (item.icon?.iconName === "trash") {
+      await deleteData(setSaveData, setLoadingOverlay);
+      return;
+    }
+
+    if (item.icon?.iconName === "download") {
+      await dataHandler(item.icon, faDownload, faUpload); 
+      return;
+    }
+
+    if (item.icon?.iconName === "upload") {
+      await handleFileClick(); 
+      return;
+    }
+
+    console.log("Error occurred!");
+  } catch (err) {
+    console.error("Aktion fehlgeschlagen:", err);
+  }
+  finally{
+    alert(name)
+  }
+}
+
 
   // Muss aktiviert werden wenn einer der drei Dinge im Vorgang sind
   // Es wird so programmiert dass wenn erst der loafingOverlay.loader fertig ist, erst die Alerts kommen
 
-//  useEffect(() => {
-//       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
-//     },[loadingOverlay.loader && !loadingOverlay.ready])
+  //  useEffect(() => {
+  //       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
+  //     },[loadingOverlay.loader && !loadingOverlay.ready])
 
   return (
     <div className="data-options">
@@ -76,15 +92,7 @@ const DataOptions = () => {
           <h2>{item.function ? "" : item.name}</h2>
           <button
             style={{ cursor: "pointer" }}
-            onClick={
-              item.icon === faUpload
-                ? handleFileClick
-                : item.icon === faDownload
-                ? () => dataHandler(item.icon, faDownload, faUpload)
-                : item.icon === faTrash
-                ? deleteData
-                : item.function
-            }
+            onClick={(e) => test(item, faDownload, faUpload)}
             ref={(el) => (iconRefs.current[index] = el)}
           >
             {item.function ? item.name : ""}
@@ -95,6 +103,7 @@ const DataOptions = () => {
       {saveData ? "Daten vorhanden" : "Keine Daten vorhanden"}
       <input
         type="file"
+        style={{ display: "none" }}
         ref={fileInputRef}
         onChange={(e) => handleFileChange(e, setSaveData)}
       />

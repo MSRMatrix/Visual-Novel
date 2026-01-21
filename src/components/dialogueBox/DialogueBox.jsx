@@ -144,7 +144,7 @@ export default function VisualNovel({ hide, setHide, storyState, setStoryState }
 
   return (
     <>
-    {loadingOverlay.loader ? "" : <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
+    <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
       {!uiState.quickMenu ? (
         <div>
           <div>
@@ -214,7 +214,7 @@ export default function VisualNovel({ hide, setHide, storyState, setStoryState }
           setUiState={setUiState}
         />
       )}
-    </div>}
+    </div>
     </>
     
   );

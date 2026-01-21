@@ -89,7 +89,7 @@ function Root() {
     <>
       <Loader />
 
-      <div className="root" onClick={globalClick}>
+      <div className="root" onClick={globalClick} style={{display: loadingOverlay.loader ? "none" : "block"}}>
         {intro && <p>{displayed}</p>}
 
         {intro && isFinished && (
