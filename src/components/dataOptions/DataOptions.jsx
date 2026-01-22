@@ -17,7 +17,7 @@ import { LoadingOverlay } from "../../context/AppProviders";
 const DataOptions = () => {
   library.add(faDownload, faUpload, faTrash);
 
- const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+  const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 
   const fileInputRef = useRef(null);
   const iconRefs = useRef([]);
@@ -44,45 +44,58 @@ const DataOptions = () => {
     arrayFocus: iconRefs,
   });
 
-async function test(item, faDownload, faUpload) {
-  const name = item.icon?.iconName === "trash" ? "Daten gelöscht!" : item.icon?.iconName === "download" ? "Export erfolgreich" : item.icon?.iconName === "upload" ? "Import erfolgreich" : "Kein Befehl ausgeführt!"
-  try {
-    if (!item.icon && typeof item.function === "function") {
-      item.function(); 
-      return;
-    }
+  const [example, setExample] = useState(null);
 
-    if (item.icon?.iconName === "trash") {
-      await deleteData(setSaveData, setLoadingOverlay);
-      return;
-    }
+  function test(item, faDownload, faUpload) {
+    try {
+      if (!item.icon && typeof item.function === "function") {
+        item.function();
+        return;
+      }
 
-    if (item.icon?.iconName === "download") {
-      await dataHandler(item.icon, faDownload, faUpload); 
-      return;
-    }
+      if (item.icon?.iconName === "trash") {
+        deleteData(setSaveData,setExample );
+        return;
+      }
 
-    if (item.icon?.iconName === "upload") {
-      await handleFileClick(); 
-      return;
-    }
+      if (item.icon?.iconName === "download") {
+          dataHandler(item.icon, faDownload, faUpload, setExample);
+        return;
+      }
 
-    console.log("Error occurred!");
-  } catch (err) {
-    console.error("Aktion fehlgeschlagen:", err);
+      if (item.icon?.iconName === "upload") {
+         handleFileClick();
+        return;
+      }
+
+      console.log("Error occurred!");
+    } catch (err) {
+      console.error("Aktion fehlgeschlagen:", err);
+    }
   }
-  finally{
-    alert(name)
-  }
-}
 
-
-  // Muss aktiviert werden wenn einer der drei Dinge im Vorgang sind
-  // Es wird so programmiert dass wenn erst der loafingOverlay.loader fertig ist, erst die Alerts kommen
-
-  //  useEffect(() => {
-  //       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
-  //     },[loadingOverlay.loader && !loadingOverlay.ready])
+  useEffect(() => {
+    if(!example){
+      console.log(`Nothing to see...`);
+      return;
+    }
+    setLoadingOverlay((prev) => ({...prev, loader: true, ready: true}))
+    if (example === "delete" && !loadingOverlay.loader) {
+      setExample("")
+      alert("Löschen erfolgreich!");
+      return;
+    }
+    if (example === "upload" && !loadingOverlay.loader) {
+      setExample("")
+      alert("Daten erfolgreich abgeloaded!");
+      return;
+    }
+    if (example === "download" && !loadingOverlay.loader) {
+      setExample("")
+      alert("Download erfolgreich!");
+      return;
+    }
+  }, [example]);
 
   return (
     <div className="data-options">
@@ -105,7 +118,7 @@ async function test(item, faDownload, faUpload) {
         type="file"
         style={{ display: "none" }}
         ref={fileInputRef}
-        onChange={(e) => handleFileChange(e, setSaveData)}
+        onChange={(e) => handleFileChange(e, setSaveData, setExample)}
       />
     </div>
   );
