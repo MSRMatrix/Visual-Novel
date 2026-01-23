@@ -10,7 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { dataHandler, deleteData, handleFileChange } from "./dataFunctions";
+import { dataHandler, deleteData, dispatchItemAction, handleFileChange } from "./dataFunctions";
 import { useSimpleFocusMode } from "../modes/useMode";
 import { LoadingOverlay } from "../../context/AppProviders";
 
@@ -23,6 +23,7 @@ const DataOptions = () => {
   const iconRefs = useRef([]);
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
+  const [actionType, setActionType] = useState(null);
   const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves"));
   const itemNames = [
     { name: "Importieren", icon: faUpload },
@@ -43,59 +44,34 @@ const DataOptions = () => {
     setFocusedIndex,
     arrayFocus: iconRefs,
   });
-
-  const [example, setExample] = useState(null);
-
-  function test(item, faDownload, faUpload) {
-    try {
-      if (!item.icon && typeof item.function === "function") {
-        item.function();
-        return;
-      }
-
-      if (item.icon?.iconName === "trash") {
-        deleteData(setSaveData,setExample );
-        return;
-      }
-
-      if (item.icon?.iconName === "download") {
-          dataHandler(item.icon, faDownload, faUpload, setExample);
-        return;
-      }
-
-      if (item.icon?.iconName === "upload") {
-         handleFileClick();
-        return;
-      }
-
-      console.log("Error occurred!");
-    } catch (err) {
-      console.error("Aktion fehlgeschlagen:", err);
-    }
-  }
-
+  
   useEffect(() => {
-    if(!example){
-      console.log(`Nothing to see...`);
-      return;
+    if (!loadingOverlay.loader) return;
+
+    setLoadingOverlay((prev) => ({
+      ...prev,
+      ready: true,
+    }));
+
+    if (actionType && loadingOverlay.percent >= 100) {
+      alert(
+        actionType === "delete"
+          ? `Löschen erfolgreich!`
+          : actionType === "upload"
+            ? `Daten erfolgreich hochgeladen!`
+            : actionType === "download"
+              ? `Download erfolgreich!`
+              : "Fehler",
+      );
+      setLoadingOverlay((prev) => ({
+        ...prev,
+        ready: false,
+      }));
+      setActionType("");
     }
-    setLoadingOverlay((prev) => ({...prev, loader: true, ready: true}))
-    if (example === "delete" && !loadingOverlay.loader) {
-      setExample("")
-      alert("Löschen erfolgreich!");
-      return;
-    }
-    if (example === "upload" && !loadingOverlay.loader) {
-      setExample("")
-      alert("Daten erfolgreich abgeloaded!");
-      return;
-    }
-    if (example === "download" && !loadingOverlay.loader) {
-      setExample("")
-      alert("Download erfolgreich!");
-      return;
-    }
-  }, [example]);
+
+    // Reset
+  }, [loadingOverlay.percent]);
 
   return (
     <div className="data-options">
@@ -105,7 +81,7 @@ const DataOptions = () => {
           <h2>{item.function ? "" : item.name}</h2>
           <button
             style={{ cursor: "pointer" }}
-            onClick={(e) => test(item, faDownload, faUpload)}
+            onClick={() => dispatchItemAction(item, faDownload, faUpload, setLoadingOverlay, setSaveData, setActionType, handleFileClick)}
             ref={(el) => (iconRefs.current[index] = el)}
           >
             {item.function ? item.name : ""}
@@ -118,7 +94,7 @@ const DataOptions = () => {
         type="file"
         style={{ display: "none" }}
         ref={fileInputRef}
-        onChange={(e) => handleFileChange(e, setSaveData, setExample)}
+        onChange={(e) => handleFileChange(e, setSaveData, setActionType, setLoadingOverlay)}
       />
     </div>
   );
