@@ -24,7 +24,7 @@ const DataOptions = () => {
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
   const [actionType, setActionType] = useState(null);
-  const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves"));
+  const [saveData, setSaveData] = useState(localStorage.getItem("vn_saves") || null);
   const itemNames = [
     { name: "Importieren", icon: faUpload },
     { name: "Exportieren", icon: faDownload },
@@ -80,12 +80,14 @@ const DataOptions = () => {
         <div key={item.name}>
           <h2>{item.function ? "" : item.name}</h2>
           <button
+          disabled={item.name === "Exportieren" && !saveData}
             style={{ cursor: "pointer" }}
             onClick={() => dispatchItemAction(item, faDownload, faUpload, setLoadingOverlay, setSaveData, setActionType, handleFileClick)}
             ref={(el) => (iconRefs.current[index] = el)}
           >
             {item.function ? item.name : ""}
-            {item.function ? "" : <FontAwesomeIcon icon={item.icon} />}
+            {/* Color muss bearbeitet werden */}
+            {item.name === "Exportieren" && !saveData ? "Keine Daten vorhanden" : item.function ? "" : <FontAwesomeIcon icon={item.icon} />}
           </button>
         </div>
       ))}
