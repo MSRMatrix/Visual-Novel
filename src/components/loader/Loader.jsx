@@ -38,7 +38,7 @@ const Loader = () => {
   }, [loadingOverlay.percent]);
 
   return (
-    <div className="loader" style={{display: loadingOverlay.loader ? "block" : "none"}}>
+    <div className="loader" style={{display: loadingOverlay.loader ? "flex" : "none"}}>
       <h1>{loadingOverlay.title}</h1>
       <div
         className="loading-bar"

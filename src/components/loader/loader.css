@@ -1,3 +1,12 @@
+.loader{
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: inherit;
+  width: inherit;
+  position: absolute;
+}
+
 .loading-bar{
     width: 150px;
     height: 20px;

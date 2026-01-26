@@ -32,7 +32,6 @@ function Start() {
   return (
     <>
     <div className='window' onClick={() => displayDialogueBox()}>
-        Window for text
         <DialogueBox
         storyState={storyState}
         setStoryState={setStoryState}
