@@ -1,5 +1,13 @@
 .options{
-     position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   width: inherit;
+  height: inherit;
+  .option-container{
+    display: flex;
+  flex-direction: column;
+    position: relative;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -19,4 +27,5 @@
 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
 }

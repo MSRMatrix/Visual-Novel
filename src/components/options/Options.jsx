@@ -62,7 +62,7 @@ useSimpleFocusMode({
       {sounds.options ? (
         ""
       ) : (
-        <div>
+        <div className="option-container">
           {buttonItems.map((item, index) => (
             <button
               key={item.name}

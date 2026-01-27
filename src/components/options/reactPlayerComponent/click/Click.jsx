@@ -32,7 +32,7 @@ const Click = ({ focusableRef, startIndex }) => {
   }, [focusableRef, startIndex]);
 
   return (
-    <>
+    <div>
       {Object.keys(players.click).map((key, i) => (
         <button
           ref={(el) => (focusableRef.current[startIndex + i] = el)}
@@ -47,7 +47,7 @@ const Click = ({ focusableRef, startIndex }) => {
           {key}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 

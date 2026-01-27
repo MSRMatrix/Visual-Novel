@@ -1,15 +1,15 @@
-.react-player-container{
+.load{
     width: inherit;
     height: inherit;
     display: flex;
+    justify-content: center;
     align-items: center;
-    justify-content: center;   
-}
-
-
-
-.react-player{
-     position: relative;
+    .load-container{
+display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
@@ -29,42 +29,5 @@
 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  display: flex;
-  flex-direction: column;
-}
-
-
-.hide{
-    display: none;
-}
-
-.show-player{
-    display: block;
-}
-
-
-.click-action, .type-action, .sound-volume, .musicData{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.click-action{
-
-}
-
-.type-action{
-
-}
-
-.sound-volume{
-
-}
-
-.vn-checkbox{
-     display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    }
 }

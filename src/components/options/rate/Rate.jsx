@@ -79,7 +79,7 @@ if (e.key === "ArrowUp") {
 
   return (
     <>
-      <div>
+      <div className="option-container">
         <h1>Beispieltext</h1>
 
         <p>{displayExample}</p>

@@ -28,7 +28,7 @@ const AudioManager = ({
       {soundSettings.map((item, i) => (
         <div key={item.name}>
           <h2>{item.label}</h2>
-          <div>
+          <div style={{display: "flex", alignItems: "center", justifyContent: "center", gap: "10px"}}>
             <input
               ref={(el) => (focusableRef.current[startIndex + i * 2] = el)}
               type="range"

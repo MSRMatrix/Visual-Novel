@@ -1,3 +1,5 @@
+import "./load.css"
+
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -74,7 +76,8 @@ function Load() {
   }, [uiState.focusedIndex]);
 
   return (
-    <>
+    <div className="load">
+      <div className="load-container">
       {saves.map((item, index) => (
         <button
         
@@ -101,7 +104,8 @@ function Load() {
       >
         Zurück
       </button>
-    </>
+      </div>
+    </div>
   );
 }
 

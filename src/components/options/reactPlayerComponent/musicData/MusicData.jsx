@@ -24,7 +24,7 @@ const MusicData = ({ focusableRef, startIndex }) => {
   }, [focusableRef, startIndex]);
 
   return (
-    <>
+    <div>
       {musicData.map((item, i) => (
         <button
           key={item.name}
@@ -36,7 +36,7 @@ const MusicData = ({ focusableRef, startIndex }) => {
           {item.name}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 

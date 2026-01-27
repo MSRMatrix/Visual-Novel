@@ -75,6 +75,7 @@ const DataOptions = () => {
 
   return (
     <div className="data-options">
+      <div className="data-options-container">
       <h1>Daten Verwaltung</h1>
       {itemNames.map((item, index) => (
         <div key={item.name}>
@@ -98,6 +99,7 @@ const DataOptions = () => {
         ref={fileInputRef}
         onChange={(e) => handleFileChange(e, setSaveData, setActionType, setLoadingOverlay)}
       />
+      </div>
     </div>
   );
 };

@@ -77,7 +77,8 @@ function ReactPlayerComponent() {
   }, [focusedIndex, focusableRef]);
 
   return (
-    <div className={`react-player ${sounds.hidePlayer ? "hide" : ""}`}>
+    <div className={`react-player-container ${sounds.hidePlayer ? "hide" : ""}`}>
+    <div className="react-player">
       <ReactPlayer
         src={sounds.url}
         playing={sounds.playing}
@@ -87,7 +88,7 @@ function ReactPlayerComponent() {
         style={{display: "none"}}
       />
 
-      <div className="react-player-action">
+      <div className="react-player-action" style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
         <div className="music-test">
           <button
            ref={(el) => (focusableRef.current[0] = el)}
@@ -117,6 +118,8 @@ function ReactPlayerComponent() {
       >
         Zurück
       </button>
+    </div>
+    
     </div>
   );
 }

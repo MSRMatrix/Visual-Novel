@@ -32,7 +32,7 @@ const Write = ({ focusableRef, startIndex }) => {
   }, [focusableRef, startIndex]);
 
   return (
-    <>
+    <div>
       {Object.keys(players.typing).map((key, i) => (
         <button
         ref={(el) => (focusableRef.current[startIndex + i] = el)}
@@ -48,7 +48,7 @@ const Write = ({ focusableRef, startIndex }) => {
           {key}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 
