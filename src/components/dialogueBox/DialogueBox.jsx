@@ -144,7 +144,7 @@ export default function VisualNovel({ hide, setHide, storyState, setStoryState }
 
   return (
     <>
-    <div className="dialog-box" style={{ display: hide ? "none" : "block"}}>
+    <div className={`dialog-box${uiState.quickMenu ? "-hide" : ""}`} style={{ display: hide ? "none" : "block"}}>
       {!uiState.quickMenu ? (
         <div>
           <div>

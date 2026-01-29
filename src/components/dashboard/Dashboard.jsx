@@ -47,8 +47,8 @@ const labels = {
 
   
   return (
-    <>
-    {loadingOverlay.loader ? "" : <div className="dashboard">
+    <div className="dashboard">
+    {loadingOverlay.loader ? "" : <div className="dashboard-container">
       {menuItems.map((route, index) => (
         <button
           key={route}
@@ -65,7 +65,7 @@ const labels = {
       ))}
     </div>}
     
-    </>
+    </div>
     
   );
 }

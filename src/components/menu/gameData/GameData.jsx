@@ -105,6 +105,10 @@ function GameData({
 
   return (
     <div className="game-data">
+      <div className="game-data-container">
+
+
+      
       {saves.map((item, idx) => (
           <button 
           disabled={action !== "save" && !item.timestamp}
@@ -158,6 +162,7 @@ function GameData({
       >
         Zurück
       </button>
+      </div>
     </div>
   );
 }

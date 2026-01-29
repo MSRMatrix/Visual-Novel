@@ -1,3 +1,5 @@
+import "./backlog.css"
+
 import { useRef } from "react";
 
 import { story } from "../../text/data/story";
@@ -24,7 +26,9 @@ function Backlog({setAction, action, currentStep, storyState, uiState, setUiStat
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
 
   return (
-    <>
+    <div className="backlog">
+      <div className="backlog-containter">
+      
       <h2>Backlog</h2>
       <ul>
         {steps.map((step, i) => (
@@ -39,7 +43,8 @@ function Backlog({setAction, action, currentStep, storyState, uiState, setUiStat
         >
           Zurück
         </button>
-    </>
+        </div>
+    </div>
   );
 }
 

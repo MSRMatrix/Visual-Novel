@@ -28,3 +28,11 @@
   border-color: rgba(120, 180, 255, 0.45);
   box-shadow: 0 6px 25px rgba(0, 0, 0, 0.22);
 }
+
+.dialog-box-hide{
+  height: inherit;
+  width: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

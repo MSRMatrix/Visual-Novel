@@ -76,7 +76,8 @@ useSimpleFocusMode({
 
 
   return (
-    <>
+    <div className="dashboard">
+    <div className={`dashboard-container`} style={{display: action || !sounds.hidePlayer ? "none" : ""}}>
       <h1>Schnellmenü</h1>
       
 
@@ -95,7 +96,9 @@ useSimpleFocusMode({
       </button>
     ))}
 
-      {action === "save" || action === "load" || action === "delete" ? (
+      
+    </div>
+    {action === "save" || action === "load" || action === "delete" ? (
         <GameData
           mode={action}
           setMode={setAction}
@@ -122,7 +125,7 @@ useSimpleFocusMode({
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 }
 

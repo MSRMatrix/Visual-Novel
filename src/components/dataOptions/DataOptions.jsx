@@ -78,7 +78,7 @@ const DataOptions = () => {
       <div className="data-options-container">
       <h1>Daten Verwaltung</h1>
       {itemNames.map((item, index) => (
-        <div key={item.name}>
+        <div key={item.name} style={{display: "flex", alignItems: "center", flexDirection: "column"}}>
           <h2>{item.function ? "" : item.name}</h2>
           <button
           disabled={item.name === "Exportieren" && !saveData}
