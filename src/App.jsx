@@ -1,8 +1,17 @@
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { useState } from "react";
-import { LoadContext, LoadingOverlay, SoundContext, WriteContext } from "./context/AppProviders";
-import { click1, typing1 } from "./components/options/reactPlayerComponent/soundEffects";
+import {
+  LoadContext,
+  LoadingOverlay,
+  PictureContext,
+  SoundContext,
+  WriteContext,
+} from "./context/AppProviders";
+import {
+  click1,
+  typing1,
+} from "./components/options/reactPlayerComponent/soundEffects";
 import Root from "./Root";
 import Dashboard from "./components/dashboard/Dashboard";
 import Start from "./components/start/Start";
@@ -12,8 +21,8 @@ import Load from "./components/load/Load";
 import DataOptions from "./components/dataOptions/DataOptions";
 
 function App() {
-  const menu_music = import.meta.env.VITE_MENU_MUSIC
-  
+  const menu_music = import.meta.env.VITE_MENU_MUSIC;
+
   const router = createBrowserRouter([
     {
       element: <Root />,
@@ -37,11 +46,11 @@ function App() {
     stepIndex: "",
     chatHistory: "",
     playTime: 0,
-    choice: false
+    choice: false,
   });
 
   const [sounds, setSounds] = useState({
-    hidePlayer : true,
+    hidePlayer: true,
     url: menu_music,
     playing: false,
     masterVolume: 0.5,
@@ -50,29 +59,38 @@ function App() {
     musicVolume: 0.5,
     click: click1,
     typing: typing1,
-    options: ""
-  })
+    options: "",
+  });
 
-  const [writeSpeed, setWriteSpeed] = useState(30)
+  const [writeSpeed, setWriteSpeed] = useState(30);
   const [loadingOverlay, setLoadingOverlay] = useState({
     loader: true,
     title: "",
     percentBar: false,
     ready: false,
-    percent: 0
-  })
+    percent: 0,
+  });
+
+  const [pictureContext, setPictureContext] = useState({
+    background: "",
+    protagonist: "",
+    side: "",
+    antagonist: "",
+  });
 
   return (
     <>
-    <LoadingOverlay.Provider value={{loadingOverlay, setLoadingOverlay}}>
-    <WriteContext.Provider value={{writeSpeed, setWriteSpeed}}>
-      <LoadContext.Provider value={{ load, setLoad }}>
-        <SoundContext.Provider value={{sounds, setSounds}}>
-          <RouterProvider router={router} />
-        </SoundContext.Provider>
-      </LoadContext.Provider>
-      </WriteContext.Provider>
-      </LoadingOverlay.Provider>
+      <PictureContext.Provider value={{ pictureContext, setPictureContext }}>
+        <LoadingOverlay.Provider value={{ loadingOverlay, setLoadingOverlay }}>
+          <WriteContext.Provider value={{ writeSpeed, setWriteSpeed }}>
+            <LoadContext.Provider value={{ load, setLoad }}>
+              <SoundContext.Provider value={{ sounds, setSounds }}>
+                <RouterProvider router={router} />
+              </SoundContext.Provider>
+            </LoadContext.Provider>
+          </WriteContext.Provider>
+        </LoadingOverlay.Provider>
+      </PictureContext.Provider>
     </>
   );
 }

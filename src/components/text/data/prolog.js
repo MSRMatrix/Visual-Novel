@@ -1,4 +1,5 @@
 const narrator = "Erzähler";
+const mainCharacter = "Aj"
 
 export const prolog = {
   intro: {
@@ -6,24 +7,59 @@ export const prolog = {
     steps: [
       {
         type: "text",
-        speaker: narrator,
-        text: "Was? Wo bin ich? Ach ja...",
+        speaker: "???",
+        text: "...",
+      },
+      {
+        type: "text",
+        speaker: "???",
+        text: "Wo bin ich?",
       },
       {
         type: "text",
         speaker: narrator,
-        text: "Heute ist es soweit! Bist du auch aufgeregt?",
+        text: "Unser junger Hauptcharakter öffnete langsam seine Augen... Er lag noch schwer im Sand und richtete seinen Oberkörper auf.",
       },
       {
         type: "text",
+        speaker: "???",
+        text: "Was zum...?",
+      },
+{
+        type: "text",
         speaker: narrator,
-        text: "... du redest wohl nicht viel, oder?",
+        text: "Vor ihm tat sich eine wunderschöne und mysteriöse Insel auf. Langsam richtete er sich auf und versuchte einen klaren Kopf zu bekommen.",
+        pic: { background: "beach"}
+          
+        
+        
       },
       {
         type: "text",
-        speaker: narrator,
-        text: "Also dann... Was möchtest du heute spielen?",
+        speaker: "???",
+        text: "Was ein abgefahrener Ort...",
+        pic: { protagonist: "thinking"}
       },
+
+
+        {
+        type: "text",
+        speaker: narrator,
+        text: `Das ist ${mainCharacter}. Ein junger aufstrebender Sportler.`,
+        pic: { protagonist: "thinking"}
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Verdammt... Ich träume wiedermal zuviel...`,
+        pic: { protagonist: "reflect"}
+      },
+
+// Fehlt noch was
+
+
+
+// Fehlt noch was
       {
         type: "choice",
         options: [

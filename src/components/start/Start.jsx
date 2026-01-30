@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react'
 import DialogueBox from '../dialogueBox/DialogueBox'
 import './start.css'
-import { LoadContext, LoadingOverlay } from '../../context/AppProviders';
+import { LoadContext, LoadingOverlay, PictureContext } from '../../context/AppProviders';
 
 function Start() {
    const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+   const {pictureContext, setPictureContext} = useContext(PictureContext)
    const { load, setLoad } = useContext(LoadContext);
   const [hide, setHide] = useState(false)
 
@@ -29,8 +30,23 @@ function Start() {
       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
     },[loadingOverlay.loader && !loadingOverlay.ready])
 
+    console.log(pictureContext);
+    
+
   return (
-    <>
+    <div
+  style={{
+    backgroundImage: pictureContext.background
+      ? `url(${pictureContext.background})`
+      : "none",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    width: "inherit",
+    height: "inherit"
+  }}
+>
+
     <div className='window' onClick={() => displayDialogueBox()}>
         <DialogueBox
         storyState={storyState}
@@ -39,7 +55,7 @@ function Start() {
         setHide={setHide}
         />
     </div>
-    </>
+    </div>
   )
 }
 

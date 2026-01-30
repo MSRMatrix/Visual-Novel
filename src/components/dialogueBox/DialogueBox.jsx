@@ -2,14 +2,19 @@ import "./dialogueBox.css";
 
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
-import { LoadingOverlay, SoundContext, WriteContext } from "../../context/AppProviders";
+import { LoadingOverlay, PictureContext, SoundContext, WriteContext } from "../../context/AppProviders";
+import styled from "styled-components";
 
 import { useAutoMode, useBreakMode, useFocusMode, useIndexMode, useKeyControl, useSkipMode, useTypeWriterMode, useWriteSoundMode } from "../modes/useMode";
+
 import { story } from "../text/data/story";
+import { pictures } from "../pictures/pictures";
+
 import Menu from "../menu/Menu";
 import DialogueAction from "./dialogueAction/DialogueAction";
 import Games from "../games/Games";
 import Choice from "./choice/Choice";
+
 
 export default function VisualNovel({ hide, setHide, storyState, setStoryState }) {
   const focusableRef = useRef([]);
@@ -17,6 +22,7 @@ export default function VisualNovel({ hide, setHide, storyState, setStoryState }
   const { sounds, setSounds } = useContext(SoundContext);
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+  const {pictureContext, setPictureContext} = useContext(PictureContext)
 
   const [play, { stop, sound }] = useSound(sounds.typing, {
     volume: sounds.textVolume,
@@ -141,6 +147,29 @@ export default function VisualNovel({ hide, setHide, storyState, setStoryState }
 
   // Height muss sich dem Reactplayer anpassen
   // Height muss sich dem Reactplayer anpassen
+
+  // Function für die Bilder
+useEffect(() => {
+  if (!currentStep.pic) return;
+
+  Object.entries(currentStep.pic).forEach(([type, value]) => {
+    if (!value) return;
+
+    const img = pictures[type]?.[value];
+    if (!img) return;
+
+    setPictureContext(prev => ({
+      ...prev,
+      [type]: img
+    }));
+  });
+}, [currentStep.pic]);
+
+console.log(pictureContext);
+
+
+
+  // Function für die Bilder
 
   return (
     <>
