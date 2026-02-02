@@ -29,10 +29,7 @@ export const prolog = {
         type: "text",
         speaker: narrator,
         text: "Vor ihm tat sich eine wunderschöne und mysteriöse Insel auf. Langsam richtete er sich auf und versuchte einen klaren Kopf zu bekommen.",
-        pic: { background: "beach"}
-          
-        
-        
+        pic: { background: "island"}
       },
       {
         type: "text",
@@ -46,7 +43,6 @@ export const prolog = {
         type: "text",
         speaker: narrator,
         text: `Das ist ${mainCharacter}. Ein junger aufstrebender Sportler.`,
-        pic: { protagonist: "thinking"}
       },
 {
         type: "text",

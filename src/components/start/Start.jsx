@@ -55,6 +55,38 @@ function Start() {
         setHide={setHide}
         />
     </div>
+    {/* {pictureContext.antagonist ? <img className='antagonist' src={pictureContext.antagonist} alt="Trend" />  : ""}
+    {pictureContext.side ? <img className='side' src={pictureContext.side} alt="Trend" />  : ""} */}
+
+
+    <div className="character-layer">
+  {pictureContext.protagonist && (
+    <img
+      className="protagonist"
+      src={pictureContext.protagonist}
+      alt="Protagonist"
+      data-position="left"
+    />
+  )}
+  {pictureContext.protagonist && (
+    <img
+      className="side"
+      src={pictureContext.protagonist}
+      alt="Side"
+      data-position="center"
+    />
+  )}
+  {pictureContext.protagonist && (
+    <img
+      className="antagonist"
+      src={pictureContext.protagonist}
+      alt="Antagonist"
+      data-position="right"
+    />
+  )}
+</div>
+
+    
     </div>
   )
 }

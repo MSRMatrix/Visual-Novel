@@ -1,4 +1,38 @@
 .window{
     height: inherit;
     width: inherit;
+    position: relative;
+    z-index: 3;
 } 
+.character-layer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end; /* Figuren stehen auf dem Boden */
+    justify-content: center; /* Default: zentriert */
+    pointer-events: none;
+    z-index: 1;
+}
+
+.character-layer img {
+    max-height: 80%; /* proportional zur Höhe des Layers */
+    margin: 0 1vw;   /* etwas Abstand zwischen Figuren */
+    transition: all 0.5s ease; /* für Fade/Slide später */
+}
+
+/* Positions-Modifier */
+.character-layer img[data-position="left"] {
+    margin-left: 5%;
+}
+.character-layer img[data-position="center"] {
+    margin: 0 auto;
+}
+.character-layer img[data-position="right"] {
+    margin-right: 5%;
+}
+
+
+.protagonist{
+    max-height: 600px;
+    height: 100%;
+}

@@ -1,28 +1,33 @@
 .dialog-box {
   position: absolute;
-  width: 100%;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
   max-width: 600px;
-  margin: 0 auto;
-  bottom: 20%;
-  left: 0;
-  right: 0;
+  min-width: 320px;
 
-  background: rgba(20, 30, 45, 0.65);     
+  background: rgba(20, 30, 45, 0.65);
   border: 1px solid rgba(80, 150, 255, 0.3);
   border-radius: 10px;
 
-  backdrop-filter: blur(8px);              
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 
-  padding: 18px 22px;
+  padding: 2vh 2vw;
   color: #cfe6ff;
-  font-size: 16px;
+  font-size: 18px;
   letter-spacing: 0.4px;
-  line-height: 1.45;
+  line-height: 1.5;
 
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
+
 
 .dialog-box:hover {
   border-color: rgba(120, 180, 255, 0.45);
