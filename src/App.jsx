@@ -38,6 +38,10 @@ function App() {
         { element: <DataOptions />, path: "/data-options" },
       ],
     },
+    {
+      element: <Dashboard />,
+      path: "*"
+    }
   ]);
 
   const [load, setLoad] = useState({
