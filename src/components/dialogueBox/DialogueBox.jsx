@@ -153,11 +153,19 @@ useEffect(() => {
   if (!currentStep.pic) return;
 
   Object.entries(currentStep.pic).forEach(([type, value]) => {
-    if (!value) return;
+    if (value === "none" || value === null || value === undefined) {
+      // Bild entfernen
+      setPictureContext(prev => ({
+        ...prev,
+        [type]: ""  // oder null, je nachdem was du bevorzugst
+      }));
+      return;
+    }
 
     const img = pictures[type]?.[value];
     if (!img) return;
 
+    // Bild setzen
     setPictureContext(prev => ({
       ...prev,
       [type]: img
@@ -165,7 +173,8 @@ useEffect(() => {
   });
 }, [currentStep.pic]);
 
-console.log(pictureContext);
+
+// console.log(pictureContext);
 
 
 

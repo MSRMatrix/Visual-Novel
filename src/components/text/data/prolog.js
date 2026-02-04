@@ -1,5 +1,5 @@
 const narrator = "Erzähler";
-const mainCharacter = "Aj"
+const mainCharacter = "AJ"
 
 export const prolog = {
   intro: {
@@ -49,6 +49,24 @@ export const prolog = {
         speaker: mainCharacter,
         text: `Verdammt... Ich träume wiedermal zuviel...`,
         pic: { protagonist: "reflect"}
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Bevor ich hier Wurzeln schlage, sollte ich weitergehen...`,
+        pic: { protagonist: "thinking"}
+      },
+       {
+        type: "text",
+        speaker: narrator,
+        text: `So fing der junge Mann an langsam am Strand zu spazieren.`,
+        pic: { background: "beachDay", protagonist: "none" }
+      },
+      {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Diese Insel ist so schön...`,
+        pic: { protagonist: "walking"}
       },
 
 // Fehlt noch was

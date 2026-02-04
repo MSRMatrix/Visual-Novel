@@ -18,6 +18,7 @@ import protagonist_walking from "../../assets/character/protagonist/walking.png"
 
 // background
 import beach from "../../assets/background/beach.png";
+import beachDay from "../../assets/background/beach-day.png";
 import destroyedTown from "../../assets/background/destroyed-town.png";
 import forest from "../../assets/background/forest.png";
 import island from "../../assets/background/island.png";
@@ -42,6 +43,7 @@ export const pictures = {
   },
   background: {
     beach: beach,
+    beachDay: beachDay,
     destroyedTown: destroyedTown,
     forest: forest,
     island: island,

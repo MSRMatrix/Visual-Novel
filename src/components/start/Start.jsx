@@ -30,7 +30,7 @@ function Start() {
       setLoadingOverlay((prev) => ({...prev, title: "Spiel wird geladen", ready: storyState ? true : false}))
     },[loadingOverlay.loader && !loadingOverlay.ready])
 
-    console.log(pictureContext);
+    // console.log(pictureContext);
     
 
   return (
@@ -60,14 +60,14 @@ function Start() {
 
 
     <div className="character-layer">
-  {pictureContext.protagonist && (
+  {/* {pictureContext.protagonist && (
     <img
       className="protagonist"
       src={pictureContext.protagonist}
       alt="Protagonist"
       data-position="left"
     />
-  )}
+  )} */}
   {pictureContext.protagonist && (
     <img
       className="side"
@@ -76,14 +76,14 @@ function Start() {
       data-position="center"
     />
   )}
-  {pictureContext.protagonist && (
+  {/* {pictureContext.protagonist && (
     <img
       className="antagonist"
       src={pictureContext.protagonist}
       alt="Antagonist"
       data-position="right"
     />
-  )}
+  )} */}
 </div>
 
     

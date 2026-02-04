@@ -3,7 +3,7 @@ import "./credits.css";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 
-import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
+import { LoadingOverlay, PictureContext, SoundContext } from "../../context/AppProviders";
 import { useSimpleFocusMode } from "../modes/useMode";
 
 const Credits = () => {
@@ -11,6 +11,7 @@ const Credits = () => {
   const menu_music = import.meta.env.VITE_MENU_MUSIC;
   const { sounds, setSounds } = useContext(SoundContext);
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+  const {pictureContext, setPictureContext} = useContext(PictureContext)
   const navigate = useNavigate();
   const [focusedIndex, setFocusedIndex] = useState(0);
   const buttonRefs = useRef([]);
@@ -54,6 +55,12 @@ const Credits = () => {
             })),
               navigate(`/${route === "Neustart" ? "start" : ""}`);
             setLoadingOverlay((prev) => ({ ...prev, loader: true }));
+            setPictureContext({
+            background: "",
+            protagonist: "",
+            side: "",
+            antagonist: "",
+          })
           }}
           onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
           disabled={false}
