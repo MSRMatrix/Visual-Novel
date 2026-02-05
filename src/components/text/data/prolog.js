@@ -78,7 +78,7 @@ export const prolog = {
         type: "text",
         speaker: mainCharacter,
         text: `Ich könnte in den Wald gehen... Vielleicht sich dort jemand.`,
-        pic: { protagonist: "walking"}
+        pic: { protagonist: "walking", background: "beachDay"}
       },
 
       {
@@ -121,11 +121,44 @@ export const prolog = {
         type: "text",
         speaker: narrator,
         text: `Mitten im tiefen Wald findet er eine Art Bunkertür.`,
-        pic: {background: "forest-door"}
+        pic: {background: "forestDoor", protagonist: "none"}
       },
-// Fehlt noch was
 
-// Fehlt noch was
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Was macht eine Bunkertür mitten im Wald?"`,
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Es scheint Strom zu bekommen... Das Tastenfeld leuchtet."`,
+      },
+
+{
+        type: "text",
+        speaker: narrator,
+        text: `Er zieht kräftig an der Tür.`,
+      },
+
+{
+        type: "text",
+        speaker: narrator,
+        text: `Nichts passiert.`,
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Mist... Scheint wirklich verschlossen zu sein. Und ich kann mir auch sparen zu raten..."`,
+        pic: {protagonist: "thinking"}
+      },
+
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Irgendwas seltsames geht hier vor und ich werde schon herausfinden was..."`,
+      },
+
       {
         type: "text",
         speaker: narrator,
@@ -141,13 +174,16 @@ export const prolog = {
       {
         type: "text",
         speaker: narrator,
-        text: "Also gut... eine ruhige Geschichte über das Leben.",
+        text: "Er streift den Strand ab.",
+        pic: {background: "beachDay", protagonist: "none"}
       },
       {
         type: "text",
-        speaker: narrator,
-        text: "Hm, wo fangen wir an?",
+        speaker: mainCharacter,
+        text: "Hier muss doch irgendwas sein...",
       },
+
+      // Ab hier muss alles bearbeitet werden(Tent day)
       {
         type: "text",
         speaker: narrator,

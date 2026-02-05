@@ -22,7 +22,9 @@ import beachDay from "../../assets/background/beach-day.png";
 import destroyedTown from "../../assets/background/destroyed-town.png";
 import forest from "../../assets/background/forest.png";
 import island from "../../assets/background/island.png";
-import tent from "../../assets/background/tent.png";
+import beachTentDay from "../../assets/background/beach-tent-day.png";
+import beachTentNight from "../../assets/background/beach-tent-night.png";
+import forestDoor from "../../assets/background/forest-door.png"
 // background
 
 export const pictures = {
@@ -47,6 +49,8 @@ export const pictures = {
     destroyedTown: destroyedTown,
     forest: forest,
     island: island,
-    tent: tent,
+    beachTentDay: beachTentDay,
+    beachTentNight: beachTentNight,
+    forestDoor: forestDoor
   },
 };
