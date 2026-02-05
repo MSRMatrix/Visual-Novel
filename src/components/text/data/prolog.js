@@ -68,21 +68,28 @@ export const prolog = {
         text: `Diese Insel ist so schön...`,
         pic: { protagonist: "walking"}
       },
+      {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Doch wo soll ich hin? Hier ist keine Menschenseele.`,
+        pic: { protagonist: "walking"}
+      },
+      {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Ich könnte in den Wald gehen... Vielleicht sich dort jemand.`,
+        pic: { protagonist: "walking"}
+      },
 
-// Fehlt noch was
-
-
-
-// Fehlt noch was
       {
         type: "choice",
         options: [
           {
-            text: "Eine heroische Geschichte voller Abenteuer!",
+            text: "In den Wald gehen",
             next: { chapter: "prolog", scene: "choice_fail" },
           },
           {
-            text: "Eine ruhige Geschichte über das Leben.",
+            text: "Am Strand bleiben",
             next: { chapter: "prolog", scene: "path_life" },
           },
         ],
@@ -96,23 +103,33 @@ export const prolog = {
       {
         type: "text",
         speaker: narrator,
-        text: "Bereit für ein spannendes Abenteuer? Dann legen wir mal los!",
+        text: `AJ entschliesst sich in den Wald zu schreiten.`,
+        pic: { protagonist: "none", background: "forest"}
       },
+     {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Ganz schön dunkel hier...`,
+        pic: { protagonist: "thinking"}
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: `Moment... Was ist denn das?`,
+      },
+{
+        type: "text",
+        speaker: narrator,
+        text: `Mitten im tiefen Wald findet er eine Art Bunkertür.`,
+        pic: {background: "forest-door"}
+      },
+// Fehlt noch was
+
+// Fehlt noch was
       {
         type: "text",
         speaker: narrator,
-        text: "...",
-      },
-      {
-        type: "text",
-        speaker: narrator,
-        sfx: "paper_flip.mp3",
-        text: "Ups... hab das Script verlegt...",
-      },
-      {
-        type: "text",
-        speaker: narrator,
-        text: "Dann nehmen wir einfach den anderen Storyteil!",
+        text: "Er kehrt zurück zum Strand",
         next: { chapter: "prolog", scene: "path_life" },
       },
     ],
