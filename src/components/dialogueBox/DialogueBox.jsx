@@ -186,17 +186,17 @@ useEffect(() => {
       {!uiState.quickMenu ? (
         <div>
           <div>
-            <p>
+            {/* <p>
               {scene.id.toUpperCase().slice(0, 1) +
                 scene.id.toLowerCase().slice(1)}
-            </p>
+            </p> */}
           </div>
 
           <>
             {currentStep?.type === "text" ? (
               <div>
                 {" "}
-                <p className="font-bold">{currentStep.speaker || ""}</p>{" "}
+                <p className="font-bold">{currentStep.speaker === "AJ" ? currentStep.speaker : ""}</p>{" "}
                 <p className="mt-2">{textState.displayText || ""}</p>{" "}
               </div>
             ) : (
@@ -211,19 +211,6 @@ useEffect(() => {
               setUiState={setUiState}
               uiState={uiState}
             />
-
-            {currentStep?.type === "game" ? (
-              <Games
-                focusableRef={focusableRef}
-                currentStep={currentStep}
-                storyState={storyState}
-                setStoryState={setStoryState}
-                setUiState={setUiState}
-                uiState={uiState}
-              />
-            ) : (
-              ""
-            )}
 
             <DialogueAction
               scene={scene}
@@ -253,6 +240,20 @@ useEffect(() => {
         />
       )}
     </div>
+    
+    
+    {currentStep?.type === "game" ? (
+              <Games
+                focusableRef={focusableRef}
+                currentStep={currentStep}
+                storyState={storyState}
+                setStoryState={setStoryState}
+                setUiState={setUiState}
+                uiState={uiState}
+              />
+            ) : (
+              ""
+            )}
     </>
     
   );

@@ -1,3 +1,5 @@
+import "./games.css"
+
 import MemorieGame from "./memorieGame/MemorieGame";
 import NumberGame from "./numberGame/NumberGame";
 import PuzzleGame from "./puzzleGame/PuzzleGame";
@@ -10,7 +12,7 @@ const Games = ({
   uiState
 }) => {
   return (
-    <>
+    <div className="games">
       Games
       {currentStep.mode === "number" ? (
         <NumberGame
@@ -32,7 +34,7 @@ const Games = ({
       ) : (
         ""
       )}
-    </>
+    </div>
   );
 };
 

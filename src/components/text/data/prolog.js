@@ -183,16 +183,28 @@ export const prolog = {
         text: "Hier muss doch irgendwas sein...",
       },
 
-      // Ab hier muss alles bearbeitet werden(Tent day)
+{
+        type: "text",
+        speaker: narrator,
+        text: "Stundenlang schritt er am Strand entlang... Der Tag wurde zur Nacht.",
+        pic: {background: "beach"}
+      },
+
       {
         type: "text",
         speaker: narrator,
-        text: "Ah, richtig. Bei dir.",
+        text: "Nach einen langen Marsch fand er dann in der Ferne ein altes Zelt am Strand...",
+        pic: {background: "beachTentNight"}
+      },
+{
+        type: "text",
+        speaker: mainCharacter,
+        text: "Ein Zelt? Hier könnte ich übernachten...",
       },
       {
         type: "text",
         speaker: narrator,
-        text: "Kapitel Ende.",
+        text: "Und so endet die erste Nacht für AJ... Nichts ahnend was am zweiten Tag geschehen würde...",
         next: { chapter: "chapterOne", scene: "path_life_continue_1" },
       },
     ],
