@@ -53,6 +53,7 @@ export function useTypeWriterMode({
     currentStep.type === "choice",
     currentStep.type === "game",
     uiState.quickMenu,
-    autoState.skip,
+    autoState.skip
   ]);
 }
+ 
