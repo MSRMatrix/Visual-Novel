@@ -59,7 +59,7 @@ button {
   }
 
   &:disabled {
-    color: transparent;
+    text-decoration: line-through;
     cursor: default;
   }
 }

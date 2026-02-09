@@ -181,80 +181,89 @@ useEffect(() => {
   // Function für die Bilder
 
   return (
-    <>
-    <div className={`dialog-box${uiState.quickMenu ? "-hide" : ""}`} style={{ display: hide ? "none" : "block"}}>
-      {!uiState.quickMenu ? (
-        <div>
-          <div>
-            {/* <p>
-              {scene.id.toUpperCase().slice(0, 1) +
-                scene.id.toLowerCase().slice(1)}
-            </p> */}
+<>
+  <div
+    className={`dialog-ui`}
+    style={{ display: hide ? "none" : "block" }}
+  >
+    {!uiState.quickMenu ? (
+      <div className="dialog-wrapper">
+        {/* Speaker Label */}
+        {(currentStep.speaker === "AJ" || currentStep.speaker === "???") && (
+          <div className="dialog-speaker">
+            {currentStep.speaker}
           </div>
+        )}
 
-          <>
-            {currentStep?.type === "text" ? (
-              <div>
-                {" "}
-                <p className="font-bold">{currentStep.speaker === "AJ" ? currentStep.speaker : ""}</p>{" "}
-                <p className="mt-2">{textState.displayText || ""}</p>{" "}
-              </div>
-            ) : (
-              ""
+        {/* Dialog Box */}
+        <div className="dialog">
+          <div className="dialog__content">
+            {currentStep?.type === "text" && (
+              <p className="dialog__text">
+                {textState.displayText || ""}
+              </p>
             )}
 
-            <Choice
-              currentStep={currentStep}
-              focusableRef={focusableRef}
-              storyState={storyState}
-              setStoryState={setStoryState}
-              setUiState={setUiState}
-              uiState={uiState}
-            />
-
-            <DialogueAction
-              scene={scene}
-              hide={hide}
-              setHide={setHide}
-              focusableRef={focusableRef}
-              currentStep={currentStep}
-              storyState={storyState}
-              setStoryState={setStoryState}
-              setTextState={setTextState}
-              autoState={autoState}
-              setAutoState={setAutoState}
-              uiState={uiState}
-              setUiState={setUiState}
-            />
-          </>
-        </div>
-      ) : (
-        <Menu
-          currentStep={currentStep}
-          storyState={storyState}
-          setStoryState={setStoryState}
-          textState={textState}
-          setTextState={setTextState}
-          uiState={uiState}
-          setUiState={setUiState}
-        />
-      )}
-    </div>
-    
-    
-    {currentStep?.type === "game" ? (
-              <Games
-                focusableRef={focusableRef}
+            <div className="dialog__choices">
+              <Choice
                 currentStep={currentStep}
+                focusableRef={focusableRef}
                 storyState={storyState}
                 setStoryState={setStoryState}
                 setUiState={setUiState}
                 uiState={uiState}
               />
-            ) : (
-              ""
-            )}
-    </>
+            </div>
+
+            <div className="dialog__actions">
+              <DialogueAction
+                scene={scene}
+                hide={hide}
+                setHide={setHide}
+                focusableRef={focusableRef}
+                currentStep={currentStep}
+                storyState={storyState}
+                setStoryState={setStoryState}
+                setTextState={setTextState}
+                autoState={autoState}
+                setAutoState={setAutoState}
+                uiState={uiState}
+                setUiState={setUiState}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <Menu
+        className="dialog-menu"
+        currentStep={currentStep}
+        storyState={storyState}
+        setStoryState={setStoryState}
+        textState={textState}
+        setTextState={setTextState}
+        uiState={uiState}
+        setUiState={setUiState}
+      />
+    )}
+  </div>
+
+  {currentStep?.type === "game" && (
+    <div>
+      {/*<div className="game-layer">  */}
+      <Games
+        focusableRef={focusableRef}
+        currentStep={currentStep}
+        storyState={storyState}
+        setStoryState={setStoryState}
+        setUiState={setUiState}
+        uiState={uiState}
+      />
+    </div>
+  )}
+</>
+
+
     
   );
 }

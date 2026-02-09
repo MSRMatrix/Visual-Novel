@@ -108,7 +108,7 @@ const DialogueAction = ({
   }
 
   return (
-    <div>
+    <>
       {menuButtons.map((btn, index) => (
         <button
           ref={(el) => (focusableRef.current[pauseFunction(index)] = el)}
@@ -121,7 +121,7 @@ const DialogueAction = ({
           {btn.label}
         </button>
       ))}
-    </div>
+    </>
   );
 };
 
