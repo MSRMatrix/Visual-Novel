@@ -235,16 +235,7 @@ useEffect(() => {
         </div>
       </div>
     ) : (
-      <Menu
-        className="dialog-menu"
-        currentStep={currentStep}
-        storyState={storyState}
-        setStoryState={setStoryState}
-        textState={textState}
-        setTextState={setTextState}
-        uiState={uiState}
-        setUiState={setUiState}
-      />
+     <></>
     )}
   </div>
 
@@ -261,6 +252,17 @@ useEffect(() => {
       />
     </div>
   )}
+{uiState.quickMenu ?<Menu
+        className="dialog-menu"
+        currentStep={currentStep}
+        storyState={storyState}
+        setStoryState={setStoryState}
+        textState={textState}
+        setTextState={setTextState}
+        uiState={uiState}
+        setUiState={setUiState}
+      /> : <></>}
+   
 </>
 
 

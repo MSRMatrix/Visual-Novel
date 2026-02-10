@@ -27,7 +27,7 @@
 
 .dialog-speaker {
   position: absolute;
-  top: -14px;
+  top: -22px;
   left: 20px;
 
   background: rgba(25, 45, 75, 0.85);
@@ -111,8 +111,11 @@
 
 .dialog__actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 0.5rem;
+  button{
+    font-size: x-small;
+  }
 }
 
 

@@ -88,9 +88,9 @@ function Menu({
   });
 
   return (
-    <div className="dashboard">
+    <div className="menu">
       <div
-        className={`dashboard-container`}
+        className={`menu-container`}
         style={{ display: action || !sounds.hidePlayer ? "none" : "" }}
       >
         <h1>Schnellmenü</h1>

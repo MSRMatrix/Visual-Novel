@@ -1,12 +1,9 @@
 .dashboard{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    justify-content: space-evenly;
     width: inherit;
     height: inherit;
-
-        
+    display: flex;
+    justify-content: center;
+    align-items: center;
   .dashboard-container{
     display: flex;
   flex-direction: column;
