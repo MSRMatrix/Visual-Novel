@@ -76,7 +76,11 @@
 
   display: flex;
   flex-direction: column;
+
+  /* WICHTIG */
+  min-height: 140px;
 }
+
 
 .dialog:hover {
   border-color: rgba(120, 180, 255, 0.45);

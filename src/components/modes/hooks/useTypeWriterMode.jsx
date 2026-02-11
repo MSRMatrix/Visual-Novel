@@ -1,59 +1,76 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 export function useTypeWriterMode({
- currentStep,
-    writeSpeed,
-    setTextState,
-    textState,
-    autoState,
-    uiState
+  currentStep,
+  writeSpeed,
+  setTextState,
+  autoState,
+  uiState
 }) {
+  const indexRef = useRef(0);
+  const timeoutRef = useRef(null);
+
   useEffect(() => {
+    // Guard Conditions
     if (
       !currentStep?.text ||
       currentStep.type === "choice" ||
       currentStep.type === "game" ||
       uiState.quickMenu
-    )
+    ) {
       return;
+    }
 
-    setTextState((prev) => ({
+    const fullText = currentStep.text;
+
+    // Reset
+    indexRef.current = 0;
+
+    setTextState(prev => ({
       ...prev,
       displayText: "",
-      textFinished: false
+      textFinished: false,
     }));
-    
-    let i = textState.pausedText.length;
 
-    setTextState((prev) => ({
-      ...prev,
-      displayText: textState.pausedText + currentStep.text.charAt(i),
-      pausedText: ""
-    }));
-    const interval = setInterval(() => {
-      if (i < currentStep.text.length) {
-        setTextState((prev) => ({
-          ...prev,
-          displayText: prev.displayText + currentStep.text.charAt(i),
-        }));
+    // Skip sofort komplett anzeigen
+    if (autoState.skip) {
+      setTextState(prev => ({
+        ...prev,
+        displayText: fullText,
+        textFinished: true,
+      }));
+      return;
+    }
 
-        i++;
+    const typeNext = () => {
+      indexRef.current++;
+
+      setTextState(prev => ({
+        ...prev,
+        displayText: fullText.slice(0, indexRef.current),
+      }));
+
+      if (indexRef.current < fullText.length) {
+        timeoutRef.current = setTimeout(typeNext, writeSpeed);
       } else {
-        clearInterval(interval);
-        setTextState((prev) => ({
+        setTextState(prev => ({
           ...prev,
           textFinished: true,
         }));
       }
-    }, writeSpeed);
+    };
 
-    return () => clearInterval(interval);
+    timeoutRef.current = setTimeout(typeNext, writeSpeed);
+
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
   }, [
     currentStep?.text,
-    currentStep.type === "choice",
-    currentStep.type === "game",
+    currentStep?.type,
     uiState.quickMenu,
-    autoState.skip
+    autoState.skip,
+    writeSpeed,
+    setTextState
   ]);
 }
- 
