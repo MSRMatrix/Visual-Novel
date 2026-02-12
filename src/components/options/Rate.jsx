@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { useTypeWriteMode } from "./modes/useTypeWriteMode";
-import { showSpeedRate, writespeedHandler } from "./functions/writeFunctions";
-import { SoundContext, WriteContext } from "../../../context/AppProviders";
+import { showSpeedRate, writespeedHandler } from "../../game/engine/writeFunctions";
+import { SoundContext, WriteContext } from "../../context/AppProviders";
+import { useRateMode } from "../../game/modes/hooks/useRateMode"
 
 function Rate({ active, setActive }) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);
@@ -25,7 +25,7 @@ function Rate({ active, setActive }) {
   const [keyCatcher, setKeyCatcher] = useState("");
 
   // TYPEWRITER-EFFEKT
-  useTypeWriteMode({
+  useRateMode({
     active,
     setDisplayExample,
     writeSpeed,

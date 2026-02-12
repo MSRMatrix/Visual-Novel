@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useTypeWriteMode({
+export function useRateMode({
   active,
   setDisplayExample,
   writeSpeed,

@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react";
-import { SoundContext } from "../../../../context/AppProviders";
-import { test_music1, test_music2, test_music3,test_music4 } from "../soundEffects";
+import { SoundContext } from "../../context/AppProviders";
+import { test_music1, test_music2, test_music3,test_music4 } from "./soundEffects";
 
 const MusicData = ({ focusableRef, startIndex }) => {
   const { sounds, setSounds } = useContext(SoundContext);

@@ -1,10 +1,10 @@
-import click1 from "../../../sound/normalClick.wav";
-import click2 from "../../../sound/normalClick2.mp3";
-import click3 from "../../../sound/boopClick.wav";
+import click1 from "../../sound/normalClick.wav";
+import click2 from "../../sound/normalClick2.mp3";
+import click3 from "../../sound/boopClick.wav";
 
-import typing1 from "../../../sound/typing-1.wav";
-import typing2 from "../../../sound/typing-2.mp3";
-import typing3 from "../../../sound/typing-3.mp3";
+import typing1 from "../../sound/typing-1.wav";
+import typing2 from "../../sound/typing-2.mp3";
+import typing3 from "../../sound/typing-3.mp3";
 
 const test_music1 = import.meta.env.VITE_TEST_MUSIC1;
 const test_music2 = import.meta.env.VITE_TEST_MUSIC2;

@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import { handleSound } from "../../../functions/handleSound";
-import { click1, click2, click3 } from "../soundEffects";
+import { handleSound } from "../../game/engine/handleSound";
+import { click1, click2, click3 } from "./soundEffects";
 import useSound from "use-sound";
-import { SoundContext } from "../../../../context/AppProviders";
+import { SoundContext } from "../../context/AppProviders";
 
 const Click = ({ focusableRef, startIndex }) => {
   const { sounds, setSounds } = useContext(SoundContext);

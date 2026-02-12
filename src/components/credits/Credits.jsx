@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { LoadingOverlay, PictureContext, SoundContext } from "../../context/AppProviders";
-import { useSimpleFocusMode } from "../modes/useMode";
+import { useSimpleFocusMode } from "../../game/modes/useMode";
+
 
 const Credits = () => {
   const game_music = import.meta.env.VITE_GAME_MUSIC;

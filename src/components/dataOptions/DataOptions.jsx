@@ -10,9 +10,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { dataHandler, deleteData, dispatchItemAction, handleFileChange } from "./dataFunctions";
-import { useSimpleFocusMode } from "../modes/useMode";
+import { dispatchItemAction, handleFileChange } from "../../game/engine/dataFunctions";
+
 import { LoadingOverlay } from "../../context/AppProviders";
+import { useSimpleFocusMode } from "../../game/modes/useMode";
 
 const DataOptions = () => {
   library.add(faDownload, faUpload, faTrash);

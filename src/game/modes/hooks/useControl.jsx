@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { handleKeyDown } from "../../functions/handleKeyDown";
+import { handleKeyDown } from "../../engine/handleKeyDown";
 
 export function useKeyControl({ focusableRef, currentStep, uiState, setUiState, effectdeps, ifDeps }) {
   useEffect(() => {

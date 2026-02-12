@@ -1,17 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import "./menu.css";
 import { useContext, useRef, useState } from "react";
-import GameData from "./gameData/GameData";
-import { mainMenu } from "../functions/mainMenu";
-import { newGame } from "../functions/newGame";
-import Backlog from "./backlog/Backlog";
+import GameData from "./GameData";
+import { mainMenu } from "../../game/engine/mainMenu";
+import { newGame } from "../../game/engine/newGame";
+import Backlog from "./Backlog";
 import Options from "../options/Options";
-import { useSimpleFocusMode } from "../modes/hooks/useSimpleFocusMode";
 import {
-  LoadContext,
+  useSimpleFocusMode
+} from "../../game/modes/useMode";
+import 
+  {LoadContext,
   PictureContext,
-  SoundContext,
-} from "../../context/AppProviders";
+  SoundContext,} from "../../context/AppProviders"
 
 function Menu({
   currentStep,

@@ -3,9 +3,9 @@ import "./load.css"
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { formatTime } from "../functions/formatTime";
-import { handleKeyDown } from "../functions/handleKeyDown";
+import { formatTime } from "../../utils/formatTime";
 import { LoadContext, LoadingOverlay, SoundContext } from "../../context/AppProviders";
+import { handleKeyDown } from "../../game/engine/handleKeyDown";
 
 function Load() {
   const game_music = import.meta.env.VITE_GAME_MUSIC;

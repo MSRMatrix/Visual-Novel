@@ -12,13 +12,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { saveData } from "../../functions/saveData";
-import { loadData } from "../../functions/loadData";
-import { deleteData } from "../../functions/deleteData";
-import { formatTime } from "../../functions/formatTime";
+import { saveData } from "../../game/engine/saveData";
+import { loadData } from "../../game/engine/loadData";
+import { deleteData } from "../../game/engine/deleteData";
+import { formatTime } from "../../utils/formatTime";
 
-import { LoadingOverlay, SoundContext } from "../../../context/AppProviders";
-import { useFocusMode, useKeyControl } from "../../modes/useMode";
+import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
+import { useFocusMode, useKeyControl } from "../../game/modes/useMode";
 
 function GameData({
   mode,

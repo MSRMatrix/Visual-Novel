@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
-import { handleMenuAction } from "./handleMenuAction";
-import { useSimpleFocusMode } from "../modes/useMode";
+import { handleMenuAction } from "../../game/engine/handleMenuAction";
+import { useSimpleFocusMode } from "../../game/modes/useMode";
 
 function Dashboard() {
   

@@ -1,12 +1,10 @@
-import "./root.css";
 import { Outlet } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import useSound from "use-sound";
-import Loader from "./components/loader/Loader";
-import { LoadingOverlay, SoundContext } from "./context/AppProviders";
-import ReactPlayerComponent from "./components/options/reactPlayerComponent/ReactPlayerComponent";
-import { useLoad } from "./components/modes/useMode";
-import Intro from "./components/intro/Intro";
+import Loader from "../components/loader/Loader";
+import { LoadingOverlay, SoundContext } from "../context/AppProviders";
+import Intro from "../components/intro/Intro";
+import ReactPlayerComponent from "../components/options/ReactPlayerComponent";
 
 function Root() {
   const [intro, setIntro] = useState(true);

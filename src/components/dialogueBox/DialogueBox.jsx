@@ -3,17 +3,18 @@ import "./dialogueBox.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
 import { LoadingOverlay, PictureContext, SoundContext, WriteContext } from "../../context/AppProviders";
-import styled from "styled-components";
 
-import { useAutoMode, useBreakMode, useFocusMode, useIndexMode, useKeyControl, useSkipMode, useTypeWriterMode, useWriteSoundMode } from "../modes/useMode";
+import { useAutoMode, useBreakMode, useFocusMode, useIndexMode, useKeyControl, useSkipMode, useTypeWriterMode, useWriteSoundMode } from "../../game/modes/useMode";
 
-import { story } from "../text/data/story";
+import { story } from "../../game/story/story";
 import { pictures } from "../pictures/pictures";
 
 import Menu from "../menu/Menu";
-import DialogueAction from "./dialogueAction/DialogueAction";
-import Games from "../games/Games";
-import Choice from "./choice/Choice";
+import DialogueAction from "./DialogueAction";
+import Games from "../../features/games/Games";
+import Choice from "./Choice";
+
+
 
 
 export default function VisualNovel({ hide, setHide, storyState, setStoryState }) {

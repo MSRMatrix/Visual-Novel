@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { nextStep } from "../../functions/nextStep";
-import { stepBack } from "../../functions/stepBack";
+import { nextStep } from "../../game/engine/nextStep";
+import { stepBack } from "../../game/engine/stepBack";
 
 const DialogueAction = ({
   scene,

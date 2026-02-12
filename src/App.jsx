@@ -11,8 +11,8 @@ import {
 import {
   click1,
   typing1,
-} from "./components/options/reactPlayerComponent/soundEffects";
-import Root from "./Root";
+} from "./components/options/soundEffects";
+import Root from "./layouts/Root";
 import Dashboard from "./components/dashboard/Dashboard";
 import Start from "./components/start/Start";
 import Options from "./components/options/Options";
