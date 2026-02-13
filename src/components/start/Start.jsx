@@ -1,6 +1,9 @@
-import { useContext, useEffect, useState } from 'react'
-import DialogueBox from '../dialogueBox/DialogueBox'
 import './start.css'
+
+import { useContext, useEffect, useState } from 'react'
+
+import Box from '../dialogue/Box'
+
 import { LoadContext, LoadingOverlay, PictureContext } from '../../context/AppProviders';
 
 function Start() {
@@ -48,7 +51,7 @@ function Start() {
 >
 
     <div className='window' onClick={() => displayDialogueBox()}>
-        <DialogueBox
+        <Box
         storyState={storyState}
         setStoryState={setStoryState}
         hide={hide}

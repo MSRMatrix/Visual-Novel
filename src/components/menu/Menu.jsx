@@ -1,14 +1,18 @@
-import { useNavigate } from "react-router-dom";
 import "./menu.css";
+
+import { useNavigate } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
+
+import { mainMenu,newGame  } from "../../game/engine/functions";
+
 import GameData from "./GameData";
-import { mainMenu } from "../../game/engine/mainMenu";
-import { newGame } from "../../game/engine/newGame";
 import Backlog from "./Backlog";
 import Options from "../options/Options";
+
 import {
   useSimpleFocusMode
 } from "../../game/modes/useMode";
+
 import 
   {LoadContext,
   PictureContext,

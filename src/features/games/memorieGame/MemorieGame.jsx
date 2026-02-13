@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./memorieGame.css";
-import { cardHandler, createDeck } from "./cardFunctions";
-import { useCardMode } from "./modes/cardModes";
+import { cardHandler, createDeck } from "../../../game/engine/functions";
+import { useCardMode } from "../../../game/modes/useMode";
 
 
 const MemorieGame = ({

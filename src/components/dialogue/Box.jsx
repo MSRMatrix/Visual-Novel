@@ -1,4 +1,4 @@
-import "./dialogueBox.css";
+import "./dialogue.css";
 
 import { useContext, useEffect, useRef, useState } from "react";
 import useSound from "use-sound";
@@ -10,12 +10,9 @@ import { story } from "../../game/story/story";
 import { pictures } from "../pictures/pictures";
 
 import Menu from "../menu/Menu";
-import DialogueAction from "./DialogueAction";
+import Action from "./Action";
 import Games from "../../features/games/Games";
 import Choice from "./Choice";
-
-
-
 
 export default function VisualNovel({ hide, setHide, storyState, setStoryState }) {
   const focusableRef = useRef([]);
@@ -217,7 +214,7 @@ useEffect(() => {
             </div>
 
             <div className="dialog__actions">
-              <DialogueAction
+              <Action
                 scene={scene}
                 hide={hide}
                 setHide={setHide}

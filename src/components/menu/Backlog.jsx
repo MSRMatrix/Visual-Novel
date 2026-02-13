@@ -1,9 +1,7 @@
-import "./backlog.css"
-
 import { useRef } from "react";
 
 import { story } from "../../game/story/story";
-import { buildBacklog } from "../../game/engine/buildBacklog";
+import { buildBacklog } from "../../game/engine/functions";
 import { useFocusMode, useKeyControl } from "../../game/modes/useMode";
 
 function Backlog({setAction, action, currentStep, storyState, uiState, setUiState}) {

@@ -1,8 +1,12 @@
-import { useContext, useEffect } from "react";
 import useSound from "use-sound";
-import { typing1, typing2, typing3 } from "./soundEffects";
-import { SoundContext } from "../../context/AppProviders";
-import { handleSound } from "../../game/engine/handleSound";
+
+import { useContext, useEffect } from "react";
+
+import { typing1, typing2, typing3 } from "../../../utils/soundEffects";
+
+import { SoundContext } from "../../../context/AppProviders";
+
+import { handleSound } from "../../../game/engine/functions";
 
 const Write = ({ focusableRef, startIndex }) => {
   const { sounds, setSounds } = useContext(SoundContext);

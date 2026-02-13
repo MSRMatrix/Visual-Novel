@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { nextStep } from "../../game/engine/nextStep";
-import { stepBack } from "../../game/engine/stepBack";
+import { nextStep, stepBack } from "../../game/engine/functions";
 
-const DialogueAction = ({
+const Action = ({
   scene,
   hide,
   setHide,
@@ -125,4 +124,4 @@ const DialogueAction = ({
   );
 };
 
-export default DialogueAction;
+export default Action;

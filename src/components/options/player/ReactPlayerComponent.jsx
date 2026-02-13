@@ -1,11 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import ReactPlayer from "react-player";
+
 import AudioManager from "./AudioManager";
 import Click from "./Click";
 import Write from "./Write";
 import MusicData from "./MusicData";
-import "./reactPlayerComponent.css";
-import { SoundContext } from "../../context/AppProviders";
+
+import { SoundContext } from "../../../context/AppProviders";
 
 function ReactPlayerComponent() {
   const { sounds, setSounds } = useContext(SoundContext);

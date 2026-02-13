@@ -1,9 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import "./options.css";
+
+import { useNavigate } from "react-router-dom";
+
 import { useContext, useRef, useState } from "react";
+
 import { SoundContext } from "../../context/AppProviders";
-import Rate from "./Rate";
+
 import { useSimpleFocusMode } from "../../game/modes/useMode";
+
+import Rate from "./rate/Rate";
 
 function Options({ action, setAction }) {
   const { sounds, setSounds } = useContext(SoundContext);

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { nextStep } from "../../engine/nextStep";
+import { nextStep } from "../../engine/logic/nextStep";
 
 export function useAutoMode({currentStep, scene, storyState, setStoryState, textState, autoState, uiState,}){
   const navigate = useNavigate();

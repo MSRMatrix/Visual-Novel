@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useNumberMode } from "./modes/useNumberMode";
-import { answerHandler } from "./numberGameHandler";
+import { useNumberMode } from "../../../game/modes/useMode";
+import { answerHandler } from "../../../game/engine/functions";
 
 const NumberGame = ({
   focusableRef,

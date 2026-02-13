@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { showSpeedRate, writespeedHandler } from "../../game/engine/writeFunctions";
-import { SoundContext, WriteContext } from "../../context/AppProviders";
-import { useRateMode } from "../../game/modes/hooks/useRateMode"
+import { showSpeedRate, writespeedHandler } from "../../../game/engine/functions";
+import { SoundContext, WriteContext } from "../../../context/AppProviders";
+import { useRateMode } from "../../../game/modes/hooks/useRateMode"
 
 function Rate({ active, setActive }) {
   const { writeSpeed, setWriteSpeed } = useContext(WriteContext);

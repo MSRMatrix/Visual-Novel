@@ -1,4 +1,4 @@
-import "./dataOptions.css";
+import "./dataManager.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -10,12 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { dispatchItemAction, handleFileChange } from "../../game/engine/dataFunctions";
+import { dispatchItemAction, handleFileChange } from "../../game/engine/functions";
 
 import { LoadingOverlay } from "../../context/AppProviders";
 import { useSimpleFocusMode } from "../../game/modes/useMode";
 
-const DataOptions = () => {
+const DataManager = () => {
   library.add(faDownload, faUpload, faTrash);
 
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
@@ -105,4 +105,4 @@ const DataOptions = () => {
   );
 };
 
-export default DataOptions;
+export default DataManager;

@@ -1,5 +1,3 @@
-import "./gameData.css";
-
 import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +10,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-import { saveData } from "../../game/engine/saveData";
-import { loadData } from "../../game/engine/loadData";
-import { deleteData } from "../../game/engine/deleteData";
+import { saveData, loadData, deleteData } from "../../game/engine/functions";
 import { formatTime } from "../../utils/formatTime";
 
 import { LoadingOverlay, SoundContext } from "../../context/AppProviders";

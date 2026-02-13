@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useRef, useState } from "react";
 
 import { LoadingOverlay, SoundContext } from "../../context/AppProviders";
-import { handleMenuAction } from "../../game/engine/handleMenuAction";
 import { useSimpleFocusMode } from "../../game/modes/useMode";
+import { handleMenuAction } from "../../game/engine/functions";
 
 function Dashboard() {
   
@@ -19,13 +19,13 @@ function Dashboard() {
   const [focusedIndex, setFocusedIndex] = useState(0);
   
 
-const menuItems = ["start", "load", "options", "data-options"];
+const menuItems = ["start", "load-game", "options", "data-manager"];
 
 const labels = {
   start: "Start",
-  load: "Spiel laden",
+  "load-game": "Spiel laden",
   options: "Optionen",
-  "data-options": "Daten Verwaltung",
+  "data-manager": "Daten Verwaltung",
 };
 
 

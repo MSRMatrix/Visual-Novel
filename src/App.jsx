@@ -11,14 +11,15 @@ import {
 import {
   click1,
   typing1,
-} from "./components/options/soundEffects";
+} from "./utils/soundEffects";
+
 import Root from "./layouts/Root";
 import Dashboard from "./components/dashboard/Dashboard";
 import Start from "./components/start/Start";
 import Options from "./components/options/Options";
 import Credits from "./components/credits/Credits";
-import Load from "./components/load/Load";
-import DataOptions from "./components/dataOptions/DataOptions";
+import LoadGames from "./components/loadGame/LoadGame";
+import DataManager from "./components/dataManager/DataManager";
 
 function App() {
   const menu_music = import.meta.env.VITE_MENU_MUSIC;
@@ -34,8 +35,8 @@ function App() {
         { element: <Options />, path: "/options" },
         { element: <Start />, path: "/start" },
         { element: <Credits />, path: "/credits" },
-        { element: <Load />, path: "/load" },
-        { element: <DataOptions />, path: "/data-options" },
+        { element: <LoadGames />, path: "/load-game" },
+        { element: <DataManager />, path: "/data-manager" },
       ],
     },
     {

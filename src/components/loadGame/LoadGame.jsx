@@ -1,13 +1,13 @@
-import "./load.css"
+import "./loadGame.css"
 
 import { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { formatTime } from "../../utils/formatTime";
 import { LoadContext, LoadingOverlay, SoundContext } from "../../context/AppProviders";
-import { handleKeyDown } from "../../game/engine/handleKeyDown";
+import { handleKeyDown } from "../../game/engine/functions";
 
-function Load() {
+function LoadGames() {
   const game_music = import.meta.env.VITE_GAME_MUSIC;
   const { sounds, setSounds } = useContext(SoundContext);
   const { load, setLoad } = useContext(LoadContext);
@@ -109,4 +109,4 @@ function Load() {
   );
 }
 
-export default Load;
+export default LoadGames;

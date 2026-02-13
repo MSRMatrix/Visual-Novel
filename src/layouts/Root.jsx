@@ -4,7 +4,7 @@ import useSound from "use-sound";
 import Loader from "../components/loader/Loader";
 import { LoadingOverlay, SoundContext } from "../context/AppProviders";
 import Intro from "../components/intro/Intro";
-import ReactPlayerComponent from "../components/options/ReactPlayerComponent";
+import ReactPlayerComponent from "../components/options/player/ReactPlayerComponent";
 
 function Root() {
   const [intro, setIntro] = useState(true);
