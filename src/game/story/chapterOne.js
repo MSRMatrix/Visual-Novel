@@ -1,5 +1,5 @@
 const narrator = "Erzähler";
-const player = "Spieler"
+const mainCharacter = "AJ"
 
 export const chapterOne = {
   path_life_continue_1: {
@@ -8,13 +8,61 @@ export const chapterOne = {
       {
         type: "text",
         speaker: narrator,
-        text: "Noch gibt es keinen Text...",
+        text: `Eine lange und schlaflose Nacht verging für ihn.`,
+        pic: { background: "none"}
       },
       {
         type: "text",
         speaker: narrator,
-        text: "Sei nicht traurig...",
+        text: `Nur schwer konnte ${mainCharacter} die Augen öffnen`,
       },
+ {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Ah...`,
+        pic: {background: "beach-tent-day", protagonist: "none"}
+      },
+ {
+        type: "text",
+        speaker: narrator,
+        text: `Langsam kam er aus dem Zelt, streckte und reckte sich einmal als das Sonnenlicht seine Augen zusammen zucken lies.`,
+      },
+
+ {
+        type: "text",
+        speaker: mainCharacter,
+        text: `"Gähn." Bin ich etwa immernoch hier?`,
+        pic: {protagonist: "thinking"}
+      },
+ {
+        type: "text",
+        speaker: mainCharacter,
+        text: `Also war das doch kein einfacher Traum...`,
+        pic: { protagonist: "reflect"}
+      },
+      {
+        type: "text",
+        speaker: narrator,
+        text: `Blickte einmal aufs Wasser für einige Sekunden und atmete tief ein und aus.`,
+      },
+
+      // Fehlt nocht Text hier
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      // Fehlt nocht Text hier
       {
         type: "game",
         mode: "number",
