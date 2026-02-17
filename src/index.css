@@ -32,8 +32,15 @@ html, body {
 }
 
 body{
-  background: #0d1117;
+    background: linear-gradient(
+    180deg,
+    #0b1d26 0%,      
+    #12343b 50%,     
+    #1d4d4f 100%     
+  );
 }
+
+/* Ein beweglicher Hintergrundbild */
 
 
 button {
