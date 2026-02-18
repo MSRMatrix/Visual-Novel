@@ -13,6 +13,8 @@ function Dashboard() {
 
   const { sounds, setSounds } = useContext(SoundContext);
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
+const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
+console.log(saves);
 
   const buttonRefs = useRef([]);
 
@@ -56,7 +58,7 @@ const labels = {
           onClick={() =>
             handleMenuAction(route, navigate, setSounds, setLoadingOverlay)}
           onBlur={() => buttonRefs.current[focusedIndex]?.focus()}
-          disabled={false}
+          disabled={route === "load-game" && saves.length <= 0 ? true : false}
           data-nosound="false"
           className="menu-button"
         >
