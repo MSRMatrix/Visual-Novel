@@ -13,7 +13,6 @@ const Games = ({
 }) => {
   return (
     <div className="games">
-      Games
       {currentStep.mode === "number" ? (
         <NumberGame
           focusableRef={focusableRef}

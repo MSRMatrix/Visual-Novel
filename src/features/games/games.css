@@ -3,7 +3,82 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: aliceblue;
   padding: 10px;
   z-index: 1;
+}
+
+
+.island-number-game {
+  background: rgba(15, 40, 45, 0.85);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  max-width: 400px;
+}
+
+/* Titel */
+.island-title {
+  color: #fefae0;
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+}
+
+/* Versuche */
+.island-tries {
+  color: #e0e1dd;
+  margin-bottom: 8px;
+}
+
+/* History */
+.island-history {
+  color: #e9c46a;
+  margin-bottom: 15px;
+}
+
+/* Input */
+.island-input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(30, 70, 60, 0.8);
+  color: #f1faee;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  transition: all 0.25s ease;
+}
+
+.island-input:focus {
+  outline: none;
+  border-color: rgba(233,196,106,0.7);
+  box-shadow: 0 0 12px rgba(233,196,106,0.6);
+}
+
+/* Button */
+.island-button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #1b4332, #2a9d8f);
+  color: #fefae0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.island-button:hover {
+  background: linear-gradient(135deg, #2a9d8f, #40916c);
+  transform: translateY(-2px);
+}
+
+.island-button:focus {
+  box-shadow: 0 0 15px rgba(233,196,106,0.7);
+}
+
+.island-button:active {
+  transform: translateY(1px);
+  background: #e9c46a;
+  color: #1b4332;
 }
