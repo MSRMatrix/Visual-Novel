@@ -38,16 +38,21 @@ const Loader = () => {
   }, [loadingOverlay.percent]);
 
   return (
-    <div className="loader" style={{display: loadingOverlay.loader ? "flex" : "none"}}>
-      <h1>{loadingOverlay.title}</h1>
-      <div
-        className="loading-bar"
-        style={{
-          background: `linear-gradient(to right, blue 0%, blue ${loadingOverlay.percent}%, transparent ${loadingOverlay.percent}%, transparent 100%)`,
-        }}
-      ></div>
-      <p className="percent">{loadingOverlay.percent}%</p>
-    </div>
+  <div
+  className="island-loader"
+  style={{ display: loadingOverlay.loader ? "flex" : "none" }}
+>
+  <h1 className="loader-title">{loadingOverlay.title}</h1>
+
+  <div className="loading-bar">
+    <div
+      className="loading-fill"
+      style={{ width: `${loadingOverlay.percent}%` }}
+    />
+  </div>
+
+  <p className="percent">{loadingOverlay.percent}%</p>
+</div>
   );
 };
 

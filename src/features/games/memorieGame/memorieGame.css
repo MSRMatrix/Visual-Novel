@@ -1,38 +1,80 @@
-.card-container{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+.island-memory {
+  background: rgba(15, 40, 45, 0.85);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
+}
+
+/* Titel */
+.memory-title {
+  color: #fefae0;
+  font-size: 1.6rem;
+  margin-bottom: 10px;
+}
+
+/* Versuche */
+.memory-tries {
+  color: #e9c46a;
+  margin-bottom: 20px;
+}
+
+/* Karten Layout */
+.card-container {
+  display: grid;
+   grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    width: fit-content;
-    gap: 5px;
-    justify-self: center;
-    
+  gap: 12px;
 }
 
-.cards{
-    cursor: pointer;
-    border: none;
-    transition: 0.5s all ease-in-out;
-    background-color: aqua;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    /* transform: rotateY(90deg); */
-    &:hover{
-        transition: 0.2s all ease-in-out;
-        background-color: blue;
-    }
-    &:focus{
-        border: none;
-    }
+/* Basis Karte */
+.island-card {
+  height: 70px;
+  width: 70px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, #1b4332, #2a9d8f);
+  color: #fefae0;
+  font-weight: bold;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-
-.flipped{
- /* transform: rotateY(90deg); */
+/* Hover */
+.island-card:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-.hidden{
- /* transform: rotateY(90deg); */
+/* Focus */
+.island-card:focus {
+  outline: none;
+  box-shadow: 0 0 12px rgba(233,196,106,0.7);
+}
+
+/* Active */
+.island-card:active {
+  transform: translateY(1px);
+}
+
+.island-card:disabled{
+    text-decoration: none;
+}
+
+/* Gelöst */
+.card-solved {
+  background: linear-gradient(135deg, #40916c, #52b788);
+  color: #fefae0;
+  box-shadow: 0 0 12px rgba(82,183,136,0.6);
+}
+
+/* Verloren / Falsch */
+.card-failed {
+  background: linear-gradient(135deg, #6a040f, #9d0208);
+  color: #fff;
+  opacity: 0.85;
 }

@@ -62,7 +62,7 @@ const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 
     const timeout = setTimeout(() => {
       setIndex((prev) => prev + 1);
-    }, 3000);
+    }, 4000);
 
     return () => clearTimeout(timeout);
   }, [index, intro, loadingOverlay.loader]);

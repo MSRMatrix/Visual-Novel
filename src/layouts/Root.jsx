@@ -1,3 +1,5 @@
+import "./root.css"
+
 import { Outlet } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import useSound from "use-sound";
@@ -16,12 +18,12 @@ function Root() {
     if (e.target.closest("[data-nosound]")) return;
     playClick();
   }
-  const exampleText = [
-    "System Initializing...",
-    "Loading World Data...",
-    "Establishing Connection...",
-    "",
-  ];
+ const exampleText = [
+  "The island stirs...",
+  "Waves begin to whisper...",
+  "Ancient paths reveal themselves...",
+  "You are not alone...",
+];
 
   useEffect(() => {
     setLoadingOverlay((prev) => ({...prev, title: "Seite wird geladen", ready: intro && exampleText ? true : false}))
@@ -31,12 +33,16 @@ function Root() {
     <>
       <Loader />
 
-      <div onClick={globalClick} style={{visibility: loadingOverlay.loader ? "hidden" : "visible", height: "inherit", width: "inherit"}}>
-        {intro ? <Intro 
-       intro={intro}
-       setIntro={setIntro}
-       exampleText={exampleText}
-       /> :  <>
+    <div
+  onClick={globalClick}
+  className={`island-main ${loadingOverlay.loader ? "hidden" : ""}`}
+>
+  {intro ?
+    <Intro
+      intro={intro}
+      setIntro={setIntro}
+      exampleText={exampleText}
+    /> :  <>
               <Outlet />
               <ReactPlayerComponent />
           </>}
