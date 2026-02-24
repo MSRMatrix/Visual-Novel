@@ -33,66 +33,174 @@
   z-index: 3;
   }
 }
+/* Overlay */
+.island-game-data {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 25, 30, 0.92);
+  backdrop-filter: blur(10px);
 
-.game-data{
-
-   display: flex;
-    justify-content: center;
-    flex-direction: column; 
-         
-    .game-data-container{
-    display: flex;
-  flex-direction: column;
-    position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-
-  background: rgba(20, 30, 45, 0.65);     
-  border: 1px solid rgba(80, 150, 255, 0.3);
-  border-radius: 10px;
-
-  backdrop-filter: blur(8px);              
-  -webkit-backdrop-filter: blur(8px);
-
-  padding: 18px 22px;
-  color: #cfe6ff;
-  font-size: 16px;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
-
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    cursor: pointer;
-}
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Container */
+.game-data-container {
+  width: 700px;
+  max-height: 85%;
+  padding: 30px;
+  border-radius: 20px;
+
+  background: rgba(15, 40, 45, 0.85);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+/* Save Slot */
+.island-save-slot {
+  position: relative;
+  padding: 15px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: linear-gradient(135deg, #1b4332, #264653);
+  color: #e0e1dd;
+
+  text-align: left;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+/* Hover */
+.island-save-slot:hover:not(:disabled) {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* Focus */
+.island-save-slot:focus {
+  outline: none;
+  box-shadow: 0 0 12px rgba(233,196,106,0.7);
+}
+
+/* Empty Slot */
+.slot-empty {
+  opacity: 0.35;
+  background: rgba(30, 50, 60, 0.6);
+}
+
+/* Titel */
+.slot-title {
+  color: #fefae0;
+  margin-bottom: 8px;
+}
+
+/* Icon */
+.slot-icon {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  font-size: 1.2rem;
+  opacity: 0.7;
+}
+
+/* Mode Akzente */
+.mode-save {
+  border-color: rgba(82,183,136,0.6);
+}
+
+.mode-load {
+  border-color: rgba(233,196,106,0.6);
+}
+
+.mode-delete {
+  border-color: rgba(157,2,8,0.7);
+  box-shadow: 0 0 10px rgba(157,2,8,0.5);
+}
 
 
-.backlog{
 
-    .backlog-containter{
-             display: flex;
+
+/* Overlay */
+.island-backlog {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 25, 30, 0.9);
+  backdrop-filter: blur(10px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container */
+.backlog-container {
+  width: 600px;
+  max-height: 80%;
+  padding: 30px;
+  border-radius: 20px;
+
+  background: rgba(15, 40, 45, 0.85);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+
+  display: flex;
   flex-direction: column;
-    position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
+}
 
-  background: rgba(20, 30, 45, 0.65);     
-  border: 1px solid rgba(80, 150, 255, 0.3);
+/* Titel */
+.backlog-title {
+  color: #fefae0;
+  margin-bottom: 20px;
+  letter-spacing: 2px;
+}
+
+/* Liste */
+.backlog-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px 0;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Scrollbar */
+.backlog-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.backlog-list::-webkit-scrollbar-thumb {
+  background: #e9c46a;
   border-radius: 10px;
+}
 
-  backdrop-filter: blur(8px);              
-  -webkit-backdrop-filter: blur(8px);
+/* Basis Item */
+.backlog-item {
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  transition: background 0.2s ease;
+}
 
-  padding: 18px 22px;
-  color: #cfe6ff;
-  font-size: 16px;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
+/* Spieler */
+.speaker-player {
+  background: linear-gradient(135deg, #2a9d8f, #40916c);
+  color: #fefae0;
+  align-self: flex-start;
+}
 
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-    }
+/* NPC */
+.speaker-npc {
+  background: linear-gradient(135deg, #264653, #1b4332);
+  color: #e0e1dd;
+  align-self: flex-end;
+}
+
+/* Sprecher-Name */
+.speaker-name {
+  color: #e9c46a;
 }

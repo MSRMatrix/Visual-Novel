@@ -24,25 +24,40 @@ function Backlog({setAction, action, currentStep, storyState, uiState, setUiStat
   // Einen Scroller einfügen um die Texte durchlesen zu können wenn er zulang wird
 
   return (
-    <div className="backlog">
-      <div className="backlog-containter">
-      
-      <h2>Backlog</h2>
-      <ul>
-        {steps.map((step, i) => (
-          <li key={i} style={{background: step.speaker === "Spieler" ? "red" : "royalblue"}}>
-            <strong>{step.speaker}:</strong> {step.text}
-          </li>
-        ))}
-      </ul>
-       <button
-        ref={(el) => (focusableRef.current[0] = el)}
-          onClick={() => setAction("")}
+   <div className="island-backlog">
+  <div className="backlog-container">
+
+    <h2 className="backlog-title">Backlog</h2>
+
+    <ul className="backlog-list">
+      {steps.map((step, i) => (
+        <li
+          key={i}
+          className={`backlog-item ${
+            step.speaker === "Spieler"
+              ? "speaker-player"
+              : "speaker-npc"
+          }`}
         >
-          Zurück
-        </button>
-        </div>
-    </div>
+          <strong className="speaker-name">
+            {step.speaker}:
+          </strong>{" "}
+          {step.text}
+        </li>
+      ))}
+    </ul>
+
+    <button
+      className="island-button"
+      ref={(el) => (focusableRef.current[0] = el)}
+      onClick={() => setAction("")}
+    >
+      Zurück
+    </button>
+
+  </div>
+</div>
+
   );
 }
 

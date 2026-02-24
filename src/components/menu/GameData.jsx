@@ -100,66 +100,69 @@ function GameData({
   // Fokus setzen
 
   return (
-    <div className="game-data">
-      <div className="game-data-container">
+   <div className="island-game-data">
+  <div className="game-data-container">
 
+    {saves.map((item, idx) => {
+      const isEmpty = !item.timestamp;
+      const disabled = action !== "save" && isEmpty;
 
-      
-      {saves.map((item, idx) => (
-          <button 
-          disabled={action !== "save" && !item.timestamp}
-          className="gameData"
+      return (
+        <button
+          key={item.name}
+          disabled={disabled}
           tabIndex={0}
           ref={(el) => (focusableRef.current[0 + idx] = el)}
           onClick={() => actionFunction(item.name)}
-          key={item.name}
-          >
-            <h2
-              style={{
-                color:
-                  !item.timestamp && action !== "save" ? "transparent" : "",
-              }}
-            >
-              {item.name}
-            </h2>
-            <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
-            <p>{item.chapter ? `Kapitel: ${item.chapter}` : ""}</p>
-            <p>{item.scene ? `Szene im Kapitel: ${item.scene}` : ""}</p>
-            <p>
-              {item.step >= 0 ? `Punkt in der Szene: ${item.step + 1}` : ""}
-            </p>
-            <p>
-              {isNaN(item.playTime)
-                ? ""
-                : `Spielzeit: ${formatTime(item.playTime)}`}
-            </p>
-            <FontAwesomeIcon
-            
-            style={{
-                display:
-                  !item.timestamp && action !== "block" ? "none" : "",
-              }}
-              icon={
-                mode === "save"
-                  ? "floppy-disk"
-                  : mode === "delete"
-                  ? "trash-can"
-                  : mode === "load"
-                  ? "cloud"
-                  : "face-meh"
-              }
-            />
-          </button>
-            
-      ))}
-      <button
-        ref={(el) => (focusableRef.current[5] = el)}
-        onClick={() => setAction("")}
-      >
-        Zurück
-      </button>
-      </div>
-    </div>
+          className={`
+            island-save-slot
+            ${isEmpty ? "slot-empty" : "slot-filled"}
+            ${mode === "delete" ? "mode-delete" : ""}
+            ${mode === "save" ? "mode-save" : ""}
+            ${mode === "load" ? "mode-load" : ""}
+          `}
+        >
+          <h2 className="slot-title">
+            {item.name}
+          </h2>
+
+          {item.timestamp && (
+            <>
+              <p>Gespeichert am: {item.timestamp}</p>
+              <p>Kapitel: {item.chapter}</p>
+              <p>Szene im Kapitel: {item.scene}</p>
+              <p>Punkt in der Szene: {item.step + 1}</p>
+              <p>Spielzeit: {formatTime(item.playTime)}</p>
+            </>
+          )}
+
+          <FontAwesomeIcon
+            className="slot-icon"
+            icon={
+              mode === "save"
+                ? "floppy-disk"
+                : mode === "delete"
+                ? "trash-can"
+                : mode === "load"
+                ? "cloud"
+                : "face-meh"
+            }
+          />
+        </button>
+      );
+    })}
+
+    <button
+      className="island-button"
+      ref={(el) => (focusableRef.current[5] = el)}
+      onClick={() => setAction("")}
+    >
+      Zurück
+    </button>
+
+  </div>
+</div>
+
   );
 }
 
