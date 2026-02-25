@@ -93,56 +93,59 @@ function Menu({
   });
 
   return (
-    <div className="menu">
-      <div
-        className={`menu-container`}
-        style={{ display: action || !sounds.hidePlayer ? "none" : "" }}
-      >
-        <h1>Schnellmenü</h1>
+  <div className="island-menu">
+  <div
+    className={`menu-container ${
+      action || !sounds.hidePlayer ? "menu-hidden" : ""
+    }`}
+  >
+    <h1 className="menu-title">Schnellmenü</h1>
 
-        {menuButtons.map((item, idx) => (
-          <button
-            ref={(el) => (focusableRef.current[idx] = el)}
-            key={item.action || idx}
-            disabled={item.action === action}
-            onClick={() => {
-              if (item.onClick) item.onClick();
-              setAction(item.action);
-              setSounds((prev) => ({ ...prev, options: "" }));
-            }}
-          >
-            {item.label}
-          </button>
-        ))}
-      </div>
-      {action === "save" || action === "load" || action === "delete" ? (
-        <GameData
-          mode={action}
-          setMode={setAction}
-          action={action}
-          setAction={setAction}
-          currentStep={currentStep}
-          storyState={storyState}
-          setStoryState={setStoryState}
-          setTextState={setTextState}
-          uiState={uiState}
-          setUiState={setUiState}
-        />
-      ) : action === "option" ? (
-        <Options action={action} setAction={setAction} />
-      ) : action === "backlog" ? (
-        <Backlog
-          setAction={setAction}
-          action={action}
-          currentStep={currentStep}
-          storyState={storyState}
-          uiState={uiState}
-          setUiState={setUiState}
-        />
-      ) : (
-        ""
-      )}
-    </div>
+    {menuButtons.map((item, idx) => (
+      <button
+        key={item.action || idx}
+        ref={(el) => (focusableRef.current[idx] = el)}
+        disabled={item.action === action}
+        className="island-menu-button"
+        onClick={() => {
+          if (item.onClick) item.onClick();
+          setAction(item.action);
+          setSounds((prev) => ({ ...prev, options: "" }));
+        }}
+      >
+        {item.label}
+      </button>
+    ))}
+  </div>
+
+  {action === "save" ||
+  action === "load" ||
+  action === "delete" ? (
+    <GameData
+      mode={action}
+      setMode={setAction}
+      action={action}
+      setAction={setAction}
+      currentStep={currentStep}
+      storyState={storyState}
+      setStoryState={setStoryState}
+      setTextState={setTextState}
+      uiState={uiState}
+      setUiState={setUiState}
+    />
+  ) : action === "option" ? (
+    <Options action={action} setAction={setAction} />
+  ) : action === "backlog" ? (
+    <Backlog
+      setAction={setAction}
+      action={action}
+      currentStep={currentStep}
+      storyState={storyState}
+      uiState={uiState}
+      setUiState={setUiState}
+    />
+  ) : null}
+</div>
   );
 }
 

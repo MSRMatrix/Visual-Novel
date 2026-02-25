@@ -76,36 +76,51 @@ function LoadGames() {
   }, [uiState.focusedIndex]);
 
   return (
-    <div className="load">
-      <div className="load-container">
-      {saves.map((item, index) => (
+   <div className="island-game-data">
+  <div className="game-data-container">
+
+    {saves.map((item, index) => {
+      const isEmpty = !item.timestamp;
+
+      return (
         <button
-        
-          disabled={!item.timestamp}
-          ref={(el) => (focusableRef.current[0 + index] = el)}
           key={item.name}
+          disabled={isEmpty}
+          ref={(el) => (focusableRef.current[index] = el)}
           onClick={() => handleLoad(item.name)}
+          className={`
+            island-save-slot
+            ${isEmpty ? "slot-empty" : "slot-filled"}
+            mode-load
+          `}
         >
-          <h2 style={{color: !item.timestamp ? "transparent" : ""}}>{item.name}</h2>
-          <p>{item.timestamp ? `Gespeichert am: ${item.timestamp}` : ""}</p>
-          <p>{item.currentChapter ? `Kapitel: ${item.currentChapter}` : ""}</p>
-          <p>
-            {item.currentScene ? `Szene im Kapitel: ${item.currentScene}` : ""}
-          </p>
-          <p>{item.stepIndex ? `Punkt im Szene: ${item.stepIndex}` : ""}</p>
-          <p>
-            {item.playTime ? `Spielzeit: ${formatTime(item.playTime)}` : ""}
-          </p>
+          <h2 className="slot-title">
+            {item.name}
+          </h2>
+
+          {!isEmpty && (
+            <>
+              <p>Gespeichert am: {item.timestamp}</p>
+              <p>Kapitel: {item.currentChapter}</p>
+              <p>Szene im Kapitel: {item.currentScene}</p>
+              <p>Punkt in der Szene: {item.stepIndex + 1}</p>
+              <p>Spielzeit: {formatTime(item.playTime)}</p>
+            </>
+          )}
         </button>
-      ))}
-      <button
-        ref={(el) => (focusableRef.current[5] = el)}
-        onClick={() => navigate("/")}
-      >
-        Zurück
-      </button>
-      </div>
-    </div>
+      );
+    })}
+
+    <button
+      className="island-button"
+      ref={(el) => (focusableRef.current[saves.length] = el)}
+      onClick={() => navigate("/")}
+    >
+      Zurück
+    </button>
+
+  </div>
+</div>
   );
 }
 

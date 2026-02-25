@@ -1,38 +1,87 @@
-.menu{
-    width: inherit;
-    height: inherit;
-    background-color: gray;
-    position: relative;
-    z-index: 2;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  .menu-container{
-    display: flex;
-  flex-direction: column;
-    position: relative;
-  width: 100%;
-  max-width: 600px;
-  margin: 0 auto;
-    gap: 30px;
-  background: rgba(20, 30, 45, 0.65);     
-  border: 1px solid rgba(80, 150, 255, 0.3);
-  border-radius: 10px;
-
-  backdrop-filter: blur(8px);              
-  -webkit-backdrop-filter: blur(8px);
-
-  padding: 18px 22px;
-  color: #cfe6ff;
-  font-size: 16px;
-  letter-spacing: 0.4px;
-  line-height: 1.45;
-
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
-  z-index: 3;
-  }
+/* Overlay Wrapper */
+.island-menu {
+  position: absolute;
+  inset: 0;
 }
+
+/* Menü Panel */
+.menu-container {
+  position: absolute;
+  bottom: 40px;
+  right: 40px;
+
+  width: 260px;
+  padding: 25px;
+  border-radius: 20px;
+
+  background: rgba(15, 40, 45, 0.85);
+  backdrop-filter: blur(12px);
+
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  pointer-events: all;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 3;
+}
+
+/* Versteckt */
+.menu-hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* Titel */
+.menu-title {
+  color: #fefae0;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+/* Menü Buttons */
+.island-menu-button {
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+
+  background: linear-gradient(135deg, #1b4332, #264653);
+  color: #e0e1dd;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.island-menu-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #2a9d8f, #40916c);
+}
+
+/* Focus */
+.island-menu-button:focus {
+  outline: none;
+  box-shadow: 0 0 12px rgba(233,196,106,0.7);
+}
+
+/* Active */
+.island-menu-button:active {
+  transform: translateY(1px);
+}
+
+/* Disabled */
+.island-menu-button:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+
 /* Overlay */
 .island-game-data {
   position: absolute;
@@ -43,6 +92,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 3;
 }
 
 /* Container */
