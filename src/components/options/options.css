@@ -94,3 +94,99 @@
     align-items: center;
     flex-direction: column;
 }
+
+/* Wrapper */
+.island-options {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+/* Container */
+.island-options-container {
+  width: 600px;
+  max-height: 85%;
+  padding: 35px;
+  border-radius: 20px;
+
+  background: rgba(15, 40, 45, 0.88);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Titel */
+.options-title {
+  color: #fefae0;
+  text-align: center;
+}
+
+/* Beispieltext */
+.options-example {
+  min-height: 60px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  color: #e0e1dd;
+}
+
+/* Geschwindigkeit */
+.options-speed {
+  color: #e9c46a;
+}
+
+/* Range */
+.options-range {
+  width: 100%;
+  cursor: pointer;
+}
+
+/* Button Reihe */
+.options-button-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Standard Island Button */
+.island-button {
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: linear-gradient(135deg, #1b4332, #264653);
+  color: #fefae0;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* Hover */
+.island-button:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+/* Focus */
+.island-button:focus {
+  outline: none;
+  box-shadow: 0 0 12px rgba(233,196,106,0.7);
+}
+
+/* Disabled */
+.island-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Test Button Accent */
+.accent-button {
+  border-color: rgba(233,196,106,0.6);
+}
+
+/* Zurück */
+.back-button {
+  margin-top: 10px;
+  align-self: center;
+}

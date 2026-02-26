@@ -78,61 +78,67 @@ if (e.key === "ArrowUp") {
   }
 
   return (
-    <>
-      <div className="option-container">
-        <h1>Beispieltext</h1>
+    <div className="island-options">
+  <div className="island-options-container">
 
-        <p>{displayExample}</p>
-        <p>Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)}</p>
+    <h1 className="options-title">Textgeschwindigkeit</h1>
 
-        {/* Range Input */}
-        <input
-          ref={(el) => (focusableRef.current[0] = el)}
-          value={writeSpeed}
-          type="range"
-          max={150}
-          min={15}
-          onChange={writeHelper}
-        />
+    <p className="options-example">{displayExample}</p>
+    <p className="options-speed">
+      Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)}
+    </p>
 
-        {/* Preset Buttons */}
-        <div style={{ display: "flex" }}>
-          {speed.map((item, i) => (
-            <button
-              key={item.name}
-              ref={(el) => (focusableRef.current[i + 1] = el)}
-              value={item.rate}
-              disabled={item.rate === writeSpeed || active}
-              onClick={writeHelper}
-            >
-              {item.name}
-            </button>
-          ))}
+    {/* Range Input */}
+    <input
+      className="options-range"
+      ref={(el) => (focusableRef.current[0] = el)}
+      value={writeSpeed}
+      type="range"
+      max={150}
+      min={15}
+      onChange={writeHelper}
+    />
 
-          {/* Test Button */}
-          <button
-            disabled={active}
-            ref={(el) => (focusableRef.current[speed.length + 1] = el)}
-            onClick={() => setActive(true)}
-          >
-            Test
-          </button>
-        </div>
-
-        {/* Zurück */}
+    {/* Preset Buttons */}
+    <div className="options-button-row">
+      {speed.map((item, i) => (
         <button
-          ref={(el) => (focusableRef.current[speed.length + 2] = el)}
-          onClick={() => {
-            setSounds((prev) => ({ ...prev, options: "" }));
-            setFocusedIndex(0);
-            setDisplayExample("");
-            setActive(false);
-          }}
+          key={item.name}
+          ref={(el) => (focusableRef.current[i + 1] = el)}
+          value={item.rate}
+          disabled={item.rate === writeSpeed || active}
+          onClick={writeHelper}
+          className="island-button"
         >
-          Zurück
+          {item.name}
         </button>
-      </div>
-    </>
+      ))}
+
+      <button
+        disabled={active}
+        ref={(el) => (focusableRef.current[speed.length + 1] = el)}
+        onClick={() => setActive(true)}
+        className="island-button accent-button"
+      >
+        Test
+      </button>
+    </div>
+
+    <button
+      className="island-button back-button"
+      ref={(el) => (focusableRef.current[speed.length + 2] = el)}
+      onClick={() => {
+        setSounds((prev) => ({ ...prev, options: "" }));
+        setFocusedIndex(0);
+        setDisplayExample("");
+        setActive(false);
+      }}
+    >
+      Zurück
+    </button>
+
+  </div>
+</div>
   );
 }
 
