@@ -14,7 +14,6 @@ function Dashboard() {
   const { sounds, setSounds } = useContext(SoundContext);
   const { loadingOverlay, setLoadingOverlay } = useContext(LoadingOverlay);
 const saves = JSON.parse(localStorage.getItem("vn_saves") || "[]");
-console.log(saves);
 
   const buttonRefs = useRef([]);
 

@@ -78,50 +78,56 @@ function ReactPlayerComponent() {
   }, [focusedIndex, focusableRef]);
 
   return (
-    <div className={`react-player-container ${sounds.hidePlayer ? "hide" : ""}`}>
-    <div className="react-player">
-      <ReactPlayer
-        src={sounds.url}
-        playing={sounds.playing}
-        volume={sounds.musicVolume}
-        loop
-        onError={(e) => console.log("Player-Error:", e)}
-        style={{display: "none"}}
-      />
+  <div className={`island-player-wrapper ${sounds.hidePlayer ? "hide" : ""}`}>
 
-      <div className="react-player-action" style={{display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-        <div className="music-test">
-          <button
-           ref={(el) => (focusableRef.current[0] = el)}
-            onClick={() =>
-              setSounds((prev) => ({ ...prev, playing: !prev.playing }))
-            }
-          >
-            {sounds.playing ? "Anhalten" : "Weiter"}
-          </button>
-        </div>
+  <div className="island-player">
 
-        <div className="placeholder">
-          {reactplayerItems.map((item) => (
-            <div key={item.name} className={item.className}>
-              <h2>{item.name}</h2>
-              {item.component}
-            </div>
-          ))}
+    <ReactPlayer
+      src={sounds.url}
+      playing={sounds.playing}
+      volume={sounds.musicVolume}
+      loop
+      onError={(e) => console.log("Player-Error:", e)}
+      style={{ display: "none" }}
+    />
+
+    <h1 className="memory-title">Musik</h1>
+
+    {/* Play / Pause */}
+    <button
+      className="island-card"
+      ref={(el) => (focusableRef.current[0] = el)}
+      onClick={() =>
+        setSounds((prev) => ({ ...prev, playing: !prev.playing }))
+      }
+    >
+      {sounds.playing ? "Anhalten" : "Weiter"}
+    </button>
+
+    {/* Dynamische Player Elemente */}
+    <div className="player-section">
+      {reactplayerItems.map((item) => (
+        <div key={item.name} className="player-item">
+          <h2 className="player-subtitle">{item.name}</h2>
+          {item.component}
         </div>
-      </div>
-      <button
-        ref={(el) => (focusableRef.current[19] = el)}
-        onClick={() => {
-          setSounds((prev) => ({ ...prev, hidePlayer: true, options: "" })),
-            setFocusedIndex(0);
-        }}
-      >
-        Zurück
-      </button>
+      ))}
     </div>
-    
-    </div>
+
+    {/* Zurück */}
+    <button
+      className="island-card"
+      ref={(el) => (focusableRef.current[19] = el)}
+      onClick={() => {
+        setSounds((prev) => ({ ...prev, hidePlayer: true, options: "" }));
+        setFocusedIndex(0);
+      }}
+    >
+      Zurück
+    </button>
+
+  </div>
+</div>
   );
 }
 

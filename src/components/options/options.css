@@ -32,43 +32,49 @@
 
 
 
-.react-player-container{
-    width: inherit;
-    height: inherit;
-    display: flex;
-    align-items: center;
-    justify-content: center;   
-    position: absolute;
-    top: 0;
-    z-index: 4;
+/* Wrapper */
+.island-player-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
+.island-player-wrapper.hide {
+  display: none;
+}
 
+/* Panel */
+.island-player {
+  background: rgba(15, 40, 45, 0.85);
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.45);
+  backdrop-filter: blur(8px);
 
-.react-player{ 
-  width: 100%;
-  max-width: 600px;
-  padding: 40px;
-
-  background: rgba(18, 52, 59, 0.85);
-
-  border-radius: 24px;
-
-  border: 1px solid rgba(233, 196, 106, 0.25);
-
-  box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(0, 0, 0, 0.3);
-
-  backdrop-filter: blur(6px);
-
-  color: #f1faee; 
-
+  width: 520px;
   display: flex;
   flex-direction: column;
-  gap: 30px;
+  gap: 18px;
+}
 
-  z-index: 3;
+/* Unterbereiche */
+.player-section {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.player-item {
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.05);
+}
+
+/* Subtitel */
+.player-subtitle {
+  color: #e9c46a;
+  margin-bottom: 6px;
 }
 
 
