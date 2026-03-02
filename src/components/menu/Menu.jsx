@@ -93,7 +93,7 @@ function Menu({
   });
 
   return (
-  <div className="island-menu">
+  <div className={!sounds.hidePlayer ? "" : `island-menu`}>
   <div
     className={`menu-container ${
       action || !sounds.hidePlayer ? "menu-hidden" : ""
