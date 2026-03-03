@@ -17,11 +17,6 @@ function Rate({ active, setActive }) {
     { name: "Langsam", rate: 100 },
   ];
 
-  // Beispieltext
-  const [example] = useState({
-    text: "Das ist hier ein Beispieltext",
-  });
-
   const [keyCatcher, setKeyCatcher] = useState("");
 
   // TYPEWRITER-EFFEKT
@@ -29,7 +24,6 @@ function Rate({ active, setActive }) {
     active,
     setDisplayExample,
     writeSpeed,
-    example,
     setActive,keyCatcher,setKeyCatcher
   });
   // TYPEWRITER-EFFEKT

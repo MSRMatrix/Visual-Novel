@@ -27,4 +27,5 @@ export function newGame(
   } else {
     console.log(`Neues Spiel abgebrochen!`);
   }
+  setAction("");
 }

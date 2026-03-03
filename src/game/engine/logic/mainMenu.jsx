@@ -20,6 +20,8 @@
     setSound((prev) => ({ ...prev, url: menu_music }))
       return navigate("/");
     } else {
-      return;
+      console.log(`Hauptmenü abgebrochen!`)
+      
     }
+    setAction("");
   }

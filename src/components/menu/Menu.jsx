@@ -105,7 +105,7 @@ function Menu({
       <button
         key={item.action || idx}
         ref={(el) => (focusableRef.current[idx] = el)}
-        disabled={item.action === action}
+        // disabled={item.action === action}
         className="island-menu-button"
         onClick={() => {
           if (item.onClick) item.onClick();

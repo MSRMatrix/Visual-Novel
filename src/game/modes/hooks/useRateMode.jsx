@@ -1,30 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
+
+
+// Beim Schreiben hängt es immernoch wenn man Pfeiltaste oben und unten benutzt
 export function useRateMode({
   active,
   setDisplayExample,
   writeSpeed,
-  example,
   setActive,
 }) {
+  const indexRef = useRef(0);
+  const exampleText = "Das ist hier ein Beispieltext";
+
   useEffect(() => {
     if (!active) return;
 
     setDisplayExample("");
-
-    const intervalDelay = writeSpeed;
-    let i = -1;
+    indexRef.current = 0;
 
     const interval = setInterval(() => {
-      if (i < example.text.length) {
-        setDisplayExample((prev) => prev + example.text.charAt(i));
-        i++;
+      if (indexRef.current < exampleText.length) {
+        setDisplayExample((prev) =>
+          prev + exampleText.charAt(indexRef.current)
+        );
+        indexRef.current++;
       } else {
         clearInterval(interval);
         setActive(false);
       }
-    }, intervalDelay);
+    }, writeSpeed);
 
     return () => clearInterval(interval);
-  }, [active, writeSpeed]);
+  }, [active, writeSpeed]); // 👈 writeSpeed wieder rein!
 }
