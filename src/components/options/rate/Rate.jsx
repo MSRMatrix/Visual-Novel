@@ -72,19 +72,19 @@ if (e.key === "ArrowUp") {
   }
 
   return (
-    <div className="island-options">
-  <div className="island-options-container">
+  <div className="rate">
+  <div className="rate__container">
 
-    <h1 className="options-title">Textgeschwindigkeit</h1>
+    <h1 className="rate__title">Textgeschwindigkeit</h1>
 
-    <p className="options-example">{displayExample}</p>
-    <p className="options-speed">
+    <p className="rate__example">{displayExample}</p>
+
+    <p className="rate__speed">
       Aktuelle Geschwindigkeit: {showSpeedRate(writeSpeed)}
     </p>
 
-    {/* Range Input */}
     <input
-      className="options-range"
+      className="rate__range"
       ref={(el) => (focusableRef.current[0] = el)}
       value={writeSpeed}
       type="range"
@@ -93,8 +93,7 @@ if (e.key === "ArrowUp") {
       onChange={writeHelper}
     />
 
-    {/* Preset Buttons */}
-    <div className="options-button-row">
+    <div className="rate__button-row">
       {speed.map((item, i) => (
         <button
           key={item.name}
@@ -102,7 +101,7 @@ if (e.key === "ArrowUp") {
           value={item.rate}
           disabled={item.rate === writeSpeed || active}
           onClick={writeHelper}
-          className="island-button"
+          className="rate__button"
         >
           {item.name}
         </button>
@@ -112,14 +111,14 @@ if (e.key === "ArrowUp") {
         disabled={active}
         ref={(el) => (focusableRef.current[speed.length + 1] = el)}
         onClick={() => setActive(true)}
-        className="island-button accent-button"
+        className="rate__button rate__button--accent"
       >
         Test
       </button>
     </div>
 
     <button
-      className="island-button back-button"
+      className="rate__button rate__button--back"
       ref={(el) => (focusableRef.current[speed.length + 2] = el)}
       onClick={() => {
         setSounds((prev) => ({ ...prev, options: "" }));
