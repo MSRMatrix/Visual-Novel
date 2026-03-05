@@ -94,15 +94,18 @@ function ReactPlayerComponent() {
     <h1 className="memory-title">Musik</h1>
 
     {/* Play / Pause */}
-    <button
-      className="island-card"
+    <div className="player-item">
+     <button
+      className=""
       ref={(el) => (focusableRef.current[0] = el)}
       onClick={() =>
         setSounds((prev) => ({ ...prev, playing: !prev.playing }))
       }
     >
       {sounds.playing ? "Anhalten" : "Weiter"}
-    </button>
+    </button> 
+    </div>
+    
 
     {/* Dynamische Player Elemente */}
     <div className="player-section">
@@ -114,9 +117,9 @@ function ReactPlayerComponent() {
       ))}
     </div>
 
-    {/* Zurück */}
-    <button
-      className="island-card"
+<div className="player-item">
+   <button
+      className=""
       ref={(el) => (focusableRef.current[19] = el)}
       onClick={() => {
         setSounds((prev) => ({ ...prev, hidePlayer: true, options: "" }));
@@ -125,6 +128,8 @@ function ReactPlayerComponent() {
     >
       Zurück
     </button>
+</div>
+   
 
   </div>
 </div>
